@@ -1,0 +1,14 @@
+{
+  "name":"rameduard/mvc",
+  "type": "library",
+  "description": "Simple PHP-MVC",
+  "authors": [
+    {
+      "name": "Ramón Serrano",
+      "email": "ramon.calle.88@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3"
+  }
+}
