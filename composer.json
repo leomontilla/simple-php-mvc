@@ -1,5 +1,5 @@
 {
-  "name":"rameduard/simple-php-mvc",
+  "name":"rameduard/MVC",
   "type": "library",
   "description": "Simple PHP-MVC",
   "authors": [
@@ -10,5 +10,8 @@
   ],
   "require": {
     "php": ">=5.3.3"
+  },
+  "autoload": {
+    "psr-0": { "MVC": "src/" }
   }
 }
