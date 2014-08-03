@@ -1,10 +1,10 @@
 <?php
 
-namespace MVC\command;
+namespace MVC\Command;
 
-use \MVC\command\Controller,
-    \MVC\command\Model,
-    \MVC\command\Test;
+use \MVC\Command\Controller,
+    \MVC\Command\Model,
+    \MVC\Command\Test;
 
 /**
  * Description of Command
@@ -79,11 +79,11 @@ class Command implements Controller, Model, Test {
     public static function getDefaultSettings() {
         return array(
             "app_path" => "./lib/MVC",
-            "controllers_path" => "./controllers",
-            "models_path" => "./models",
-            "views_path" => "./views",
-            "namespace_controllers" => "MVC\\controllers",
-            "namespace_models" => "MVC\\models"
+            "controllers_path" => "./Controllers",
+            "models_path" => "./Models",
+            "views_path" => "./Views",
+            "namespace_controllers" => "MVC\\Controllers",
+            "namespace_models" => "MVC\\Models"
         );
     }
 
@@ -228,7 +228,7 @@ $database = array(
 
     protected function help() {
         print "
-\nUsage: php command [option]
+\nUsage: php Command [option]
 
  build_controller       Build a new Controller with a View file.
  build_module           Build a Module with Model, Controller and View.
@@ -268,15 +268,15 @@ class ' . $name_file[0] . ' extends \MVC\Controller
         fwrite($path_file, '<?php 
 namespace ' . $this->settings['namespace_models'] . ';
 
-require dirname(__DIR__) . "/database/DB.php";
-require dirname(__DIR__) . "/database/Functions_DB.php";
-require dirname(__DIR__) . "/errors/Exception.php";
+require dirname(__DIR__) . "/Database/DB.php";
+require dirname(__DIR__) . "/Database/Functions_DB.php";
+require dirname(__DIR__) . "/Errors/Exception.php";
 
 /**
  * Description of ' . $this->model_name[0] . ' class
  * @author name
  */
-class ' . $this->model_name[0] . ' extends \MVC\database\Functions_DB {
+class ' . $this->model_name[0] . ' extends \MVC\Database\Functions_DB {
 
     public function __construct() {
         $path_config_file = dirname(dirname(dirname(__DIR__))) . "/config-database.php";

@@ -1,12 +1,12 @@
 <?php
 
-namespace MVC\server;
+namespace MVC\Server;
 
 /**
  * Description of Url
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\server
+ * @package MVC\Server
  */
 class Url {
 

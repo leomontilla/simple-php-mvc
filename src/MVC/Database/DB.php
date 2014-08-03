@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\database;
+namespace MVC\Database;
 
 /**
  * Description of class DB

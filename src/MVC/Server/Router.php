@@ -1,14 +1,12 @@
 <?php
 
-namespace MVC\server;
+namespace MVC\Server;
 
 /**
  * The Router is used to handle url routing.
  *
- * @author    Nick Sinopoli <NSinopoli@gmail.com>
- * @copyright 2011-2012 Nick Sinopoli
- * @license   http://opensource.org/licenses/BSD-3-Clause The BSD License
- * @package MVC\server
+ * @author  Ramón Serrano <ramon.calle.88@gmail.com>
+ * @package MVC\Server
  */
 class Router {
 

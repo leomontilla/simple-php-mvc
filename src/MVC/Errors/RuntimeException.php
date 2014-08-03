@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\errors;
+namespace MVC\Errors;
 
 /**
  * Description of Exception

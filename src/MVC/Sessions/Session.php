@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\sessions;
+namespace MVC\Sessions;
 
 /**
  * Description of Session

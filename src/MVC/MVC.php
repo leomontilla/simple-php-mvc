@@ -7,7 +7,7 @@ namespace MVC;
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @package MVC
- * @version 1.0.1
+ * @version 1.0
  */
 class MVC {
 
@@ -18,43 +18,6 @@ class MVC {
     protected $container;
 
     /**
-     * MVC autoloader
-     * @param string $className Classname to autoload
-     * @return void
-     */
-    public static function autoload($className) {
-        $thisClass = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
-
-        $baseDir = __DIR__;
-
-        if (substr($baseDir, -strlen($thisClass)) === $thisClass) {
-            $baseDir = substr($baseDir, 0, -strlen($thisClass));
-        }
-
-        $className = ltrim($className, '\\');
-        $fileName = $baseDir;
-        $namespace = '';
-        if ($lastNsPos = strripos($className, '\\')) {
-            $namespace = substr($className, 0, $lastNsPos);
-            $className = substr($className, $lastNsPos + 1);
-            $fileName .= str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
-        }
-        $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
-
-        if (file_exists($fileName)) {
-            require $fileName;
-        }
-    }
-
-    /**
-     * Register MVC autoloader
-     * @return void
-     */
-    public static function registerAutoloader() {
-        spl_autoload_register(__NAMESPACE__ . "\\MVC::autoload");
-    }
-
-    /**
      * Constructor
      * @param  array $userSettings Associative array of application settings
      */
@@ -62,9 +25,9 @@ class MVC {
         $this->container = new \stdClass;
         $this->container->settings = array_merge(static::getDefaultSettings(), $userSettings);
 
-        $this->container->request = new \MVC\server\Request;
-        $this->container->response = new \MVC\server\Response;
-        $this->container->router = new \MVC\server\Router;
+        $this->container->request = new \MVC\Server\Request;
+        $this->container->response = new \MVC\Server\Response;
+        $this->container->router = new \MVC\Server\Router;
         $this->container->view = new \MVC\View;
         $this->container->view->root = $this->container->settings['app_path'];
         $this->container->view->templates_path = $this->container->settings['templates_path'];
@@ -228,8 +191,8 @@ class MVC {
     /**
      * Checks for request characteristics.
      * ajax, delete, flash, get, head, mobile, options, post, put, ssl
-     * @param string $characteristic    The characteristic.
-     * @return string
+     * @param string $caracteristic   The request caracteristic
+     * @return mixed
      */
     public function is($caracteristic) {
         return $this->container->request->is($caracteristic);
@@ -283,14 +246,14 @@ class MVC {
      * Get the Default Controller object
      * @param string $name   Name of Controller
      * @return \MVC\Controller
-     * @return \MVC\controllers\[controller]
+     * @return \MVC\Controllers\[controller]
      */
     public function controller($name = null) {
         if (!is_null($name)) {
             if (isset($this->container->controllers[$name])) {
                 return $this->container->controllers[$name];
             } else {
-                \MVC\errors\Exception::run("No existe el controlador o no se cargo al MVC.");
+                \MVC\Errors\Exception::run("No existe el controlador o no se cargo al MVC.");
             }
         } else {
             return $this->container->controller;
@@ -300,7 +263,7 @@ class MVC {
     /**
      * Get the models
      * @param string $name  Name of Model
-     * @return \MVC\models\[model]
+     * @return \MVC\Models\[model]
      */
     public function model($name = null) {
         if (!is_null($name)) {
@@ -310,7 +273,7 @@ class MVC {
 
     /**
      * Get the Request object
-     * @return \MVC\server\Request
+     * @return \MVC\Server\Request
      */
     public function request() {
         return $this->container->request;
@@ -334,7 +297,7 @@ class MVC {
 
     /**
      * Get the Response object
-     * @return \MVC\server\Response
+     * @return \MVC\Server\Response
      */
     public function response() {
         return $this->container->response;

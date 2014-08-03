@@ -3,6 +3,7 @@
   "type": "library",
   "description": "Simple PHP-MVC",
   "license": "GPL",
+  "keywords": ["framework"],
   "authors": [
     {
       "name": "Ramón Serrano",

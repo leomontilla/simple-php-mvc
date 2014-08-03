@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\command;
+namespace MVC\Command;
 
 /**
  * Functions of Model

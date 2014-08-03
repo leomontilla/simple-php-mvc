@@ -1,8 +1,8 @@
 <?php
 
-namespace MVC\database;
+namespace MVC\Database;
 
-use \MVC\database\DB;
+use \MVC\Database\DB;
 
 /**
  * Description of Functions_DB

@@ -1,13 +1,13 @@
 <?php
 
-namespace MVC\server;
+namespace MVC\Server;
 
 /**
  * The Request class is used to handle all data pertaining to an incoming HTTP
  * request.
  *
  * @author    Ramon Serrano <ramon.calle.88@gmail.com>
- * @package MVC\server
+ * @package MVC\Server
  */
 class Request {
 
