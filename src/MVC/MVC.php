@@ -35,7 +35,7 @@ class MVC {
         if (is_array($controllers = $this->container->settings['controllers'])) {
             $this->controllers = array();
             foreach ($controllers as $key => $value) {
-                $this->container->controllers[$key] = new $value;                
+                $this->container->controllers[$key] = new $value;
                 $this->container->controllers[$key]->view()->root = $this->container->settings['app_path'];
                 $this->container->controllers[$key]->view()->templates_path = $this->container->settings['templates_path'];
             }
@@ -91,7 +91,7 @@ class MVC {
         }
 
         if (is_array($name)) {
-            if (true === $value) {                
+            if (true === $value) {
                 $c = array_merge_recursive($c, $name);
             } else {
                 $c = array_merge($c, $name);
@@ -211,7 +211,7 @@ class MVC {
      * @param  int      $status     The HTTP redirect status code (optional)
      */
     public function redirect($url, $status = 302) {
-        $this->container->response->redirect($url, $status);        
+        $this->container->response->redirect($url, $status);
     }
 
     /**
@@ -236,7 +236,7 @@ class MVC {
      * @param  mixed $callable Anything that returns true for is_callable()
      * @return void
      */
-    public function notFound($callable = null) {        
+    public function notFound($callable = null) {
         $args = func_get_args();
         $methods = array("GET", "POST", "PUT", "DELETE", "AJAX", "OPTIONS", "HEAD", "MOBILE");
         $this->container->routes['notFound'] = array($methods, "*", $args[0]);
@@ -283,7 +283,7 @@ class MVC {
      * Get the data of request
      * @return \stdClass
      */
-    public function data() {        
+    public function data() {
         return $this->container->request->data;
     }
 
@@ -291,7 +291,7 @@ class MVC {
      * Get the query of request
      * @return \stdClass
      */
-    public function query() {        
+    public function query() {
         return $this->container->request->query;
     }
 
@@ -330,7 +330,7 @@ class MVC {
      * @return void
      */
     public function run() {
-        
+
         if ($this->container->settings['debug'] === true) {
             error_reporting(E_ALL);
         } else {
@@ -340,7 +340,7 @@ class MVC {
         $parsed = $this->container->router->parse($this->container->request->url, $this->container->request->request_method, $this->container->routes);
 
         if ($parsed['found'] || isset($this->container->routes['notFound'])) {
-            if ($parsed['callback']) {            
+            if ($parsed['callback']) {
                 $this->container->request->params = $parsed['param'];
                 call_user_func_array($parsed['callback'], array_values($parsed['params']));
             } else {
@@ -348,7 +348,7 @@ class MVC {
             }
         } else {
             $this->defaultNotFound();
-        }        
+        }
     }
 
     /**
@@ -371,6 +371,6 @@ class MVC {
      */
     protected function defaultNotFound() {
         echo static::generateTemplateMarkup('404 Page Not Found', '<p>The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly. If all else fails, you can visit our home page at the link below.</p><a href="' . $this->container->request->url . '/">Visit the Home Page</a>');
-    }    
+    }
 
 }

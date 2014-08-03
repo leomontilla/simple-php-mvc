@@ -1,15 +1,15 @@
 <?php
 
-require "vendor/autoload.php";
+require __DIR__ . "/vendor/autoload.php";
 
 $config = array(
     "app_path" => __DIR__,
     "controllers" => array(
-        "UserController" => "\\MVC\\controllers\\UserController"
+        "UserController" => "\\MVC\\Controllers\\UserController"
         )
     );
 
-$mvc = new \MVC\MVC($config);
+$mvc = new MVC\MVC($config);
 
 $mvc->get("/", function() use($mvc) {    
     $mvc->view()->display("index.html");
