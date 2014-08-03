@@ -1,6 +1,6 @@
 <?php
 
-require "lib/MVC/MVC.php";
+require "src/MVC/MVC.php";
 
 \MVC\MVC::registerAutoloader();
 
