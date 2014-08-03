@@ -9,7 +9,7 @@ $config = array(
         )
     );
 
-$mvc = new MVC\MVC($config);
+$mvc = new \MVC\MVC($config);
 
 $mvc->get("/", function() use($mvc) {    
     $mvc->view()->display("index.html");
