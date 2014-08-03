@@ -2,7 +2,7 @@
 
 namespace MVC;
 
-use \MVC\errors\RuntimeException;
+use \MVC\Errors\RuntimeException;
 
 /**
  * Description of View

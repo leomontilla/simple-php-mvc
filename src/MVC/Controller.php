@@ -3,8 +3,8 @@
 namespace MVC;
 
 use MVC\View,
-    MVC\errors\RuntimeException,
-    \MVC\server\Url;
+    MVC\Errors\RuntimeException,
+    \MVC\Server\Url;
 
 /**
  * Description of AppController
@@ -21,7 +21,7 @@ class Controller {
     protected $_response;
 
     /**
-     * @var \MVC\server\View
+     * @var \MVC\Server\View
      */
     protected $view;
 
@@ -35,7 +35,7 @@ class Controller {
     /**
      * Call a action of controller
      * @param string $action                  Action of Controller
-     * @param \MVC\server\Request $request    Object of Request class
+     * @param \MVC\Server\Request $request    Object of Request class
      * @param string $file_view               String of the view file
      * @return array
      */
@@ -72,7 +72,7 @@ class Controller {
      * 
      * Function for Error 404: Not Found
      * 
-     * @param \MVC\server\Request $request
+     * @param \MVC\Server\Request $request
      * @return array
      */
     public function _404($request) {
@@ -107,7 +107,7 @@ class Controller {
      * 
      * Example of controller function or method
      * 
-     * @param \MVC\server\Request $request
+     * @param \MVC\Server\Request $request
      * @return array
      */
     public function testCall($request) {

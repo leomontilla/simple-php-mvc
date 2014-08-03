@@ -1,8 +1,6 @@
 <?php
 
-require "src/MVC/MVC.php";
-
-\MVC\MVC::registerAutoloader();
+require "vendor/autoload.php";
 
 $config = array(
     "app_path" => __DIR__,
