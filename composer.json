@@ -2,7 +2,12 @@
   "name":"rameduard/simple-php-mvc",
   "type": "library",
   "description": "Simple PHP-MVC",
+<<<<<<< HEAD
   "license": "GPL-2.0",
+=======
+  "license": "GPL",
+  "keywords": ["framework"],
+>>>>>>> master
   "authors": [
     {
       "name": "Ramón Serrano",
