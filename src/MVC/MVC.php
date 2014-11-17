@@ -120,72 +120,100 @@ class MVC {
 
     /**
      * Add AJAX route
+     * 
+     * @param string $pattern
+     * @param callable $callable
+     * 
      * @return array
      */
-    public function ajax() {
-        $args = func_get_args();
-        $this->container->routes[] = array("AJAX", $args[0], $args[1]);
-        return array("AJAX", $args[0], $args[1]);
+    public function ajax($pattern, callable $callable) {
+        $route = array("AJAX", $pattern, $callable);
+        $this->container->routes[] = $route;
+        return $route;
     }
 
     /**
      * Add HEAD route
+     * 
+     * @param string $pattern
+     * @param callable $callable
+     * 
      * @return array
      */
-    public function head() {
-        $args = func_get_args();
-        $this->container->routes[] = array("HEAD", $args[0], $args[1]);
-        return array("HEAD", $args[0], $args[1]);
+    public function head($pattern, callable $callable) {
+        $route = array("HEAD", $pattern, $callable);
+        $this->container->routes[] = $route;
+        return $route;
     }
 
     /**
      * Add GET route
+     * 
+     * @param string $pattern
+     * @param callable $callable
+     * 
      * @return array
      */
-    public function get() {
-        $args = func_get_args();
-        $this->container->routes[] = array("GET", $args[0], $args[1]);
-        return array("GET", $args[0], $args[1]);
+    public function get($pattern, callable $callable) {
+        $route = array("GET", $pattern, $callable);
+        $this->container->routes[] = $route;
+        return $route;
     }
 
     /**
      * Add OPTIONS route
+     * 
+     * @param string $pattern
+     * @param callable $callable
+     * 
      * @return array
      */
-    public function options() {
-        $args = func_get_args();
-        $this->container->routes[] = array("OPTIONS", $args[0], $args[1]);
-        return array("OPTIONS", $args[0], $args[1]);
+    public function options($pattern, callable $callable) {
+        $route = array("OPTIONS", $pattern, $callable);
+        $this->container->routes[] = $route;
+        return $route;
     }
 
     /**
      * Add POST route
+     * 
+     * @param string $pattern
+     * @param callable $callable
+     * 
      * @return array
      */
-    public function post() {
-        $args = func_get_args();
-        $this->container->routes[] = array("POST", $args[0], $args[1]);
-        return array("POST", $args[0], $args[1]);
+    public function post($pattern, callable $callable) {
+        $route = array("POST", $pattern, $callable);
+        $this->container->routes[] = $route;
+        return $route;
     }
 
     /**
      * Add PUT route
+     * 
+     * @param string $pattern
+     * @param callable $callable
+     * 
      * @return array
      */
-    public function put() {
-        $args = func_get_args();
-        $this->container->routes[] = array("PUT", $args[0], $args[1]);
-        return array("PUT", $args[0], $args[1]);
+    public function put($pattern, callable $callable) {
+        $route = array("PUT", $pattern, $callable);
+        $this->container->routes[] = $route;
+        return $route;
     }
 
     /**
      * Add DELETE route
+     * 
+     * @param string $pattern
+     * @param callable $callable
+     * 
      * @return array
      */
-    public function delete() {
-        $args = func_get_args();
-        $this->container->routes[] = array("DELETE", $args[0], $args[1]);
-        return array("DELETE", $args[0], $args[1]);
+    public function delete($pattern, callable $callable) {
+        $route = array("DELETE", $pattern, $callable);
+        $this->container->routes[] = $route;
+        return $route;
     }
 
     /**
