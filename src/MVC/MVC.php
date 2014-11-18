@@ -2,6 +2,11 @@
 
 namespace MVC;
 
+use MVC\Server\Router,
+    MVC\Server\Request,
+    MVC\Server\Response,
+    MVC\View;
+
 /**
  * Description of Class MVC (Model View Controller)
  *
@@ -22,13 +27,14 @@ class MVC {
      * @param  array $userSettings Associative array of application settings
      */
     public function __construct(array $userSettings = array()) {
+        
         $this->container = new \stdClass;
         $this->container->settings = array_merge(static::getDefaultSettings(), $userSettings);
 
-        $this->container->request = new \MVC\Server\Request;
-        $this->container->response = new \MVC\Server\Response;
-        $this->container->router = new \MVC\Server\Router;
-        $this->container->view = new \MVC\View;
+        $this->container->request = new Request;
+        $this->container->response = new Response;
+        $this->container->router = new Router;
+        $this->container->view = new View;
         $this->container->view->root = $this->container->settings['app_path'];
         $this->container->view->templates_path = $this->container->settings['templates_path'];
         $this->container->controller = new \MVC\Controller;
@@ -47,6 +53,9 @@ class MVC {
             }
         }
         $this->container->routes = array();
+        
+        # Providers
+        $this->container->providers[] = array();
     }
 
     /**
@@ -102,6 +111,31 @@ class MVC {
             $settings = $c;
             $settings[$name] = $value;
             $c = $settings;
+        }
+    }
+    
+    /**
+     * Get container key or container
+     * 
+     * @param string $key
+     * @return object
+     */
+    public function getKey($key = null) {
+        if ($key && isset($this->container->$key)) {
+            return $this->container->$key;
+        }
+        return $this->container;
+    }
+    
+    /**
+     * Set container key and value
+     * 
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setKey($key, $value) {
+        if ($key && $value) {
+            $this->container->$key = $value;
         }
     }
 
@@ -240,6 +274,57 @@ class MVC {
      */
     public function redirect($url, $status = 302) {
         $this->container->response->redirect($url, $status);
+    }
+    
+    /**
+     * Register the providers
+     * 
+     * @param ProviderInterface $provider
+     * @param array $options
+     * @return MVC
+     */
+    public function registerProvider(ProviderInterface $provider, array $options = array()) {
+        $this->container->providers[] = $provider;
+        
+        $provider->register($this);
+        
+        foreach ($options as $key => $option) {
+            $this[$key] = $option;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Boots of the all providers of the application
+     */
+    public function boot() {
+        if (!$this->container->booted) {
+            foreach ($this->container->providers as $provider) {
+                $provider->boot($this);
+            }
+
+            $this->container->booted = true;
+        }
+    }
+    
+    /**
+     * Share a clousure object or callback object
+     * 
+     * @param $callable
+     * @return callable
+     */
+    public static function share($callable)
+    {
+        return function ($c) use ($callable) {
+            static $object;
+
+            if (null === $object) {
+                $object = $callable($c);
+            }
+
+            return $object;
+        };
     }
 
     /**
