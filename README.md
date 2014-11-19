@@ -18,6 +18,7 @@ Plantilla con el Modelo Vista Controlador
     - [Grupos de rutas](#rutas-group)
 - [Parámetros de rutas](#rutas-params)
 - [Redireccionamiento](#redirect)
+- [Proveedores o servicios](#providers)
 - [Otros aspectos](#otros)
     - [controller($name = null)](#otros-controllers)
     - [model($name = null)](#otros-models)
@@ -200,6 +201,32 @@ $mvc->get("/redirect", function(){
     print "Redirect\n";
 });
 ```
+## <a name='providers'></a> Proveedores o servicios
+Este aspecto es para registrar otros servicios independientes del Simple PHP MVC implementando la interfaz MVC\ProviderInterface. Por ejemplo: Doctrine Object Relational Mapper, SwiftMailer, Monolog, etc. 
+```
+namespace MVC\Providers;
+
+use MVC\MVC,
+    MVC\ProviderInterface;
+
+class ExampleProvider implements ProviderInterface
+{
+    
+    public function boot(MVC $app) {
+        print "Boot" . $app->getKey('example_name');
+    }
+
+    public function register(MVC $app) {
+        
+        $app->setKey('example.name', get_class($this));
+        
+        print "Register Example Provider";
+        
+    }
+
+}
+```
+
 ## <a name='otros'></a> Otros aspectos
 Para usar los objetos Response, Request, Controller, View y Model, están las siguientes funciones:
 
