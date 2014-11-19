@@ -14,7 +14,7 @@ interface ProviderInterface
      * 
      * @param MVC $app
      */
-    public function register(MVC $app);
+    public function register(MVC $app, array $options = array());
     
     /**
      * Bootstrap the application

@@ -13,6 +13,10 @@
   "require": {
     "php": ">=5.3.3"
   },
+  "suggest": {
+    "doctrine/orm": "2.3.6",
+    "doctrine/dbal": "2.3.5"
+   },
   "autoload": {
     "psr-0": { "MVC": "src/" }
   }

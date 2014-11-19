@@ -18,7 +18,7 @@ class ExampleProvider implements ProviderInterface
         print "Boot" . $app->getKey('example_name');
     }
 
-    public function register(MVC $app) {
+    public function register(MVC $app, array $options = array()) {
         
         $app->setKey('example.name', get_class($this));
         

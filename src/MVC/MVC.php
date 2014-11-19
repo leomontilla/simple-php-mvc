@@ -138,6 +138,20 @@ class MVC {
             $this->container->$key = $value;
         }
     }
+    
+    /**
+     * Return if provider exists
+     * 
+     * @param string $key
+     * @return boolean
+     */
+    public function keyExists($key) {
+        if (isset($this->container->$key)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Add Group routes
@@ -286,11 +300,7 @@ class MVC {
     public function registerProvider(ProviderInterface $provider, array $options = array()) {
         $this->container->providers[] = $provider;
         
-        $provider->register($this);
-        
-        foreach ($options as $key => $option) {
-            $this[$key] = $option;
-        }
+        $provider->register($this, $options);
         
         return $this;
     }
@@ -313,9 +323,14 @@ class MVC {
      * 
      * @param $callable
      * @return callable
+     * @throws InvalidArgumentException
      */
     public static function share($callable)
     {
+        if (!is_object($callable) || !method_exists($callable, '__invoke')) {
+            throw new InvalidArgumentException('Callable is not a Closure or invokable object.');
+        }
+        
         return function ($c) use ($callable) {
             static $object;
 
@@ -324,6 +339,23 @@ class MVC {
             }
 
             return $object;
+        };
+    }
+    
+    /**
+     * Share a protected clousure object
+     * 
+     * @param  $callable
+     * @return callable
+     * @throws InvalidArgumentException
+     */
+    public static function protect($callable)
+    {
+        if (!is_object($callable) || !method_exists($callable, '__invoke')) {
+            throw new InvalidArgumentException('Callable is not a Closure or invokable object.');
+        }
+        return function ($c) use ($callable) {
+            return $callable;
         };
     }
 
