@@ -143,6 +143,10 @@ class Request {
     public function getRootUri() {
         return $this->_env['SCRIPT_NAME'];
     }
+    
+    public function getRequestUri() {
+        return $this->_env['REQUEST_URI'];
+    }
 
    /**
     * Checks for request characteristics.

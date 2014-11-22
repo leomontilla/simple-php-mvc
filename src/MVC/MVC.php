@@ -199,12 +199,14 @@ class MVC {
      * 
      * @param string $pattern
      * @param callable $callable
+     * @param string $name
      * 
      * @return array
      */
-    public function get($pattern, callable $callable) {
+    public function get($pattern, callable $callable, $name = null) {
         $route = array("GET", $pattern, $callable);
-        $this->container->routes[] = $route;
+        if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
+        else $this->container->routes[] = $route;
         return $route;
     }
 
@@ -357,6 +359,21 @@ class MVC {
         return function ($c) use ($callable) {
             return $callable;
         };
+    }
+
+    /**
+     * Returns the URL for the name or route
+     *
+     * @param string $name      Name of Route
+     * @param boolean $relative If is true is a relative URL, else a absolute url
+     *
+     * @return string
+     */
+    public function generateUrl($name, $relative = true) {
+        if ($relative)
+            return isset($this->container->routes[$name]) ? $this->container->routes[$name][1] : '';
+        else
+            return '';
     }
 
     /**
