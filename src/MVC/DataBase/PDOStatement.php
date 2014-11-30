@@ -19,16 +19,16 @@ class PDOStatement
     /**
      * @var \PDOStatement
      */
-    protected $_pdos;
+    protected $_statement;
     
     /**
      * @param PDO $pdo
      * @param \PDOStatement $pdos
      */
-    function __construct(PDO $pdo, \PDOStatement $pdos)
+    function __construct(PDO $pdo, \PDOStatement $statement)
     {
         $this->_pdo = $pdo;
-        $this->_pdos = $pdos;
+        $this->_statement = $statement;
     }
     
     /**
@@ -39,7 +39,7 @@ class PDOStatement
      */
     public function __call($method, $arguments)
     {
-        return call_user_func_array(array(&$this->_pdos, $method), $arguments);
+        return call_user_func_array(array(&$this->_statement, $method), $arguments);
     }
     
     /**
@@ -50,9 +50,9 @@ class PDOStatement
     public function bindColumn($column, &$param, $type = null)
     {
         if ($type === null) :
-            $this->_pdos->bindColumn($column, $param);
+            $this->_statement->bindColumn($column, $param);
         else :
-            $this->_pdos->bindColumn($column, $param, $type);
+            $this->_statement->bindColumn($column, $param, $type);
         endif;
     }
     
@@ -64,21 +64,21 @@ class PDOStatement
     public function bindParam($column, &$param, $type = null)
     {
         if ($type === null) :
-            $this->_pdos->bindParam($column, $param);
+            $this->_statement->bindParam($column, $param);
         else :
-            $this->_pdos->bindParam($column, $param, $type);
+            $this->_statement->bindParam($column, $param, $type);
         endif;
     }
     
     /**
      * @param array $params Params of the Statement SQL
      * 
-     * @return boolean
+     * @return int
      */
     public function execute(array $params = array())
     {
         $this->_pdo->numExecutes++;
-        return $this->_pdos->execute($params);
+        return $this->_statement->execute($params);
     }
     
     /**
@@ -86,7 +86,7 @@ class PDOStatement
      */
     public function fetch()
     {
-        return $this->_pdos->fetch(\PDO::FETCH_CLASS);
+        return $this->_statement->fetch(\PDO::FETCH_CLASS);
     }
     
     /**
@@ -94,7 +94,7 @@ class PDOStatement
      */
     public function fetchAll()
     {
-        return $this->_pdos->fetchAll(\PDO::FETCH_CLASS);
+        return $this->_statement->fetchAll(\PDO::FETCH_CLASS);
     }
 
     /**
@@ -104,7 +104,7 @@ class PDOStatement
      */
     public function __get($property)
     {
-        return $this->_pdos->$property;
+        return $this->_statement->$property;
     }
 
     /**
@@ -112,7 +112,7 @@ class PDOStatement
      */
     public function statement()
     {
-        return $this->_pdos;
+        return $this->_statement;
     }
 
 }
