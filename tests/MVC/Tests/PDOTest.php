@@ -8,8 +8,8 @@
 
 namespace MVC\Tests;
 
-use MVC\Database\PDO,
-    MVC\Database\PDOStatement;
+use MVC\DataBase\PDO,
+    MVC\DataBase\PDOStatement;
 
 class PDOTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     {
         $pdos = $this->_pdo->query('SELECT * FROM estados');
         
-        $this->assertInstanceOf('MVC\Database\PDOStatement', $pdos);
+        $this->assertInstanceOf('MVC\DataBase\PDOStatement', $pdos);
     }
     
     public function testPDOStatement()
@@ -38,7 +38,7 @@ class PDOTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrepare(PDOStatement $pdos)
     {   
-        $this->assertInstanceOf('MVC\Database\PDOStatement', $pdos);
+        $this->assertInstanceOf('MVC\DataBase\PDOStatement', $pdos);
     }
     
     public function testExec()

@@ -68,7 +68,7 @@ class PDO
     public static function __getInstance($dsn, $user = null, $passwd = null, array $driverOptions = array())
     {
         if (!self::$instance) {
-            self::$instance = new PDO($dsn, $user, $passwd, $driverOptions);
+            self::$instance = new self($dsn, $user, $passwd, $driverOptions);
         }
         return self::$instance;
     }
@@ -82,9 +82,9 @@ class PDO
     public function prepare($sql, array $driverOptions = array())
     {
         $this->numStatements++;
-           
-        $pdos = $this->_pdo->prepare($sql, $driverOptions);
 
+        $pdos = $this->_pdo->prepare($sql, $driverOptions);
+        
         return new PDOStatement($this, $pdos);
     }
     

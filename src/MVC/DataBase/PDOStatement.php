@@ -8,7 +8,7 @@
 
 namespace MVC\DataBase;
 
-class PDOStatement implements \IteratorAggregate
+class PDOStatement
 {
 
     /**
@@ -73,7 +73,7 @@ class PDOStatement implements \IteratorAggregate
     /**
      * @param array $params Params of the Statement SQL
      * 
-     * @return mixed
+     * @return boolean
      */
     public function execute(array $params = array())
     {
@@ -81,6 +81,22 @@ class PDOStatement implements \IteratorAggregate
         return $this->_pdos->execute($params);
     }
     
+    /**
+     * @return \stdClass
+     */
+    public function fetch()
+    {
+        return $this->_pdos->fetch(\PDO::FETCH_CLASS);
+    }
+    
+    /**
+     * @return array
+     */
+    public function fetchAll()
+    {
+        return $this->_pdos->fetchAll(\PDO::FETCH_CLASS);
+    }
+
     /**
      * @param $property
      * 
@@ -94,7 +110,7 @@ class PDOStatement implements \IteratorAggregate
     /**
      * @return \PDOStatement
      */
-    public function getIterator()
+    public function statement()
     {
         return $this->_pdos;
     }
