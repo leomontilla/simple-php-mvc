@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 /vendor/
 /.idea/
-=======
-/vendor/
->>>>>>> master
+/nbproject/
+
