@@ -6,7 +6,7 @@
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
 
-namespace MVC\Database;
+namespace MVC\DataBase;
 
 class PDOStatement implements \IteratorAggregate
 {
