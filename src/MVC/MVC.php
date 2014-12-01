@@ -504,7 +504,7 @@ class MVC
                 if (is_array($response) && !isset($response['body'])) {
                     throw Errors\RuntimeException::run("Invalid response array. Expected array('body' => string, 'status' => int).");
                 } elseif (is_string($response)) {
-                    throw Errors\RuntimeException::run("Invalid response string. Expected array('body' => string, 'status' => int).");
+                    $response = array('body' => $response);
                 }
             } elseif(is_callable($parsed['callback'])) {
                 $this->container->request->params = $parsed['params'];
