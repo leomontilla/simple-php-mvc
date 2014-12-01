@@ -1,78 +1,77 @@
 <?php
 
-namespace MVC;
-
-use MVC\View,
-    MVC\Errors\RuntimeException,
-    \MVC\Server\Url;
-
 /**
  * Description of AppController
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * @package MVC
  */
-class Controller {
+
+namespace MVC;
+
+use MVC\Server\Request,
+    MVC\View,
+    MVC\Errors\RuntimeException;
+
+class Controller
+{
 
     /**
      * Response of Controller
-     * @var \stdClass $_response
+     * @var array $_response
      */
     protected $_response;
 
     /**
-     * @var \MVC\Server\View
+     * @var View
      */
     protected $view;
 
     /**
      * Create the object View
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->view = new View();
     }
 
     /**
      * Call a action of controller
-     * @param string $action                  Action of Controller
-     * @param \MVC\Server\Request $request    Object of Request class
-     * @param string $file_view               String of the view file
+     * 
+     * @param MVC $mvc         Object of Application
+     * @param Request $request Object of Request class
+     * @param string $action   Action of Controller
+     * @param string $fileView String of the view file
+     * 
      * @return array
      */
-    public function call()
+    public function call(MVC $mvc, Request $request, $action, $fileView)
     {
-        $arguments = func_get_args();
-        
-        var_dump($arguments);
-        
-        $action = $arguments[0];
-        unset($arguments[0]);
-        
         if (!method_exists($this, $action)) {
             RuntimeException::run("Method '$action' don´t exists.");
         }
         
-        #Array vars
-        $vars = call_user_func_array(array(&$this, $action), $arguments);
+        $this->view = $mvc->view();
         
-        die;
+        #Array vars
+        $vars = call_user_func_array(array(&$this, $action), array($mvc, $request));
 
         if (is_null($vars) || $vars === false) {
             return false;
         }
-        $this->_response = new \stdClass;
-        if (!is_array($vars)) {
-            $this->_response->body = $vars;
+        $this->_response = array();
+        if (is_string($vars)) {
+            $this->_response['body'] = $vars;
             return $this->_response;
         }
 
         if ($request->is("ajax")) {
-            $this->_response->body = $this->render_json($vars);
+            $this->_response['body'] = $this->render_json($vars);
         } else {
             $class = explode("\\", get_called_class());
             $classname = end($class);
-            $file = lcfirst($classname) . "/{$file_view}";
-            $this->_response->body = $this->render_html($file, $vars);
+            $file = lcfirst($classname) . "/{$fileView}";
+            $this->_response['body'] = $this->render_html($file, $vars);
         }
 
         return $this->_response;
@@ -82,13 +81,12 @@ class Controller {
      * 
      * Function for Error 404: Not Found
      * 
-     * @param \MVC\Server\Request $request
+     * @param Request $request
      * @return array
      */
-    public function _404($request) {
-        $url = Url::getUrl();
-        $uri = $request->url;        
-        return $this->view->render("404.html", compact("url", "uri"));
+    public function _404(Request $request) {
+        $uri = $request->getRequestUri();        
+        return $this->view->render("404.html", array("uri", "uri"));
     }
 
     /**

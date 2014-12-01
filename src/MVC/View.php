@@ -50,6 +50,7 @@ class View
      *  @param string $file    The file to be rendered.
      *  @param mixed $vars     The variables to be substituted in the view.
      *  @access public
+     * 
      *  @return string
      */
     public function render($file, $vars = null) 

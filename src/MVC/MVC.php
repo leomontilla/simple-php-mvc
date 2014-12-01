@@ -30,16 +30,15 @@ class MVC
      */
     public function __construct(array $userSettings = array())
     {
-        
-        $this->container = new \stdClass;
+        $this->container = new \stdClass();
         $this->container->settings = array_merge(static::getDefaultSettings(), $userSettings);
 
-        $this->container->request = new Request;
-        $this->container->response = new Response;
-        $this->container->router = new Router;
-        $this->container->view = new View;
+        $this->container->request = new Request();
+        $this->container->response = new Response();
+        $this->container->router = new Router();
+        $this->container->view = new View();
         $this->container->view->templatesPath = $this->container->settings['templates_path'];
-        $this->container->controller = new Controller;
+        $this->container->controller = new Controller();
         $this->container->routes = array();
         
         # Providers
@@ -429,7 +428,8 @@ class MVC
      * Get the data of request
      * @return \stdClass
      */
-    public function data() {
+    public function data()
+    {
         return $this->container->request->data;
     }
 
@@ -437,23 +437,26 @@ class MVC
      * Get the query of request
      * @return \stdClass
      */
-    public function query() {
+    public function query()
+    {
         return $this->container->request->query;
     }
 
     /**
      * Get the Response object
-     * @return \MVC\Server\Response
+     * @return Response
      */
-    public function response() {
+    public function response()
+    {
         return $this->container->response;
     }
 
     /**
      * Get the View object
-     * @return \MVC\View
+     * @return View
      */
-    public function view() {
+    public function view()
+    {
         return $this->container->view;
     }
 
@@ -462,9 +465,11 @@ class MVC
      * @param string $template
      * @param array $data
      * @param int $status
+     * 
      * @return void
      */
-    public function render($template, $data = array(), $status = null) {
+    public function render($template, $data = array(), $status = null)
+    {
         if (!is_null($status) && headers_sent() === false) {
             header($this->container->response->_convert_status($status));
         }
@@ -475,7 +480,8 @@ class MVC
      * Run the aplication
      * @return void
      */
-    public function run() {
+    public function run()
+    {
 
         if ($this->container->settings['debug'] === true) {
             error_reporting(E_ALL);
@@ -521,6 +527,7 @@ class MVC
      *
      * @param  string   $title  The title of the HTML template
      * @param  string   $body   The body content of the HTML template
+     * 
      * @return string
      */
     protected static function generateTemplateMarkup($title, $body)
@@ -532,7 +539,8 @@ class MVC
      * Default Not Found handler
      * @return void
      */
-    protected function defaultNotFound() {
+    protected function defaultNotFound()
+    {
         echo static::generateTemplateMarkup('404 Page Not Found', '<p>The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly. If all else fails, you can visit our home page at the link below.</p><a href="' . $this->container->request->url . '/">Visit the Home Page</a>');
     }
 
