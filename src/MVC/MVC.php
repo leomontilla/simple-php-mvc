@@ -121,8 +121,8 @@ class MVC {
      * @return object
      */
     public function getKey($key = null) {
-        if ($key && isset($this->container->$key)) {
-            return $this->container->$key;
+        if ($key && isset($this->container->providers[$key])) {
+            return $this->container->providers[$key];
         }
         return $this->container;
     }
@@ -135,7 +135,7 @@ class MVC {
      */
     public function setKey($key, $value) {
         if ($key && $value) {
-            $this->container->$key = $value;
+            $this->container->providers[$key] = $value;
         }
     }
     
@@ -146,7 +146,7 @@ class MVC {
      * @return boolean
      */
     public function keyExists($key) {
-        if (isset($this->container->$key)) {
+        if (isset($this->container->providers[$key])) {
             return true;
         } else {
             return false;
@@ -215,12 +215,14 @@ class MVC {
      * 
      * @param string $pattern
      * @param callable $callable
+     * @param string $name
      * 
      * @return array
      */
-    public function options($pattern, callable $callable) {
+    public function options($pattern, callable $callable, $name = null) {
         $route = array("OPTIONS", $pattern, $callable);
-        $this->container->routes[] = $route;
+        if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
+        else $this->container->routes[] = $route;
         return $route;
     }
 
@@ -229,12 +231,14 @@ class MVC {
      * 
      * @param string $pattern
      * @param callable $callable
+     * @param string $name
      * 
      * @return array
      */
-    public function post($pattern, callable $callable) {
+    public function post($pattern, callable $callable, $name = null) {
         $route = array("POST", $pattern, $callable);
-        $this->container->routes[] = $route;
+        if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
+        else $this->container->routes[] = $route;
         return $route;
     }
 
@@ -243,12 +247,14 @@ class MVC {
      * 
      * @param string $pattern
      * @param callable $callable
+     * @param string $name
      * 
      * @return array
      */
-    public function put($pattern, callable $callable) {
+    public function put($pattern, callable $callable, $name = null) {
         $route = array("PUT", $pattern, $callable);
-        $this->container->routes[] = $route;
+        if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
+        else $this->container->routes[] = $route;
         return $route;
     }
 
@@ -257,12 +263,14 @@ class MVC {
      * 
      * @param string $pattern
      * @param callable $callable
+     * @param string $name
      * 
      * @return array
      */
-    public function delete($pattern, callable $callable) {
+    public function delete($pattern, callable $callable, $name = null) {
         $route = array("DELETE", $pattern, $callable);
-        $this->container->routes[] = $route;
+        if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
+        else $this->container->routes[] = $route;
         return $route;
     }
 
@@ -502,8 +510,19 @@ class MVC {
         $parsed = $this->container->router->parse($this->container->request->url, $this->container->request->request_method, $this->container->routes);
 
         if ($parsed['found'] || isset($this->container->routes['notFound'])) {
-            if ($parsed['callback']) {
-                $this->container->request->params = $parsed['param'];
+            if (is_string($parsed['callback'])) {
+                list($controller, $method) = explode('::', $parsed['callback']);
+                
+                $controller = new $controller();
+                
+                $arguments = array($method, $this, $this->container->request, 'userController/index.html') + $parsed['params'];
+                
+                call_user_func_array(array(&$controller, 'call'), $arguments);
+                
+                //var_dump(call_user_func_array(array(&$controller, $method), $arguments));
+                
+            } elseif(is_callable($parsed['callback'])) {
+                $this->container->request->params = $parsed['params'];
                 call_user_func_array($parsed['callback'], array_values($parsed['params']));
             } else {
                 $this->container->response->render(false);
