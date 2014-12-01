@@ -40,7 +40,7 @@ Usa composer para instalar.
 ```
 {
    "require": {
-      "rameduard/simple-php-mvc": '1.0.0'
+      "rameduard/simple-php-mvc": '1.2.1'
    }
 }
 ```
@@ -66,41 +66,40 @@ Usa composer para instalar.
 
 ## <a name='controladores'></a> Controladores
 ``` 
-    namespace MVC\controllers;
-    
-    class Nombre_del_Controlador extends \MVC\Controller
-    {
-       public function nombre_de_la_accion( $mvc )
-       {
-           //Variables, condiciones y acciones
-           //retornando valores para que sean mostrados por las vistas
-           $cadena = "Valores";
-           $arreglo = array("Valores");
-           $objeto = new \stdClass;
-           return array("cadena" => $cadena, "arreglo" => $arreglo, "objeto" => $objeto);
-       }
-    }
+<?php
+
+namespace ControllersNamespace;
+
+use MVC\Controller,
+    MVC\MVC,
+    MVC\Server\Request;
+
+class Nombre_del_Controlador extends Controller
+{
+   public function nombre_de_la_accion(MVC $mvc, Request $request)
+   {
+       return '<p>Resultado de la accion</p>';
+   }
+}
 ```
-> **NOTA:** Todo controlador debe incluirse en la carpeta `MVC/controllers`.
 
 ## <a name='modelos'></a> Modelos
 Un modelo se crea de la siguiente forma:
 ``` 
-    namespace MVC\models;
-    
-    require dirname(dirname(__DIR__)) . "/MVC/database/DB.php";
-    require dirname(dirname(__DIR__)) . "/MVC/errors/Exception.php";
-    require dirname(dirname(__DIR__)) . "/MVC/database/Functions_DB.php";
-    
-    class Nombre_del_Modelo extends \MVC\database\Functions_DB{
-        public function __construct(){
-            $path_config_file = dirname(__DIR__) . "/config-database.php";
-            parent::__construc($path_config_file);
-            $this->table = "nombre_de_tabla";
-        }
-	}
+<?php
+namespace ModelsNamespace;
+
+use MVC\DataBase\Model,
+    MVC\DataBase\PDO;
+
+class Nombre_del_Modelo extends Model
+{
+    public function __construct(PDO $pdo)
+    {
+        parent::__construct($pdo, 'nombre_tabla');
+    }
+}
 ```
-> **NOTA:** Todo modelo debe incluirse en la carpeta `MVC/models`.
 
 ## <a name='rutas'></a> Rutas
 Una ruta se representa como cualquier URI con métodos de consulta que se envía al servidor. 
@@ -109,71 +108,69 @@ Una ruta se representa como cualquier URI con métodos de consulta que se envía
 Usa el método **get()** de tu aplicación u objeto **MVC** para crear recursos que devuelvan una llamada a un **URI** mediante el método **HTTP GET**.
 ```
 $mvc = new \MVC\MVC();
-$mvc->get("/hello/[a:name]", function($name) use($mvc) {
-    print "Hello $name\n";
-    print_r($mvc->request()->params);
-});
+$mvc->get("/hello/[a:name]", function($name) {
+    return "Hello $name.";
+}, 'hello_get');
 ```
 #### <a name='rutas-post'></a> POST
 Usa el método **post()** de tu aplicación u objeto **MVC** para crear recursos que devuelvan una llamada a un **URI** mediante el método **HTTP POST**.
 ```
 $mvc = new \MVC\MVC();
-$mvc->post("/hello/[a:name]", function($name) use($mvc) {
-    print "Hello $name\n";
-    print_r($mvc->request()->params);
-});
+$mvc->post("/hello/[a:name]", function($name) {
+    return "Hello $name";
+}, 'hello_post');
 ```
 #### <a name='rutas-delete'></a> DELETE
 Usa el método **delete()** de tu aplicación u objeto **MVC** para crear recursos que devuelvan una llamada a un **URI** mediante el método **HTTP DELETE**.
 ```
 $mvc = new \MVC\MVC();
 $mvc->delete("/hello/[i:id]", function($id) {
-    print "DELETE $id\n";
-});
+    return "DELETE $id";
+}, 'hello_delete');
 ```
 #### <a name='rutas-put'></a> PUT
 Usa el método **put()** de tu aplicación u objeto **MVC** para crear recursos que devuelvan una llamada a un **URI** mediante el método **HTTP PUT**.
 ```
 $mvc = new \MVC\MVC();
 $mvc->put("/hello/[i:id]", function($id) {
-    print "PUT $id\n";
-});
+    return "PUT $id";
+}, 'hello_put');
 ```
 #### <a name='rutas-options'></a> OPTIONS
 Usa el método **options()** de tu aplicación u objeto **MVC** para crear recursos que devuelvan una llamada a un **URI** mediante el método **HTTP OPTIONS**.
 ```
 $mvc = new \MVC\MVC();
 $mvc->options("/hello/[i:id]", function($id) {
-    print "OPTIONS $id\n";
-});
+    return "OPTIONS $id";
+}, 'hello_options');
 ```
 #### <a name='rutas-head'></a> HEAD
 Usa el método **head()** de tu aplicación u objeto **MVC** para crear recursos que devuelvan una llamada a un **URI** mediante el método **HTTP HEAD**.
 ```
 $mvc = new \MVC\MVC();
 $mvc->head("/hello/[i:id]", function($id) {
-    print "HEAD $id\n";
-});
+    return "HEAD $id";
+}, 'hello_head');
 ```
 #### <a name='rutas-ajax'></a> AJAX
 Usa el método **ajax()** de tu aplicación u objeto **MVC** para crear recursos que devuelvan una llamada a un **URI** mediante el método **HTTP AJAX**.
 ```
 $mvc = new \MVC\MVC();
 $mvc->ajax("/hello/[i:id]", function($id) {
-    print "AJAX $id\n";
-});
+    return "AJAX $id";
+}, 'hello_ajax');
 ```
 ## <a name='rutas-group'></a> Grupos de rutas
 Usa el método group de tu aplicación u objeto **MVC** para crear recursos de rutas agrupadas. Esto es para agrupar grupos de rutas que tienen el mismo prefijo.
 ```
 $mvc = new \MVC\MVC();
 $mvc->group("/admin", function($route) use($mvc) {
-    $mvc->($route, function(){
-        print "Print admin index";
-    });
-    $mvc->("$route/other", function(){
-        print "Print admin other route.";
-    });
+    $mvc->($route, function() {
+        return "Admin index";
+    }, 'admin_index');
+    $mvc->("$route/other", function() {
+        return "Admin other route.";
+    }, 'admin_other');
 });
 ```
 ## <a name='rutas-params'></a> Parámetros de rutas
@@ -187,8 +184,8 @@ Los tipos de variables válidos para las rutas son:
 ```
 $mvc = new \MVC\MVC();
 $mvc->ajax("/hello/[i:id]/[a:name]", function($id, $name) {
-    print "AJAX id = $id, name = $name\n";
-});
+    return "AJAX id = $id, name = $name\n";
+}, 'hello_id_name');
 ```
 ## <a name='redirect'></a> Redireccionamiento
 Esta función redirecciona a una ruta...
@@ -196,10 +193,10 @@ Esta función redirecciona a una ruta...
 $mvc = new \MVC\MVC();
 $mvc->get("/", function() use($mvc){
     $mvc->redirect('/redirect');
-});
+}, 'home_redirect');
 $mvc->get("/redirect", function(){
-    print "Redirect\n";
-});
+    return "Redirect\n";
+}, 'redirect');
 ```
 ## <a name='providers'></a> Proveedores o servicios
 Este aspecto es para registrar otros servicios independientes del Simple PHP MVC implementando la interfaz MVC\ProviderInterface. Por ejemplo: Doctrine Object Relational Mapper, SwiftMailer, Monolog, etc. 
@@ -263,90 +260,93 @@ $response = $mvc->response();
 ### <a name='hola-mundo'></a> Ejemplo: Hola mundo
 
 ```
-    require "lib/MVC/MVC.php";
+<?php
 
-    \MVC\MVC::registerAutoloader();
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use MVC\MVC;
+
+$mvc = new MVC();
     
-    $mvc = new \MVC\MVC();
-    
-    $mvc->get("/", function() {
-        print "Hola mundo";
-    });
-    
-    $mvc->run();
+$mvc->get("/", function() {
+    return "Hola mundo";
+}, 'hola_mundo');
+
+$mvc->run();
 ```
 
 ### <a name='ejemplo2'></a> Ejemplo2: Usando Modelos, Vistas y Controladores
 Configuracion del archivo: `/` **index.php**
 ``` 
-    require "lib/MVC/MVC.php";
+<?php
 
-    \MVC\MVC::registerAutoloader();
-    $config = array(
-        "app_path" => __DIR__,
-        "controllers" => array(
-            "UserController" => "\\MVC\\controllers\\UserController"
-            )
-        );
-    $mvc = new \MVC\MVC($config);
-    
-    $mvc->get("/", function() use($mvc) {
-        print "Respuesta /\n";
-        print_r($mvc);
-    });
-    
-    $mvc->get("/mvc", function() {
-        print "Using the Model View Controller App\n";
+require_once __DIR__ . '/../vendor/autoload.php';
 
-        $uc = new \MVC\controllers\UserController;
-        $uc->view()->root = __DIR__;
-        $uc->view()->templates_path = "./lib/MVC/views";
-        echo $uc->call('index', $mvc->request(), "index.html")->body;
-    });
-    
-    $mvc->get("/mvc2", function() use($mvc) {
-        print "Using the Model View Controller App\n";
+use MVC\DataBase\PDO,
+    MVC\MVC;
 
-        $uc = $mvc->controller('UserController');
-        $uc->view()->root = __DIR__;
-        $uc->view()->templates_path = "./lib/MVC/views";
-        echo $uc->call('index', $mvc->request(), "index.html")->body;
-    });
-    
-    $mvc->notFound(function() use($mvc) {
-    	$mvc->render("404.html", array("uri" => $mvc->request()->url), 404);
-    });
-    
-    $mvc->run();
+$mvc = new MVC();
+
+$app->setKey('pdo', new PDO('mysql:host=localhost;dbname=database;charset=UTF8', 'root', ''));
+
+$mvc->get("/", function() use($mvc) {
+    print_r($mvc);
+    return "Respuesta";
+}, 'index');
+
+$mvc->get("/users", 'MVC\\Controllers\\UserController::index', 'users');
+
+$mvc->get("/users_call", function() use($mvc) {
+    print "Using the Model View Controller App\n";
+
+    $uc = new \MVC\controllers\UserController;
+    $uc->view()->templates_path = "./src/MVC/Views";
+
+    return $uc->call($mvc, $mvc->request(), 'index', 'index.html');;
+}, 'users_call');
+
+$mvc->notFound(function() use($mvc) {
+    $mvc->render("404.html", array("uri" => $mvc->request()->url), 404);
+});
+
+$mvc->run();
 ```
-Vista de la ruta /mvc y /mvc2: `MVC/views/userController/` **index.html**
+Vista de la ruta /users y /users_call: `MVC/Views/userController/` **index.html**
 ``` 
-    <!DOCTYPE html>
-    <html>
-        <head>
-            <title>Ejemplo 1</title>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width">
-        </head>
-        <body>
-            <p>Response</p>
-            <div><?php print_r($key)?></div>
-        </body>
-    </html>
-
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ejemplo 1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <p>Response</p>
+        <div><?php print_r($users)?></div>
+    </body>
+</html>
 ```
-Controlador que crea la vista: `MVC/controllers/` **UserController.php**
+Controlador que crea la vista: `MVC/Controllers/` **UserController.php**
 ``` 
-    namespace MVC\controllers;
-    class UserController extends \MVC\Controller
-    {
-       public function index( $mvc )
-       {
-           $m = new \MVC\models\User;
-           $values = $m->all();
-           return array("key" => $values);
-       }
-    }
+<?php
+
+namespace MVC\Controllers;
+
+use MVC\Controller,
+    MVC\Models\User,
+    MVC\MVC;
+
+class UserController extends Controller
+{
+   public function index(MVC $mvc)
+   {
+       $um = new User($mvc->getKey('pdo'));
+       $users = $um->findAll();
+       return $app->view()->render('userController/index.html', array(
+            'users' => $users
+        ));
+   }
+}
 ```
 ### <a name='usando-consola'></a> Usando la consola
 
