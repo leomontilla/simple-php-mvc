@@ -1,16 +1,24 @@
 <?php 
-namespace MVC\Models;
 
 /**
  * Description of User class
  * @author name
  */
-class User extends \MVC\Database\Functions_DB {
 
-    public function __construct() {
-        $path_config_file = dirname(dirname(dirname(__DIR__))) . "/config-database.php";
-    	parent::__construct($path_config_file);
-        $this->table = "users";
+namespace MVC\Models;
+
+use MVC\DataBase\Model,
+    MVC\DataBase\PDO;
+
+class User extends Model
+{
+
+    /**
+     * @param PDO $pdo
+     */
+    public function __construct(PDO $pdo)
+    {
+        parent::__construct($pdo, 'usuario');
     }
 
 }

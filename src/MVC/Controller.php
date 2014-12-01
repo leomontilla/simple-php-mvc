@@ -39,30 +39,40 @@ class Controller {
      * @param string $file_view               String of the view file
      * @return array
      */
-    public function call($action, $request, $file_view) {
-        if (!method_exists($this, "$action")) {
+    public function call()
+    {
+        $arguments = func_get_args();
+        
+        var_dump($arguments);
+        
+        $action = $arguments[0];
+        unset($arguments[0]);
+        
+        if (!method_exists($this, $action)) {
             RuntimeException::run("Method '$action' don´t exists.");
         }
-
+        
         #Array vars
-        $compact_vars = $this->$action($request);        
+        $vars = call_user_func_array(array(&$this, $action), $arguments);
+        
+        die;
 
-        if (is_null($compact_vars) || $compact_vars === false) {
+        if (is_null($vars) || $vars === false) {
             return false;
         }
         $this->_response = new \stdClass;
-        if (!is_array($compact_vars)) {
-            $this->_response->body = $compact_vars;
+        if (!is_array($vars)) {
+            $this->_response->body = $vars;
             return $this->_response;
         }
 
         if ($request->is("ajax")) {
-            $this->_response->body = $this->render_json($compact_vars);
+            $this->_response->body = $this->render_json($vars);
         } else {
             $class = explode("\\", get_called_class());
             $classname = end($class);
             $file = lcfirst($classname) . "/{$file_view}";
-            $this->_response->body = $this->render_html($file, $compact_vars);
+            $this->_response->body = $this->render_html($file, $vars);
         }
 
         return $this->_response;

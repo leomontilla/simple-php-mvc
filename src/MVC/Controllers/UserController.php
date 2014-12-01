@@ -1,19 +1,25 @@
-<?php 
+<?php
+
+/**
+ * User Controller Example
+ * 
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 
 namespace MVC\Controllers;
 
-/**
-* Description of UserController
-*/
-class UserController extends \MVC\Controller
+use MVC\Controller,
+    MVC\Models\User,
+    MVC\MVC;
+
+class UserController extends Controller
 {
 
-	public function index( $mvc )
-	{
-		$m = new \MVC\Models\User;
-		$values = $m->all();
-		return array("key" => $values);
-	}
+    public function index(MVC $app)
+    {
+        $userModel = new User($app->getKey('pdo'));
+        $users = $userModel->findAll();
+        return array("users" => $users);
+    }
 
 }
-	

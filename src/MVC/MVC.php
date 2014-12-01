@@ -2,7 +2,8 @@
 
 namespace MVC;
 
-use MVC\Server\Router,
+use MVC\Controller,
+    MVC\Server\Router,
     MVC\Server\Request,
     MVC\Server\Response,
     MVC\View;
@@ -37,7 +38,7 @@ class MVC {
         $this->container->view = new View;
         $this->container->view->root = $this->container->settings['app_path'];
         $this->container->view->templates_path = $this->container->settings['templates_path'];
-        $this->container->controller = new \MVC\Controller;
+        $this->container->controller = new Controller;
         if (is_array($controllers = $this->container->settings['controllers'])) {
             $this->controllers = array();
             foreach ($controllers as $key => $value) {
