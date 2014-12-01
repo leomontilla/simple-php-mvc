@@ -15,7 +15,8 @@ use MVC\Controller,
  * @package MVC
  * @version 1.0
  */
-class MVC {
+class MVC
+{
 
     /**
      * Container of the aplication
@@ -27,7 +28,8 @@ class MVC {
      * Constructor
      * @param  array $userSettings Associative array of application settings
      */
-    public function __construct(array $userSettings = array()) {
+    public function __construct(array $userSettings = array())
+    {
         
         $this->container = new \stdClass;
         $this->container->settings = array_merge(static::getDefaultSettings(), $userSettings);
@@ -36,23 +38,8 @@ class MVC {
         $this->container->response = new Response;
         $this->container->router = new Router;
         $this->container->view = new View;
-        $this->container->view->root = $this->container->settings['app_path'];
-        $this->container->view->templates_path = $this->container->settings['templates_path'];
+        $this->container->view->templatesPath = $this->container->settings['templates_path'];
         $this->container->controller = new Controller;
-        if (is_array($controllers = $this->container->settings['controllers'])) {
-            $this->controllers = array();
-            foreach ($controllers as $key => $value) {
-                $this->container->controllers[$key] = new $value;
-                $this->container->controllers[$key]->view()->root = $this->container->settings['app_path'];
-                $this->container->controllers[$key]->view()->templates_path = $this->container->settings['templates_path'];
-            }
-        }
-        if (is_array($models = $this->container->settings['models'])) {
-            $this->container->models = array();
-            foreach ($models as $key => $value) {
-                $this->container->models[$key] = new $value;
-            }
-        }
         $this->container->routes = array();
         
         # Providers
@@ -63,11 +50,9 @@ class MVC {
      * Get default application settings
      * @return array
      */
-    public static function getDefaultSettings() {
+    public static function getDefaultSettings()
+    {
         return array(
-            "app_path" => __DIR__,
-            "controllers" => null,
-            "models" => null,
             "debug" => true,
             "error_writer" => true,
             "templates_path" => "./templates"
@@ -93,7 +78,8 @@ class MVC {
      * @param  mixed        $value If name is a string, the value of the setting identified by $name
      * @return mixed        The value of a setting if only one argument is a string
      */
-    public function config($name, $value = null) {
+    public function config($name, $value = null)
+    {
         $c = $this->container->settings;
 
         if ($name === "templates_path" || $name === "root_path") {
@@ -121,7 +107,8 @@ class MVC {
      * @param string $key
      * @return object
      */
-    public function getKey($key = null) {
+    public function getKey($key = null)
+    {
         if ($key && isset($this->container->providers[$key])) {
             return $this->container->providers[$key];
         }
@@ -134,7 +121,8 @@ class MVC {
      * @param string $key
      * @param mixed $value
      */
-    public function setKey($key, $value) {
+    public function setKey($key, $value)
+    {
         if ($key && $value) {
             $this->container->providers[$key] = $value;
         }
@@ -146,7 +134,8 @@ class MVC {
      * @param string $key
      * @return boolean
      */
-    public function keyExists($key) {
+    public function keyExists($key)
+    {
         if (isset($this->container->providers[$key])) {
             return true;
         } else {
@@ -158,7 +147,8 @@ class MVC {
      * Add Group routes
      * @return void
      */
-    public function group() {
+    public function group()
+    {
         $args = func_get_args();
         $route = array_shift($args);
         $callable = array_pop($args);
@@ -175,7 +165,8 @@ class MVC {
      * 
      * @return array
      */
-    public function ajax($pattern, callable $callable) {
+    public function ajax($pattern, callable $callable)
+    {
         $route = array("AJAX", $pattern, $callable);
         $this->container->routes[] = $route;
         return $route;
@@ -189,7 +180,8 @@ class MVC {
      * 
      * @return array
      */
-    public function head($pattern, callable $callable) {
+    public function head($pattern, callable $callable)
+    {
         $route = array("HEAD", $pattern, $callable);
         $this->container->routes[] = $route;
         return $route;
@@ -204,7 +196,8 @@ class MVC {
      * 
      * @return array
      */
-    public function get($pattern, callable $callable, $name = null) {
+    public function get($pattern, callable $callable, $name = null)
+    {
         $route = array("GET", $pattern, $callable);
         if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
         else $this->container->routes[] = $route;
@@ -220,7 +213,8 @@ class MVC {
      * 
      * @return array
      */
-    public function options($pattern, callable $callable, $name = null) {
+    public function options($pattern, callable $callable, $name = null)
+    {
         $route = array("OPTIONS", $pattern, $callable);
         if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
         else $this->container->routes[] = $route;
@@ -236,7 +230,8 @@ class MVC {
      * 
      * @return array
      */
-    public function post($pattern, callable $callable, $name = null) {
+    public function post($pattern, callable $callable, $name = null)
+    {
         $route = array("POST", $pattern, $callable);
         if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
         else $this->container->routes[] = $route;
@@ -252,7 +247,8 @@ class MVC {
      * 
      * @return array
      */
-    public function put($pattern, callable $callable, $name = null) {
+    public function put($pattern, callable $callable, $name = null)
+    {
         $route = array("PUT", $pattern, $callable);
         if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
         else $this->container->routes[] = $route;
@@ -268,7 +264,8 @@ class MVC {
      * 
      * @return array
      */
-    public function delete($pattern, callable $callable, $name = null) {
+    public function delete($pattern, callable $callable, $name = null)
+    {
         $route = array("DELETE", $pattern, $callable);
         if (is_string($name) && $name != '') $this->container->routes[$name] = $route;
         else $this->container->routes[] = $route;
@@ -281,7 +278,8 @@ class MVC {
      * @param string $caracteristic   The request caracteristic
      * @return mixed
      */
-    public function is($caracteristic) {
+    public function is($caracteristic)
+    {
         return $this->container->request->is($caracteristic);
     }
 
@@ -297,7 +295,8 @@ class MVC {
      * @param  string   $url        The destination URL
      * @param  int      $status     The HTTP redirect status code (optional)
      */
-    public function redirect($url, $status = 302) {
+    public function redirect($url, $status = 302)
+    {
         $this->container->response->redirect($url, $status);
     }
     
@@ -308,7 +307,8 @@ class MVC {
      * @param array $options
      * @return MVC
      */
-    public function registerProvider(ProviderInterface $provider, array $options = array()) {
+    public function registerProvider(ProviderInterface $provider, array $options = array())
+    {
         $this->container->providers[] = $provider;
         
         $provider->register($this, $options);
@@ -319,7 +319,8 @@ class MVC {
     /**
      * Boots of the all providers of the application
      */
-    public function boot() {
+    public function boot()
+    {
         if (!$this->container->booted) {
             foreach ($this->container->providers as $provider) {
                 $provider->boot($this);
@@ -378,7 +379,8 @@ class MVC {
      *
      * @return string
      */
-    public function generateUrl($name, $relative = true) {
+    public function generateUrl($name, $relative = true)
+    {
         if ($relative)
             return isset($this->container->routes[$name]) ? $this->container->routes[$name][1] : '';
         else
@@ -407,46 +409,19 @@ class MVC {
      * @param  mixed $callable Anything that returns true for is_callable()
      * @return void
      */
-    public function notFound($callable = null) {
+    public function notFound($callable = null)
+    {
         $args = func_get_args();
         $methods = array("GET", "POST", "PUT", "DELETE", "AJAX", "OPTIONS", "HEAD", "MOBILE");
         $this->container->routes['notFound'] = array($methods, "*", $args[0]);
     }
 
     /**
-     * Get the Default Controller object
-     * @param string $name   Name of Controller
-     * @return \MVC\Controller
-     * @return \MVC\Controllers\[controller]
-     */
-    public function controller($name = null) {
-        if (!is_null($name)) {
-            if (isset($this->container->controllers[$name])) {
-                return $this->container->controllers[$name];
-            } else {
-                \MVC\Errors\Exception::run("No existe el controlador o no se cargo al MVC.");
-            }
-        } else {
-            return $this->container->controller;
-        }
-    }
-
-    /**
-     * Get the models
-     * @param string $name  Name of Model
-     * @return \MVC\Models\[model]
-     */
-    public function model($name = null) {
-        if (!is_null($name)) {
-            return $this->container->models[$name];
-        }
-    }
-
-    /**
      * Get the Request object
-     * @return \MVC\Server\Request
+     * @return Request
      */
-    public function request() {
+    public function request()
+    {
         return $this->container->request;
     }
 
@@ -514,20 +489,26 @@ class MVC {
             if (is_string($parsed['callback'])) {
                 list($controller, $method) = explode('::', $parsed['callback']);
                 
+                $arguments = array($this, $this->container->request) + $parsed['params'];
+                
                 $controller = new $controller();
                 
-                $arguments = array($method, $this, $this->container->request, 'userController/index.html') + $parsed['params'];
+                $response = call_user_func_array(array(&$controller, $method), $arguments);
                 
-                call_user_func_array(array(&$controller, 'call'), $arguments);
-                
-                //var_dump(call_user_func_array(array(&$controller, $method), $arguments));
-                
+                if (is_array($response) && !isset($response['body'])) {
+                    throw Errors\RuntimeException::run("Invalid response array. Expected array('body' => string, 'status' => int).");
+                } elseif (is_string($response)) {
+                    throw Errors\RuntimeException::run("Invalid response string. Expected array('body' => string, 'status' => int).");
+                }
             } elseif(is_callable($parsed['callback'])) {
                 $this->container->request->params = $parsed['params'];
-                call_user_func_array($parsed['callback'], array_values($parsed['params']));
+                
+                $response = call_user_func_array($parsed['callback'], array_values($parsed['params']));
             } else {
-                $this->container->response->render(false);
+                $response = false;
             }
+            
+            $this->container->response->render($response);
         } else {
             $this->defaultNotFound();
         }
