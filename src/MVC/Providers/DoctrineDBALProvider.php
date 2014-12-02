@@ -25,7 +25,7 @@ class DoctrineDBALProvider implements ProviderInterface
         
     }
 
-    public function register(MVC $app, array $options = array()) {
+    public function register(MVC $app, array $options) {
         $default_options = array(
             'charset'  => null,
             'driver'   => 'pdo_mysql',

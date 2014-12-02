@@ -19,7 +19,7 @@ class DoctrineORMProvider implements ProviderInterface
         
     }
 
-    public function register(MVC $app, array $options = array()) {
+    public function register(MVC $app, array $options) {
         $default_options = array(
             'params'       => array(
                 'charset'  => null,
