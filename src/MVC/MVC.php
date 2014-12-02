@@ -43,6 +43,9 @@ class MVC
         
         # Providers
         $this->container->providers[] = array();
+        $this->container->providers['charset'] = $this->container->settings['charset'];
+        $this->container->providers['debug'] = $this->container->settings['debug'];
+        $this->container->providers['templates_path'] = array($this->container->settings['templates_path']);
     }
 
     /**
@@ -52,6 +55,7 @@ class MVC
     public static function getDefaultSettings()
     {
         return array(
+            "charset" => "UTF-8",
             "debug" => true,
             "error_writer" => true,
             "templates_path" => "./templates"
