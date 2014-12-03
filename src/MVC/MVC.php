@@ -486,41 +486,44 @@ class MVC
      */
     public function run()
     {
-
         if ($this->container->settings['debug'] === true) {
             error_reporting(E_ALL);
         } else {
             error_reporting(0);
         }
+        
+        try {
+            $parsed = $this->container->router->parse($this->container->request->url, $this->container->request->request_method, $this->container->routes);
 
-        $parsed = $this->container->router->parse($this->container->request->url, $this->container->request->request_method, $this->container->routes);
+            if ($parsed['found'] || isset($this->container->routes['notFound'])) {
+                if (is_string($parsed['callback'])) {
+                    list($controller, $method) = explode('::', $parsed['callback']);
 
-        if ($parsed['found'] || isset($this->container->routes['notFound'])) {
-            if (is_string($parsed['callback'])) {
-                list($controller, $method) = explode('::', $parsed['callback']);
-                
-                $arguments = array($this, $this->container->request) + $parsed['params'];
-                
-                $controller = new $controller();
-                
-                $response = call_user_func_array(array(&$controller, $method), $arguments);
-                
-                if (is_array($response) && !isset($response['body'])) {
-                    throw Errors\RuntimeException::run("Invalid response array. Expected array('body' => string, 'status' => int).");
-                } elseif (is_string($response)) {
-                    $response = array('body' => $response);
+                    $arguments = array($this, $this->container->request) + $parsed['params'];
+
+                    $controller = new $controller();
+
+                    $response = call_user_func_array(array(&$controller, $method), $arguments);
+
+                    if (is_array($response) && !isset($response['body'])) {
+                        throw Errors\RuntimeException::run("Invalid response array. Expected array('body' => string, 'status' => int).");
+                    } elseif (is_string($response)) {
+                        $response = array('body' => $response);
+                    }
+                } elseif(is_callable($parsed['callback'])) {
+                    $this->container->request->params = $parsed['params'];
+
+                    $response = call_user_func_array($parsed['callback'], array_values($parsed['params']));
+                } else {
+                    $response = false;
                 }
-            } elseif(is_callable($parsed['callback'])) {
-                $this->container->request->params = $parsed['params'];
-                
-                $response = call_user_func_array($parsed['callback'], array_values($parsed['params']));
+
+                $this->container->response->render($response);
             } else {
-                $response = false;
+                $this->defaultNotFound();
             }
-            
-            $this->container->response->render($response);
-        } else {
-            $this->defaultNotFound();
+        } catch (\Exception $e) {
+            Error::run($e);
         }
     }
 
