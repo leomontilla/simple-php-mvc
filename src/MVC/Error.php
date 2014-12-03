@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of Error
+ * Error Handle
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * @package MVC
@@ -12,6 +12,12 @@ namespace MVC;
 class Error
 {
 
+    /**
+     * Puts the exeption in HTML
+     * @access public 
+     * @param \Exception $e
+     * @return void
+     */
     public static function run(\Exception $e)
     {
         print '<meta charset="UTF8">';

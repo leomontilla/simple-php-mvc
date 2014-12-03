@@ -4,6 +4,7 @@
  * PDOStatement extendido
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @package MVC\DataBase
  */
 
 namespace MVC\DataBase;
@@ -12,18 +13,25 @@ class PDOStatement
 {
 
     /**
+     * Object PDO
+     * @access protected
      * @var PDO
      */
     protected $_pdo;
     
     /**
+     * Object PDOStatement
+     * @access protected
      * @var \PDOStatement
      */
     protected $_statement;
     
     /**
+     * Construct of the class
+     * @access protected
      * @param PDO $pdo
      * @param \PDOStatement $pdos
+     * @return void
      */
     function __construct(PDO $pdo, \PDOStatement $statement)
     {
@@ -32,9 +40,10 @@ class PDOStatement
     }
     
     /**
+     * Call a class method
+     * @access public
      * @param string $method
      * @param array $arguments
-     * 
      * @return mixed
      */
     public function __call($method, $arguments)
@@ -43,9 +52,12 @@ class PDOStatement
     }
     
     /**
+     * Bind a value of the column or field table
+     * @access public
      * @param string $column
      * @param mixed $param
      * @param string $type
+     * @return void 
      */
     public function bindColumn($column, &$param, $type = null)
     {
@@ -57,9 +69,12 @@ class PDOStatement
     }
     
     /**
+     * Bind a value of the param SQL
+     * @access public
      * @param string $column
      * @param mixed $param
      * @param string $type
+     * @return void
      */
     public function bindParam($column, &$param, $type = null)
     {
@@ -71,8 +86,9 @@ class PDOStatement
     }
     
     /**
+     * Execute the current statement
+     * @access public
      * @param array $params Params of the Statement SQL
-     * 
      * @return int
      */
     public function execute(array $params = array())
@@ -82,6 +98,8 @@ class PDOStatement
     }
     
     /**
+     * Fetch the current result
+     * @access public
      * @return \stdClass
      */
     public function fetch()
@@ -90,6 +108,8 @@ class PDOStatement
     }
     
     /**
+     * Fetch all results of the current statement
+     * @access public
      * @return array
      */
     public function fetchAll()
@@ -98,8 +118,9 @@ class PDOStatement
     }
 
     /**
-     * @param $property
-     * 
+     * Properties PDOStatement Getter
+     * @access public
+     * @param string $property
      * @return mixed
      */
     public function __get($property)
@@ -108,6 +129,8 @@ class PDOStatement
     }
 
     /**
+     * Returns the current PDOStatement
+     * @access public
      * @return \PDOStatement
      */
     public function statement()

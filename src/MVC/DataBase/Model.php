@@ -4,6 +4,7 @@
  * Modelo abstracto del que requeriran los demas modelos
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @package MVC\DataBase
  */
 
 namespace MVC\DataBase;
@@ -12,23 +13,32 @@ abstract class Model
 {
 
     /**
+     * Table name of model
+     * @access protected
      * @var string
      */
     protected $_table;
     
     /**
+     * PDO Object
+     * @access protected
      * @var PDO
      */
     protected $_pdo;
     
     /**
+     * Instance of model
+     * @access public
      * @var Model
      */
     public static $instance;
     
     /**
+     * Construct of the class
+     * @access public
      * @param PDO $pdo
      * @param string $table
+     * @return void
      */
     public function __construct(PDO $pdo, $table)
     {
@@ -37,9 +47,10 @@ abstract class Model
     }
 
     /**
+     * Get the instance
+     * @access public
      * @param PDO $pdo
      * @param string $table
-     * 
      * @return Model
      */
     public static function getInstance(PDO $pdo, $table)
@@ -51,8 +62,9 @@ abstract class Model
     }
     
     /**
+     * Prepare de SQL query
+     * @access protected
      * @param string $sql
-     * 
      * @return PDOStatement
      */
     protected function query($sql)
@@ -61,8 +73,9 @@ abstract class Model
     }
     
     /**
+     * Function SQL DELETE
+     * @access protected
      * @param array $criteria
-     * 
      * @return int 
      */
     protected function delete(array $criteria = array())
@@ -83,8 +96,9 @@ abstract class Model
     }
 
     /**
+     * Function SQL INSERT
+     * @access protected
      * @param array $data
-     * 
      * @return int
      */
     protected function insert(array $data = array())
@@ -109,13 +123,13 @@ abstract class Model
     }
     
     /**
+     * Function SQL SELECT
+     * @access protected
      * @param array $fields
      * @param array $criteria
      * @param array $operators
      * @param array $conditions
-     * 
      * @return array
-     * 
      * @throws \Exception
      */
     protected function select(array $fields, array $criteria = array(), array $operators = array(), array $conditions = array())
@@ -171,9 +185,10 @@ abstract class Model
     }
     
     /**
+     * Function SQL UPDATE
+     * @access protected
      * @param array $data
      * @param array $criteria
-     * 
      * @return int 
      */
     protected function update(array $data = array(), array $criteria)
@@ -196,6 +211,8 @@ abstract class Model
     }
     
     /**
+     * Find all
+     * @access public
      * @return array
      */
     public function findAll()
@@ -204,9 +221,10 @@ abstract class Model
     }
     
     /**
+     * Find by column o field of the table
+     * @access public
      * @param string $column
      * @param string $value
-     * 
      * @return array
      */
     public function findBy($column, $value)

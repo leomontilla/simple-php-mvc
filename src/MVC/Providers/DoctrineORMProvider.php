@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Description of DoctrineORMProvider
+ * Doctrine ORM Provider
  *
- * @author smartapps
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @package MVC\Providers
  */
 
 namespace MVC\Providers;
@@ -15,11 +16,23 @@ use Doctrine\ORM\Tools\Setup,
 
 class DoctrineORMProvider implements ProviderInterface
 {
-    public function boot(MVC $app) {
-        
-    }
+    /**
+     * Bootstrap of the Provider
+     * @access public
+     * @param MVC $app
+     * @return void
+     */
+    public function boot(MVC $app) { }
 
-    public function register(MVC $app, array $options) {
+    /**
+     * Register the properties of the Doctrine ORM Provider
+     * @access public
+     * @param MVC $app
+     * @param array $options
+     * @return void
+     */
+    public function register(MVC $app, array $options)
+    {
         $default_options = array(
             'params'       => array(
                 'charset'  => null,

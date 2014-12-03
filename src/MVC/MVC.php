@@ -13,19 +13,21 @@ use MVC\Controller,
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @package MVC
- * @version 1.0
+ * @version 1.5
  */
 class MVC
 {
 
     /**
      * Container of the aplication
+     * @access protected
      * @var \stdClass $container
      */
     protected $container;
 
     /**
      * Constructor
+     * @access public
      * @param  array $userSettings Associative array of application settings
      */
     public function __construct(array $userSettings = array())
@@ -50,6 +52,7 @@ class MVC
 
     /**
      * Get default application settings
+     * @access public
      * @return array
      */
     public static function getDefaultSettings()
@@ -76,7 +79,7 @@ class MVC
      *
      * If two arguments are provided, the first argument is the name of the setting
      * to be created or updated, and the second argument is the setting value.
-     *
+     * @access public
      * @param  string|array $name  If a string, the name of the setting to set or retrieve. Else an associated array of setting names and values
      * @param  mixed        $value If name is a string, the value of the setting identified by $name
      * @return mixed        The value of a setting if only one argument is a string
@@ -106,9 +109,9 @@ class MVC
     
     /**
      * Get container key or container
-     * 
+     * @access public
      * @param string $key
-     * @return object
+     * @return \stdClass|mixed
      */
     public function getKey($key = null)
     {
@@ -120,7 +123,7 @@ class MVC
     
     /**
      * Set container key and value
-     * 
+     * @access public
      * @param string $key
      * @param mixed $value
      */
@@ -133,7 +136,7 @@ class MVC
     
     /**
      * Return if provider exists
-     * 
+     * @access public
      * @param string $key
      * @return boolean
      */
@@ -148,6 +151,7 @@ class MVC
 
     /**
      * Add Group routes
+     * @access public
      * @return void
      */
     public function group()
@@ -162,10 +166,9 @@ class MVC
 
     /**
      * Add AJAX route
-     * 
+     * @access public
      * @param string $pattern
      * @param callable $callable
-     * 
      * @return array
      */
     public function ajax($pattern, callable $callable)
@@ -177,10 +180,9 @@ class MVC
 
     /**
      * Add HEAD route
-     * 
+     * @access public
      * @param string $pattern
      * @param callable $callable
-     * 
      * @return array
      */
     public function head($pattern, callable $callable)
@@ -192,11 +194,10 @@ class MVC
 
     /**
      * Add GET route
-     * 
+     * @access public
      * @param string $pattern
      * @param callable $callable
      * @param string $name
-     * 
      * @return array
      */
     public function get($pattern, callable $callable, $name = null)
@@ -209,11 +210,10 @@ class MVC
 
     /**
      * Add OPTIONS route
-     * 
+     * @access public
      * @param string $pattern
      * @param callable $callable
      * @param string $name
-     * 
      * @return array
      */
     public function options($pattern, callable $callable, $name = null)
@@ -226,11 +226,10 @@ class MVC
 
     /**
      * Add POST route
-     * 
+     * @access public
      * @param string $pattern
      * @param callable $callable
      * @param string $name
-     * 
      * @return array
      */
     public function post($pattern, callable $callable, $name = null)
@@ -243,11 +242,10 @@ class MVC
 
     /**
      * Add PUT route
-     * 
+     * @access public
      * @param string $pattern
      * @param callable $callable
      * @param string $name
-     * 
      * @return array
      */
     public function put($pattern, callable $callable, $name = null)
@@ -260,11 +258,10 @@ class MVC
 
     /**
      * Add DELETE route
-     * 
+     * @access public
      * @param string $pattern
      * @param callable $callable
      * @param string $name
-     * 
      * @return array
      */
     public function delete($pattern, callable $callable, $name = null)
@@ -278,6 +275,7 @@ class MVC
     /**
      * Checks for request characteristics.
      * ajax, delete, flash, get, head, mobile, options, post, put, ssl
+     * @access public
      * @param string $caracteristic   The request caracteristic
      * @return mixed
      */
@@ -294,9 +292,10 @@ class MVC
      * generic redirect response. You may also specify another valid
      * 3xx status code if you want. This method will automatically set the
      * HTTP Location header for you using the URL parameter.
-     *
+     * @access public
      * @param  string   $url        The destination URL
      * @param  int      $status     The HTTP redirect status code (optional)
+     * @return void
      */
     public function redirect($url, $status = 302)
     {
@@ -305,7 +304,7 @@ class MVC
     
     /**
      * Register the providers
-     * 
+     * @access public
      * @param ProviderInterface $provider
      * @param array $options
      * @return MVC
@@ -321,6 +320,8 @@ class MVC
     
     /**
      * Boots of the all providers of the application
+     * @access public
+     * @return void
      */
     public function boot()
     {
@@ -335,7 +336,7 @@ class MVC
     
     /**
      * Share a clousure object or callback object
-     * 
+     * @access public
      * @param $callable
      * @return callable
      * @throws InvalidArgumentException
@@ -359,7 +360,7 @@ class MVC
     
     /**
      * Share a protected clousure object
-     * 
+     * @access public
      * @param  $callable
      * @return callable
      * @throws InvalidArgumentException
@@ -376,10 +377,9 @@ class MVC
 
     /**
      * Returns the URL for the name or route
-     *
+     * @access public
      * @param string $name      Name of Route
      * @param boolean $relative If is true is a relative URL, else a absolute url
-     *
      * @return string
      */
     public function generateUrl($name, $relative = true)
@@ -408,7 +408,7 @@ class MVC
      * to invoke an already-registered handler. If the handler has been
      * registered and is callable, it is invoked and sends a 404 HTTP Response
      * whose body is the output of the Not Found handler.
-     *
+     * @access public
      * @param  mixed $callable Anything that returns true for is_callable()
      * @return void
      */
@@ -421,6 +421,7 @@ class MVC
 
     /**
      * Get the Request object
+     * @access public
      * @return Request
      */
     public function request()
@@ -430,15 +431,17 @@ class MVC
 
     /**
      * Get the data of request
+     * @access public
      * @return \stdClass
      */
-    public function data()
+    public function data($json = false)
     {
-        return $this->container->request->data;
+        return ($json) ? $this->container->request->data->JSON : $this->container->request->data;
     }
 
     /**
      * Get the query of request
+     * @access public
      * @return \stdClass
      */
     public function query()
@@ -448,6 +451,7 @@ class MVC
 
     /**
      * Get the Response object
+     * @access public
      * @return Response
      */
     public function response()
@@ -457,6 +461,7 @@ class MVC
 
     /**
      * Get the View object
+     * @access public
      * @return View
      */
     public function view()
@@ -466,10 +471,10 @@ class MVC
 
     /**
      * Render the template
+     * @access public
      * @param string $template
      * @param array $data
      * @param int $status
-     * 
      * @return void
      */
     public function render($template, $data = array(), $status = null)
@@ -482,6 +487,7 @@ class MVC
 
     /**
      * Run the aplication
+     * @access public
      * @return void
      */
     public function run()
@@ -527,13 +533,11 @@ class MVC
     }
 
     /**
-     * Generate diagnostic template markup
-     *
+     * Generate diagnostic template markup.
      * This method accepts a title and body content to generate an HTML document layout.
-     *
+     * @access public
      * @param  string   $title  The title of the HTML template
      * @param  string   $body   The body content of the HTML template
-     * 
      * @return string
      */
     protected static function generateTemplateMarkup($title, $body)
@@ -543,6 +547,7 @@ class MVC
 
     /**
      * Default Not Found handler
+     * @access public
      * @return void
      */
     protected function defaultNotFound()

@@ -3,6 +3,7 @@
 /**
  * Description of Migration
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @package MVC\DataBase
  */
 
 namespace MVC\DataBase;

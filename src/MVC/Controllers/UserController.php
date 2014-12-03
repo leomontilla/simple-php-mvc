@@ -4,7 +4,7 @@
  * User Controller Example
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC
+ * @package MVC\Controllers
  */
 
 namespace MVC\Controllers;
@@ -17,9 +17,11 @@ class UserController extends Controller
 {
 
     /**
+     * Example of index action for someone route with the use of the a User model
+     * Using the render view
+     * @access public
      * @param MVC $app
-     * 
-     * @return array
+     * @return string
      */
     public function index(MVC $app)
     {

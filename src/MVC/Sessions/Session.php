@@ -1,29 +1,61 @@
 <?php
-
-namespace MVC\Sessions;
-
 /**
  * Description of Session
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\sessions
+ * @package MVC
  */
-class Session {
 
+namespace MVC\Sessions;
+
+class Session 
+{
+    
+    /**
+     * Instance of Session
+     * @access public
+     * @var Session
+     */
+    public static $instance;
+    
+    /**
+     * Construct of the class
+     */
+    public function __construct()
+    {
+        $this->__init();
+    }
+    
+    /**
+     * Gets the instance of Session
+     * @access public
+     * @return Session
+     */
+    public static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+    
     /**
      * Start sessions vars
+     * @access public
      * @return void
      */
-    static function __init() {
+    public static function __init() {
         session_start();
     }
+    
     /**
      * Set var session
+     * @access public
      * @param string $name
      * @param mixed $value
      * @return bool
      */
-    static function setSession($name, $value) {
+    public function setSession($name, $value) {
         if (!isset($_SESSION[$name])) {
             $_SESSION[$name] = $value;
         } else {
@@ -32,11 +64,12 @@ class Session {
     }
 
     /**
-     * Get the session var
+     * Get the value of Session key
+     * @access public
      * @param $name
      * @return bool|mixed
      */
-    static function getSession($name) {
+    public  function getSession($name) {
         if (isset($_SESSION[$name])) {
             return $_SESSION[$name];
         } else {
@@ -46,9 +79,10 @@ class Session {
 
     /**
      * Sessions destroy
+     * @access public
      * @return void
      */
-    static function __destroy() {
+    public static function __destroy() {
         session_destroy();
     }
 

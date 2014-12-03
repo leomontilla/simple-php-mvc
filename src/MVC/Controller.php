@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of AppController
+ * Controller
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * @package MVC
@@ -18,11 +18,14 @@ class Controller
 
     /**
      * Response of Controller
+     * @access protected
      * @var array $_response
      */
     protected $_response;
 
     /**
+     * Object of the View
+     * @access protected
      * @var View
      */
     protected $view;
@@ -37,12 +40,11 @@ class Controller
 
     /**
      * Call a action of controller
-     * 
+     * @access public
      * @param MVC $mvc         Object of Application
      * @param HttpRequest $request Object of Request class
      * @param string $action   Action of Controller
      * @param string $fileView String of the view file
-     * 
      * @return array
      */
     public function call(MVC $mvc, HttpRequest $request, $action, $fileView)
@@ -78,57 +80,48 @@ class Controller
     }
 
     /**
-     * 
      * Function for Error 404: Not Found
-     * 
+     * @access public
      * @param Request $request
      * @return array
      */
-    public function _404(Request $request) {
-        $uri = $request->getRequestUri();        
+    public function _404(Request $request)
+    {
+        $uri = $request->getRequestUri();
         return $this->view->render("404.html", array("uri", "uri"));
     }
 
     /**
-     *  Converts the supplied value to JSON.
-     *
-     *  @param mixed $value    The value to encode.
-     *  @return string
+     * Converts the supplied value to JSON.
+     * @access public
+     * @param mixed $value    The value to encode.
+     * @return string
      */
-    public function render_json($value) {
+    public function render_json($value)
+    {
         $options = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP;
         return json_encode($value, $options);
     }
 
     /**
-     *  Renders a view.
-     *
-     *  @param string $file      The file to be rendered.
-     *  @param array $vars       The variables to be substituted in the view.
-     *  @return mixed
+     * Renders a view.
+     * @access public
+     * @param string $file      The file to be rendered.
+     * @param array $vars       The variables to be substituted in the view.
+     * @return mixed
      */
-    public function render_html($file, $vars = array()) {
+    public function render_html($file, $vars = array())
+    {
         return $this->view->render($file, $vars);
     }
 
     /**
-     * 
-     * Example of controller function or method
-     * 
-     * @param \MVC\Server\Request $request
-     * @return array
-     */
-    public function testCall($request) {
-        $array1 = array("valor1", "valor2");
-        $array2 = array("valor1", "valor2");
-        return compact("array1", "array2");
-    }
-    
-    /**
      * Get the View object
-     * @return \MVC\View
+     * @access public
+     * @return View
      */
-    public function view() {
+    public function view()
+    {
         return $this->view;
     }
 

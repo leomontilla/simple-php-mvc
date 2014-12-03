@@ -6,11 +6,17 @@ namespace MVC\Command;
  * Functions of Test
  *
  * @author Ramón Serrano
+ * @package MVC\Command
  */
-interface Test {
+interface Test
+{
 
     function buildUnitTest();
     
-    function makeUnitTest( $name_file, $path_file);
+    /**
+     * @param string $nameFile
+     * @param string $pathFile
+     */
+    function makeUnitTest( $nameFile, $pathFile);
 
 }

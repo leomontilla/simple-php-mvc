@@ -1,18 +1,20 @@
 <?php
 
-namespace MVC\Server;
-
 /**
  * The Response class is used to render an HTTP response.
  *
  * @author    Ramon Serrano <ramon.calle.88@gmail.com>
  * @package MVC\Server
  */
-class Response {
+
+namespace MVC\Server;
+
+class Response
+{
 
    /**
     * The configuration settings.
-    *
+    * @access protected
     * @var array
     */
     protected $_config = array();
@@ -24,9 +26,11 @@ class Response {
     *
     * * 'buffer_size' - The number of bytes each chunk of output should contain
     *
+    * @access public
     * @param array $config    The configuration options.
     */
-    public function __construct(array $config = array()) {
+    public function __construct(array $config = array()) 
+    {
         $defaults = array(
             'buffer_size'  => 8192
         );
@@ -35,11 +39,12 @@ class Response {
 
    /**
     * Converts an integer status to a well-formed HTTP status header.
-    *
+    * @access public
     * @param int $code    The integer associated with the HTTP status.
     * @return string
     */
-    public function _convert_status($code) {
+    public function _convert_status($code)
+    {
         $statuses = array(
             100 => 'Continue',
             101 => 'Switching Protocols',
@@ -89,7 +94,7 @@ class Response {
 
    /**
     * Parses a response.
-    *
+    * @access protected
     * @param mixed $response    The response to be parsed.  Can be an array
     *                           containing 'body', 'headers', and/or 'status'
     *                           keys, or a string which will be used as the
@@ -99,7 +104,8 @@ class Response {
     *                           associated with the HTTP status code).
     * @return array
     */
-    protected function _parse($response) {
+    protected function _parse($response)
+    {
         $defaults = array(
             'body'    => '',
             'headers' => array('Content-Type: text/html; charset=utf-8'),
@@ -128,7 +134,7 @@ class Response {
      * generic redirect response. You may also specify another valid
      * 3xx status code if you want. This method will automatically set the
      * HTTP Location header for you using the URL parameter.
-     *
+     * @access public
      * @param  string   $url        The destination URL
      * @param  int      $status     The HTTP redirect status code (optional)
      */
@@ -142,7 +148,7 @@ class Response {
 
    /**
     * Renders a response.
-    *
+    * @access public
     * @param mixed $response    The response to be rendered.  Can be an array
     *                           containing 'body', 'headers', and/or 'status'
     *                           keys, or a string which will be used as the
@@ -155,7 +161,8 @@ class Response {
     * @param int $status        The status of the response
     * @return void
     */
-    public function render($response, $status = null) {
+    public function render($response, $status = null)
+    {
         $response = $this->_parse($response);
 
         if (!is_null($status)) {

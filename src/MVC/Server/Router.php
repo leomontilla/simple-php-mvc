@@ -1,22 +1,25 @@
 <?php
 
-namespace MVC\Server;
-
 /**
  * The Router is used to handle url routing.
  *
  * @author  Ramón Serrano <ramon.calle.88@gmail.com>
  * @package MVC\Server
  */
-class Router {
+
+namespace MVC\Server;
+
+class Router
+{
 
    /**
     * Compiles the regex necessary to capture all match types within a route.
-    *
+    * @access protected
     * @param string $route    The route.
     * @return string
     */
-    protected function _compile_regex($route) {
+    protected function _compile_regex($route)
+    {
         $pattern = '`(/|\.|)\[([^:\]]*+)(?::([^:\]]*+))?\](\?|)`';
 
         if ( preg_match_all($pattern, $route, $matches, PREG_SET_ORDER) ) {
@@ -110,12 +113,14 @@ class Router {
     * * 'params'   - The parameters collected from the matched uri
     * * 'callback' - The callback function pulled from the matched route
     *
+    * @access public
     * @param string $request_uri       The request uri.
     * @param string $request_method    The request method.
     * @param array $routes             The routes.
     * @return array
     */
-    public function parse($request_uri, $request_method, $routes) {
+    public function parse($request_uri, $request_method, $routes)
+    {
         foreach ( $routes as $route ) {
             list($method, $uri, $callback) = $route;
 

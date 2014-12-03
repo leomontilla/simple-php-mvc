@@ -1,16 +1,22 @@
 <?php
 
-namespace MVC\Command;
-
 /**
  * Functions of Controller
  * 
  * @author Ramón Serrano
+ * @package MVC\Command
  */
-interface Controller {
-   
+
+namespace MVC\Command;
+
+interface Controller
+{
+
     function buildController();
-    
-    function makeController( $name_file, $path_file);
-    
+
+    /**
+     * @param string $nameFile
+     * @param string $pathFile
+     */
+    function makeController($nameFile, $pathFile);
 }

@@ -4,6 +4,7 @@
  * PDO 
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @package MVC\DataBase
  */
 
 namespace MVC\DataBase;
@@ -11,29 +12,35 @@ namespace MVC\DataBase;
 class PDO
 {
     /**
-     * @var \PDO
+     * PDO Object
      * @access protected
+     * @var \PDO
      */
     protected $_pdo;
     
     /**
-     * @var int
+     * Executes number
      * @access public
+     * @var int
      */
     public $numExecutes;
     
     /**
-     * @var int
+     * Statements number
      * @access public
+     * @var int
      */
     public $numStatements;
     
     /**
+     * Instance of PDO
+     * @access public
      * @var PDO
      */
-    static $instance;
+    public static $instance;
     
     /**
+     * Construct of the class
      * @param string $dsn
      * @param string $user
      * @param string $passwd
@@ -47,9 +54,10 @@ class PDO
     }
     
     /**
+     * Call a class method
+     * @access public
      * @param string $method
      * @param array $arguments
-     * 
      * @return mixed
      */
     public function __call($method, $arguments)
@@ -58,11 +66,12 @@ class PDO
     }
     
     /**
+     * Get the instance of the class
+     * @access public
      * @param string $dsn          URI of the driver
      * @param string $user         Connection user
      * @param string $passwd       Connection password
      * @param array $driverOptions Driver options
-     * 
      * @return PDO
      */
     public static function __getInstance($dsn, $user = null, $passwd = null, array $driverOptions = array())
@@ -74,9 +83,10 @@ class PDO
     }
 
     /**
+     * Prepare the statement SQL
+     * @access public
      * @param string $sql          Statement SQL
      * @param srray $driverOptions Driver options
-     * 
      * @return PDOStatement
      */
     public function prepare($sql, array $driverOptions = array())
@@ -89,8 +99,9 @@ class PDO
     }
     
     /**
+     * Executes the statement query
+     * @access public
      * @param string $sql Statement SQL
-     * 
      * @return PDOStatement
      */
     public function query($sql)
@@ -104,8 +115,9 @@ class PDO
     }
     
     /**
+     * Executes directly the statement SQL
+     * @access public
      * @param string $sql Statement SQL
-     * 
      * @return int Filas afectadas
      */
     public function exec($sql)

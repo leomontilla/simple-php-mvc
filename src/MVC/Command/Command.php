@@ -1,19 +1,22 @@
 <?php
 
+/**
+ * Command Application for create files of the application
+ * 
+ * @author Ramon Serrano
+ * @package MVC\Command
+ */
+
 namespace MVC\Command;
 
-use \MVC\Command\Controller,
-    \MVC\Command\Model,
-    \MVC\Command\Test;
+use MVC\Command\Controller,
+    MVC\Command\Model,
+    MVC\Command\Test;
 
-/**
- * Description of Command
- * @author Ramon Serrano
- */
 class Command implements Controller, Model, Test {
 
     /**
-     *
+     * Model name 
      * @var string
      * @access protected 
      * @name $model_name
@@ -21,7 +24,7 @@ class Command implements Controller, Model, Test {
     protected $model_name;
 
     /**
-     *
+     * Root Path
      * @var string
      * @access protected
      * @name $root 
@@ -37,7 +40,7 @@ class Command implements Controller, Model, Test {
     protected $settings;
 
     /**
-     *
+     * Unit test
      * @var string
      * @access protected 
      * @name $unit_test
@@ -46,6 +49,7 @@ class Command implements Controller, Model, Test {
 
     /**
      * Constructor
+     * @access public
      * @param string $root
      * @param array $userSettings
      */
@@ -56,6 +60,8 @@ class Command implements Controller, Model, Test {
 
     /**
      * Validate the settings
+     * @access public
+     * @return void
      */
     public function validateSettings() {
         if (!file_exists("$this->root/{$this->settings['app_path']}")) {
@@ -74,6 +80,7 @@ class Command implements Controller, Model, Test {
 
     /**
      * Get default application settings
+     * @access public
      * @return array
      */
     public static function getDefaultSettings() {
@@ -89,8 +96,10 @@ class Command implements Controller, Model, Test {
 
     /**
      * Singular settings
+     * @access public
      * @param string $name
      * @param string $value
+     * @return void
      */
     public function config($name, $value = "") {
         if (!is_null($name) && is_null($value)) {
@@ -101,13 +110,21 @@ class Command implements Controller, Model, Test {
         }
     }
 
+    /**
+     * Build model: auxiliar function
+     * @access protected
+     * @return void
+     */
     protected function build_module() {
-
         $this->buildModel();
-
         $this->buildController();
     }
 
+    /**
+     * Build de Config DB File in the root path
+     * @access public
+     * @return void
+     */
     public function buildConfigDatabaseFile() {
         $this->makeFile("config-database.php", "$this->root");
         $file = fopen("$this->root/config-database.php", "w");
@@ -160,6 +177,11 @@ $database = array(
         fclose($file);
     }
 
+    /**
+     * Build a controller file
+     * @access public
+     * @return boolean
+     */
     public function buildController() {
         print "\nNombre para el controlador: [new] ";
         $name_default = "new";
@@ -188,6 +210,11 @@ $database = array(
         return true;
     }
 
+    /**
+     * Build a model file
+     * @access public
+     * @return boolean
+     */
     public function buildModel() {
         print "\nNombre para el modelo: [New] ";
         $name_default = "New.php";
@@ -203,6 +230,11 @@ $database = array(
         return true;
     }
 
+    /**
+     * Build a unit test file
+     * @access public
+     * @return boolean
+     */
     public function buildUnitTest() {
         print "\nNombre de la clase para la prueba unitaria: New ";
         $name_default = "NewTest.php";
@@ -220,12 +252,18 @@ $database = array(
 
     /**
      * Getter of keyboard
+     * @access public
      * @return string
      */
     public function get() {
         return trim(fgets(STDIN));
     }
 
+    /**
+     * Puts the text help
+     * @access protected
+     * @return void
+     */
     protected function help() {
         print "
 \nUsage: php Command [option]
@@ -240,16 +278,23 @@ $database = array(
  		\r\n";
     }
 
-    public function makeController($name_file, $path_file) {
-        $name_file = explode(".", $name_file);
-        fwrite($path_file, '<?php 
+    /**
+     * Write the content of the controller file
+     * @access public
+     * @param string $nameFile
+     * @param string $pathFile
+     * @return void
+     */
+    public function makeController($nameFile, $pathFile) {
+        $nameFile = explode(".", $nameFile);
+        fwrite($pathFile, '<?php 
 
 namespace ' . $this->settings['namespace_controllers'] . ';
 
 /**
-* Description of ' . $name_file[0] . '
+* Description of ' . $nameFile[0] . '
 */
-class ' . $name_file[0] . ' extends \MVC\Controller
+class ' . $nameFile[0] . ' extends \MVC\Controller
 {
 
 	public function index( $mvc )
@@ -263,9 +308,16 @@ class ' . $name_file[0] . ' extends \MVC\Controller
 	');
     }
 
-    public function makeModel($name_file, $path_file) {
-        $this->model_name = explode(".", $name_file);
-        fwrite($path_file, '<?php 
+    /**
+     * Write the content of the model file
+     * @access public
+     * @param string $nameFile
+     * @param string $pathFile
+     * @return void
+     */
+    public function makeModel($nameFile, $pathFile) {
+        $this->model_name = explode(".", $nameFile);
+        fwrite($pathFile, '<?php 
 namespace ' . $this->settings['namespace_models'] . ';
 
 require dirname(__DIR__) . "/Database/DB.php";
@@ -288,15 +340,22 @@ class ' . $this->model_name[0] . ' extends \MVC\Database\Functions_DB {
 	');
     }
 
-    public function makeUnitTest($name_file, $path_file) {
-        $name_file = explode(".", $name_file);
-        fwrite($path_file, '<?php 
+    /**
+     * Write the content of the unit test file
+     * @access public
+     * @param string $nameFile
+     * @param string $pathFile
+     * @return void
+     */
+    public function makeUnitTest($nameFile, $pathFile) {
+        $nameFile = explode(".", $nameFile);
+        fwrite($pathFile, '<?php 
 
 /**
-* Description of ' . $name_file[0] . '
+* Description of ' . $nameFile[0] . '
 * @author name
 */
-class ' . $name_file[0] . ' extends \PHPUnit_Framework_TestCase
+class ' . $nameFile[0] . ' extends \PHPUnit_Framework_TestCase
 {
 
 	public function test(  )
@@ -308,47 +367,62 @@ class ' . $name_file[0] . ' extends \PHPUnit_Framework_TestCase
 	');
     }
 
-    protected function makeFile($name_file, $path = null) {
+    /**
+     * Create the file
+     * @access protected
+     * @param string $nameFile
+     * @param string $path
+     * @return void
+     * @throws Exception
+     */
+    protected function makeFile($nameFile, $path = null) {
         if (!is_null($path)) {
             if(!file_exists($path)) {
                 print "\nNo existe la carpeta $path.\n";
                 if (mkdir($path)) {
                     print "\nCarpeta $path creada con exito.";
                 }
-            } else if (file_exists($path . "/" . $name_file)) {
-                die ("\nEl archivo: $path/$name_file ya existe.\n");
+            } else if (file_exists($path . "/" . $nameFile)) {
+                die ("\nEl archivo: $path/$nameFile ya existe.\n");
             } else {
-                $file = fopen($path . "/" . $name_file, "w");
-                $array_file = explode(".", $name_file);
+                $file = fopen($path . "/" . $nameFile, "w");
+                $array_file = explode(".", $nameFile);
                 if (end($array_file) == "html") {
-                    fwrite($file, "Ejemplo de vista $name_file" . ' <?php print_r ($key) ?>');
+                    fwrite($file, "Ejemplo de vista $nameFile" . ' <?php print_r ($key) ?>');
                 } elseif (end($array_file) == "php") {
                     $path_array = explode('/', $path);
 
                     foreach ($path_array as $value) {
 
                         if ($value == "controllers") {
-                            $this->makeController($name_file, $file);
+                            $this->makeController($nameFile, $file);
                             break;
                         }
                         if ($value == "models") {
-                            $this->makeModel($name_file, $file);
+                            $this->makeModel($nameFile, $file);
                             break;
                         }
                         if ($value == "tests") {
-                            $this->makeUnitTest($name_file, $file);
+                            $this->makeUnitTest($nameFile, $file);
                             break;
                         }
                     }
                 }
                 fclose($file);
-                print " $path/$name_file\n";
+                print " $path/$nameFile\n";
             }
         } else {
             throw new Exception("Debe indicar el directorio del archivo");
         }
     }
 
+    /**
+     * Run the Command Application.
+     * Gets the args and runs the functions to the commands strings
+     * @access public
+     * @param array $arguments
+     * @return void
+     */
     public function run($arguments) {
         print "MVC PHP 1.0 by Ramon Serrano.\n";
         if (!isset($arguments[1])) {
@@ -378,6 +452,12 @@ class ' . $name_file[0] . ' extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Returns the string cammel case
+     * @access public
+     * @param string $string
+     * @return string
+     */
     protected function toCammelCase($string = null) {
         $string[0] = strtoupper($string[0]);
         return $string;

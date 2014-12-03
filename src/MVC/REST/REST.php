@@ -1,9 +1,10 @@
 <?php
 
 /**
- * Description of REST
+ * REST
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ * @package MVC\REST
  */
 
 namespace MVC\REST;
@@ -12,17 +13,22 @@ class REST
 {
     
     /**
+     * Object REST
+     * @access public
      * @var REST
      */
-    static $instance;
+    public static $instance;
 
     /**
-     * @var string $baseUrl
+     * Base url of the REST
      * @access public 
+     * @var string $baseUrl
      */
     public $baseUrl = "http://localhost/";
     
     /**
+     * Get the instance of REST
+     * @access public
      * @return REST
      */
     public function getInstance()
@@ -34,13 +40,14 @@ class REST
     }
 
     /**
+     * Init curl resource
+     * @access protected
      * @param string $uri
      * @param string $method
      * @param string $content_type
-     * 
      * @return resource
      */
-    private function getConnect($uri, $method, $content_type)
+    protected function getConnect($uri, $method, $content_type)
     {
         $connect = curl_init($this->baseUrl . $uri);
 
@@ -54,13 +61,15 @@ class REST
     }
 
     /**
+     * Sets the data request
+     * @access protected
      * @param resource $connect
      * @param type $data
      * @param string $content_type
-     * 
+     * @return void
      * @throws \Exception
      */
-    private function setData(&$connect, $data, $content_type)
+    protected function setData(&$connect, $data, $content_type)
     {
         if ($content_type == "application/json") {
             if (gettype($data) == "string") {
@@ -81,16 +90,16 @@ class REST
     }
 
     /**
+     * Executes the request
+     * @access protected
      * @param string $method
      * @param string $uri
      * @param type $data
      * @param string $content_type
-     * 
      * @return array
-     * 
      * @throws \Exception
      */
-    private function exec($method, $uri, $data, $content_type)
+    protected function exec($method, $uri, $data, $content_type)
     {
         $connect = $this->getConnect($uri, $method, $content_type);
         if ($data) {
@@ -122,10 +131,11 @@ class REST
     }
 
     /**
+     * Executes a GET Request
+     * @access public
      * @param string $uri
      * @param mixed $data
      * @param string $content_type
-     * 
      * @return array
      */
     public function get($uri, $data, $content_type = "application/json")
@@ -134,10 +144,11 @@ class REST
     }
 
     /**
+     * Executes a POST Request
+     * @access public
      * @param string $uri
      * @param mixed $data
      * @param string $content_type
-     * 
      * @return array
      */
     public function post($uri, $data, $content_type = "application/json")
@@ -146,10 +157,11 @@ class REST
     }
 
     /**
+     * Executes a PUT Request
+     * @access public
      * @param string $uri
      * @param mixed $data
      * @param string $content_type
-     * 
      * @return array
      */
     public function put($uri, $data, $content_type = "application/json")
@@ -158,10 +170,11 @@ class REST
     }
     
     /**
+     * Executes a DELETE Request
+     * @access public
      * @param string $uri
      * @param mixed $data
      * @param string $content_type
-     * 
      * @return array
      */
     public function delete($uri, $data, $content_type = "application/json")

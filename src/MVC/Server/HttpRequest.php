@@ -4,7 +4,7 @@
  * Description of HttpRequest
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC
+ * @package MVC\Server
  */
 
 namespace MVC\Server;
@@ -47,6 +47,9 @@ class HttpRequest
      */
     public $url;
 
+    /**
+     * Construct of the class
+     */
     function __construct()
     {
         $this->data = new \stdClass();
@@ -151,6 +154,7 @@ class HttpRequest
     }
 
     /**
+     * Returns the Root URI
      * @access public
      * @return string
      */
@@ -160,6 +164,7 @@ class HttpRequest
     }
     
     /**
+     * Returns the Request URI
      * @access public
      * @return string
      */

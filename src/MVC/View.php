@@ -1,31 +1,30 @@
 <?php
 
-namespace MVC;
-
-use \MVC\Errors\RuntimeException;
-
 /**
- * Description of View
+ * View
  * 
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  * @package MVC
  */
+
+namespace MVC;
+
 class View
 {
 
     /**
      * Path folder templates
-     * @var string $templates_path
+     * @access public
+     * @var string
      */
     public $templatesPath;
 
     /**
-     *  Display the content of template
-     *
-     *  @param string $file    The file to be rendered.
-     *  @param mixed $vars     The variables to be substituted in the view.
-     * 
-     *  @return void
+     * Display the content of template
+     * @access public
+     * @param string $file    The file to be rendered.
+     * @param mixed $vars     The variables to be substituted in the view.
+     * @return void
      */
     public function display($file, $vars = null)
     {
@@ -33,11 +32,10 @@ class View
     }
 
     /**
-     *  Escapes a value for output in an HTML context.
-     *
-     *  @param mixed $value
-     * 
-     *  @return string
+     * Escapes a value for output in an HTML context.
+     * @access public
+     * @param mixed $value
+     * @return string
      */
     public function escape($value)
     {
@@ -45,13 +43,11 @@ class View
     }
 
     /**
-     *  Renders a given file with the supplied variables.
-     *
-     *  @param string $file    The file to be rendered.
-     *  @param mixed $vars     The variables to be substituted in the view.
-     *  @access public
-     * 
-     *  @return string
+     * Renders a given file with the supplied variables.
+     * @access public
+     * @param string $file    The file to be rendered.
+     * @param mixed $vars     The variables to be substituted in the view.
+     * @return string
      */
     public function render($file, $vars = null) 
     {

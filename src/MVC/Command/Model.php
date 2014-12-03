@@ -6,11 +6,17 @@ namespace MVC\Command;
  * Functions of Model
  * 
  * @author Ramón Serrano
+ * @package MVC\Command
  */
-interface Model {
+interface Model
+{
    
     function buildModel();
     
-    function makeModel( $name_file, $path_file);
+    /**
+     * @param string $nameFile
+     * @param string $pathFile
+     */
+    function makeModel( $nameFile, $pathFile);
     
 }
