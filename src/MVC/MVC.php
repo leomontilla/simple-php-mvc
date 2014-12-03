@@ -4,7 +4,7 @@ namespace MVC;
 
 use MVC\Controller,
     MVC\Server\Router,
-    MVC\Server\Request,
+    MVC\Server\HttpRequest,
     MVC\Server\Response,
     MVC\View;
 
@@ -33,7 +33,7 @@ class MVC
         $this->container = new \stdClass();
         $this->container->settings = array_merge(static::getDefaultSettings(), $userSettings);
 
-        $this->container->request = new Request();
+        $this->container->request = new HttpRequest();
         $this->container->response = new Response();
         $this->container->router = new Router();
         $this->container->view = new View();
@@ -517,7 +517,6 @@ class MVC
                 } else {
                     $response = false;
                 }
-
                 $this->container->response->render($response);
             } else {
                 $this->defaultNotFound();

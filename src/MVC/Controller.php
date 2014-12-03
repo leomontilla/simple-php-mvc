@@ -9,7 +9,7 @@
 
 namespace MVC;
 
-use MVC\Server\Request,
+use MVC\Server\HttpRequest,
     MVC\View,
     MVC\Errors\RuntimeException;
 
@@ -39,13 +39,13 @@ class Controller
      * Call a action of controller
      * 
      * @param MVC $mvc         Object of Application
-     * @param Request $request Object of Request class
+     * @param HttpRequest $request Object of Request class
      * @param string $action   Action of Controller
      * @param string $fileView String of the view file
      * 
      * @return array
      */
-    public function call(MVC $mvc, Request $request, $action, $fileView)
+    public function call(MVC $mvc, HttpRequest $request, $action, $fileView)
     {
         if (!method_exists($this, $action)) {
             RuntimeException::run("Method '$action' don´t exists.");

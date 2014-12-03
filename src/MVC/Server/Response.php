@@ -134,7 +134,7 @@ class Response {
      */
     public function redirect($url, $status = 302)
     {
-        if (headers_sent() === false) {
+        if (!headers_sent()) {
             header("Location: $url", false, $status);
         }
     }
@@ -160,12 +160,14 @@ class Response {
 
         if (!is_null($status)) {
             $status = $this->_convert_status($status);
-        } else {
+        } elseif (!is_null($response['status'])) {
             $status = $this->_convert_status($response['status']);
+        } else {
+            $status = $this->_convert_status(500);
         }
         
-        if (headers_sent() === false){
-            if (strpos(PHP_SAPI, 'cgi') === 0) {
+        if (!headers_sent()) {
+            if (!strpos(PHP_SAPI, 'cgi')) {
                 header($status);
             }
             foreach ( $response['headers'] as $header ) {
