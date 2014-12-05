@@ -54,7 +54,7 @@ class View
         $__template__ = "$this->templatesPath/{$file}";
         
         if(!file_exists($__template__)){
-           RuntimeException::run("View '$__template__' don´t exists.");
+           throw new \Exception("View '$__template__' don´t exists.");
         }
         
         if (is_array($vars)) {
