@@ -523,6 +523,9 @@ class MVC
                 } else {
                     $response = false;
                 }
+                if (isset($this->container->providers['monolog'])) {
+                    //$this->container->providers['monolog']->addInfo($response, $parsed);
+                }
                 $this->container->response->render($response);
             } else {
                 $this->defaultNotFound();
