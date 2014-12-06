@@ -85,7 +85,7 @@ class Command implements Controller, Model, Test {
      */
     public static function getDefaultSettings() {
         return array(
-            "app_path" => "./lib/MVC",
+            "app_path" => "./app",
             "controllers_path" => "./Controllers",
             "models_path" => "./Models",
             "views_path" => "./Views",

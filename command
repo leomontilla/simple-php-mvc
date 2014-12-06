@@ -1,7 +1,18 @@
+#!/usr/bin/env php
 <?php
-spl_autoload_register(function($class) {
-    $file = str_replace('\\', '/', $class) . '.php';
-    require "lib/$file";
-});
-$command = new \MVC\command\Command(__DIR__);
+
+$loader = require __DIR__ . '/vendor/autoload.php';
+$loader->add('MVC', __DIR__ . "/src");
+
+/*
+$settings = array(
+    'app_path' => './app'
+    'views_path' => './Views',
+    'models_path' => './Models',
+    'controllers_path' => './Controllers'
+);
+$command = new MVC\Command\Command(__DIR__, $settings);
+*/
+
+$command = new MVC\Command\Command(__DIR__);
 $command->run($argv);
