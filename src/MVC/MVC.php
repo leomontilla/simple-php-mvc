@@ -384,10 +384,12 @@ class MVC
      */
     public function generateUrl($name, $relative = true)
     {
-        if ($relative)
+        if ($relative) {
             return isset($this->container->routes[$name]) ? $this->container->routes[$name][1] : '';
-        else
-            return '';
+        } else {
+            $rootUri = $this->container->request->getRootUri();
+            return isset($this->container->routes[$name]) ? $rootUri . $this->container->routes[$name][1] : '';
+        }
     }
 
     /**
@@ -422,7 +424,7 @@ class MVC
     /**
      * Get the Request object
      * @access public
-     * @return Request
+     * @return HttpRequest
      */
     public function request()
     {

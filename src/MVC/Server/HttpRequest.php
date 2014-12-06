@@ -78,7 +78,7 @@ class HttpRequest
         $base = "/" . ltrim(
           str_replace("\\", "/", dirname($this->_env["PHP_SELF"])),
         "/");
-        $base = rtrim(str_replace("/public", "", $base), "/");
+        $base = rtrim(str_replace("/index.php", "", $base), "/");
         $pattern = "/^" . preg_quote($base, "/") . "/";
         $this->url = "/" . trim(
             preg_replace($pattern, "", $parsed["path"]),
@@ -160,7 +160,11 @@ class HttpRequest
      */
     public function getRootUri()
     {
-        return $this->__get('SCRIPT_NAME');
+        if (preg_match('/index.php/', $this->_env['REQUEST_URI'])) {
+            return $this->__get('PHP_SELF');
+        } else {
+            return str_replace('/index.php', '', $this->__get('PHP_SELF'));
+        }
     }
     
     /**
