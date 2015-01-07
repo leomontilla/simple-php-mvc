@@ -31,4 +31,8 @@ class AppMVC extends MVC
         return $providers;
     }
     
+    public function getModules()
+    {
+        return $this->container->modules;
+    }
 }

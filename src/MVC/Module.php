@@ -2,6 +2,8 @@
 
 namespace MVC;
 
+use MVC\Injection\Container;
+
 /**
  * Description of Module
  *
@@ -29,7 +31,7 @@ abstract class Module implements ModuleInterface
     public function getModuleExtension()
     {
         if (null === $this->extension) {
-            $class = $this->getContainerExtensionClass();
+            $class = $this->getModuleExtensionClass();
             if (class_exists($class)) {
                 $extension = new $class();
 

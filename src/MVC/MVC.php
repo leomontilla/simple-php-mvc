@@ -407,8 +407,8 @@ class MVC implements MVCInterface
      */
     final protected function initRoutes()
     {
-        $jsonRoutes = $this->setJsonRoutes();
-        foreach ($jsonRoutes as $currentRoutes) {
+        $routes = $this->setRoutes();
+        foreach ($routes as $currentRoutes) {
             foreach ($currentRoutes as $route) {
                 if (!count($route) == 3 && !count($route) == 4) {
                     throw new \LogicException('Array Route invalid. Expected array(string|array method, string pattern, callback|string action).');
@@ -423,22 +423,6 @@ class MVC implements MVCInterface
                     } else {
                         $this->container->routes[] = $routesValues;
                     }
-                }
-            }
-        }
-        foreach ($this->setRoutes() as $route) {
-            if (!count($route) == 3 && !count($route) == 4) {
-                throw new \LogicException('Array Route invalid. Expected array(string|array method, string pattern, callback|string action).');
-            } else {
-                $routesValues = array_values($route);
-                if (count($routesValues) == 4) {
-                    $this->container->routes[$routesValues[3]] = array(
-                        $routesValues[0],
-                        $routesValues[1],
-                        $routesValues[2]
-                    );
-                } else {
-                    $this->container->routes[] = $routesValues;
                 }
             }
         }
@@ -500,27 +484,20 @@ class MVC implements MVCInterface
     }
     
     /**
-     * Set Routes to register
+     * Set Routes from JSON|PHP File
      * 
      * @return array
      */
     public function setRoutes()
     {
-        return array();
-    }
-    
-    /**
-     * Set Routes from JSON File
-     * 
-     * @return array
-     */
-    public function setJsonRoutes()
-    {
         $routesJsonFile = $this->getAppDir() . '/config/routes.json';
+        $routesPhpFile = $this->getAppDir() . '/config/routes.php';
         $routes = array();
 
         if (file_exists($routesJsonFile)) {
             $routes[] = json_decode(file_get_contents($routesJsonFile), true);
+        } elseif (file_exists($routesPhpFile)) {
+            $routes[] = require_once $routesPhpFile;
         }
 
         foreach ($this->container->modules as $module) {
