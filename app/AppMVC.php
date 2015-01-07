@@ -21,7 +21,50 @@ class AppMVC extends MVC
     
     public function setProviders()
     {
-        $providers = array();
+        $providers = array(
+            array(
+                'instance' => new \MVC\Providers\DoctrineDBALProvider(),
+                'options'  => array(
+                    'charset'  => null,
+                    'driver'   => 'pdo_mysql',
+                    'dbname'   => 'test',
+                    'host'     => 'localhost',
+                    'user'     => 'root',
+                    'password' => null,
+                    'port'     => null,
+                )
+            ),
+            array(
+                'instance' => new \MVC\Providers\DoctrineORMProvider(),
+                'options' => array(
+                    'params'       => array(
+                        'charset'  => null,
+                        'driver'   => 'pdo_mysql',
+                        'dbname'   => 'test',
+                        'host'     => 'localhost',
+                        'user'     => 'root',
+                        'password' => null,
+                        'port'     => null,
+                    ),
+                    'dev_mode'     => false,
+                    'etities_type' => 'annotations',
+                    'path_entities' => array(
+                        $this->getAppDir() . '/../src/EjemploModule/Entity'
+                    ),
+                    'proxy_dir'    => null
+                )
+            ),
+            array(
+                'instance' => new \MVC\Providers\MonologProvider(),
+                'options' => array()
+            ),
+            array(
+                'instance' => new \MVC\Providers\TwigProvider(),
+                'options' => array(
+                    'path' => $this->getAppDir() . '/../src/EjemploModule/Resources/views'
+                )
+            )
+        );
         
         $providers[] = array(
             'instance' => new EjemploModule\EjemploProvider(),
