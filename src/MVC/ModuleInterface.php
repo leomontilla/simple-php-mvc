@@ -8,20 +8,20 @@ use MVC\Injection\ExtensionInterface;
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
-interface ModuleInterface extends ProviderInterface
+interface ModuleInterface
 {
     /**
      * Returns the container extension that should be implicitly loaded.
      *
      * @return ExtensionInterface|null The default extension or null if there is none
      */
-    public function getContainerExtension();
+    public function getModuleExtension();
 
     /**
      * Returns the module name that this bundle overrides.
      *
      * Despite its name, this method does not imply any parent/child relationship
-     * between the bundles, just a way to extend and override an existing
+     * between the modules, just a way to extend and override an existing
      * bundle.
      *
      * @return string The Module name it overrides or null if no parent

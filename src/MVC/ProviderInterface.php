@@ -14,14 +14,14 @@ interface ProviderInterface
     /**
      * Bootstrap of the provider
      * @access public
-     * @param MVC $app
+     * @param MVC $mvc
      */
-    public function boot(MVC $app);
+    public function boot(MVC $mvc);
     
     /**
      * Register the provider properties and functions
      * @access public
-     * @param MVC $app
+     * @param MVC $mvc
      */
-    public function register(MVC $app, array $options);
+    public function register(MVC $mvc, array $options);
 }

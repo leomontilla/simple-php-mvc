@@ -109,4 +109,17 @@ abstract class Module implements ModuleInterface
 
         return $this->getNamespace() . '\\Injection\\'.$basename.'Extension';
     }
+    
+    /**
+     * Returns the module name that this bundle overrides.
+     *
+     * Despite its name, this method does not imply any parent/child relationship
+     * between the modules, just a way to extend and override an existing
+     * bundle.
+     *
+     * @return string The Module name it overrides or null if no parent
+     */
+    public function getParent()
+    {
+    }
 }
