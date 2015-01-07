@@ -73,7 +73,7 @@ class HttpRequest
             $this->_env["HTTPS"] = false;
         }
         
-        $parsed = parse_url($this->_env["REQUEST_URI"]);
+        $parsed = $this->parseUrl();
         
         if (!isset($this->_env['BASE'])) {
             $base = "/" . ltrim(
@@ -83,15 +83,9 @@ class HttpRequest
             $base = $this->_env['BASE'];
         }
         
-        if (preg_match('/[a-zA-Z0-9_]++\.php/i', $parsed['path'], $matches)) {
-            $urlPath = preg_replace("/$matches[0]/", '/', $parsed['path']);
-        } else {
-            $urlPath = $parsed['path'];
-        }
-        
         $pattern = "/^" . preg_quote($base, "/") . "/";
         $this->url = "/" . trim(
-            preg_replace($pattern, "", $urlPath),
+            preg_replace($pattern, "", $parsed['path']),
         "/");
         
         if ( isset($parsed["query"]) ) {
@@ -130,9 +124,23 @@ class HttpRequest
             fclose($stream);
         }
     }
+    
+    /**
+     * Returns an environment variable.
+     * 
+     * @access public
+     * @param string $key    The environment variable.
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        $key = strtoupper($key);
+        return ( isset($this->_env[$key]) ) ? $this->_env[$key] : null;
+    }
 
     /**
-     * Retrieve HTTP Method
+     * Get Request HTTP Method
+     * 
      * @access public
      * @return string Request HTTP Method
      */
@@ -152,29 +160,14 @@ class HttpRequest
     }
 
     /**
-     * Returns an environment variable.
-     * @access public
-     * @param string $key    The environment variable.
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        $key = strtoupper($key);
-        return ( isset($this->_env[$key]) ) ? $this->_env[$key] : null;
-    }
-
-    /**
      * Returns the Root URI
      * @access public
      * @return string
      */
     public function getRootUri()
     {
-        if (preg_match('/index.php/', $this->_env['REQUEST_URI'])) {
-            return $this->__get('PHP_SELF');
-        } else {
-            return str_replace('/index.php', '', $this->__get('PHP_SELF'));
-        }
+        $parsedUrl = $this->parseUrl();
+        return $parsedUrl['path'];
     }
     
     /**
@@ -185,6 +178,22 @@ class HttpRequest
     public function getRequestUri()
     {
         return $this->__get('REQUEST_URI');
+    }
+    
+    /**
+     * Get parsed url
+     * 
+     * @return array Parsed Url
+     */
+    protected function parseUrl()
+    {
+        $parsed = parse_url($this->_env["REQUEST_URI"]);
+        
+        if (preg_match('/[a-zA-Z0-9_]++\.php/i', $parsed['path'], $matches)) {
+            $parsed['path'] = preg_replace("/$matches[0]/", '/', $parsed['path']);
+        }
+        
+        return $parsed;
     }
     
     /**
