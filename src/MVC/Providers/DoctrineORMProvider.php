@@ -45,7 +45,7 @@ class DoctrineORMProvider implements ProviderInterface
             ),
             'dev_mode'     => false,
             'etities_type' => 'annotations',
-            'path_etities' => array(),
+            'path_entities' => array(),
             'proxy_dir'    => null
         );
         
