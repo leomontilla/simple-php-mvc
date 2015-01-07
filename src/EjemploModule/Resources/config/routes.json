@@ -1,0 +1,6 @@
+[{
+    "method": ["GET", "POST"],
+    "pattern": "/ejemplo/index",
+    "action": "EjemploModule\\Controller\\DefaultController::ejemploJsonAction",
+    "name": "ejemplo_index"
+}]

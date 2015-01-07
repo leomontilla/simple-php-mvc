@@ -13,7 +13,7 @@ class AppMVC extends MVC
     public function setModules()
     {
         $modules = array(
-            new \App\Module\EjemploModule\AppEjemploModule()
+            new EjemploModule\EjemploModule()
         );
         
         return $modules;
@@ -24,7 +24,7 @@ class AppMVC extends MVC
         $providers = array();
         
         $providers[] = array(
-            'instance' => new App\Module\EjemploModule\EjemploProvider(),
+            'instance' => new EjemploModule\EjemploProvider(),
             'options'  => array()
         );
         

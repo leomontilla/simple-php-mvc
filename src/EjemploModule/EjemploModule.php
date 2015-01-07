@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Module\EjemploModule;
+namespace EjemploModule;
 
 use MVC\Module;
 
@@ -9,7 +9,7 @@ use MVC\Module;
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
-class AppEjemploModule extends Module
+class EjemploModule extends Module
 {
     
 }

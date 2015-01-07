@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Module\EjemploModule;
+namespace EjemploModule;
 
 use MVC\MVC;
 use MVC\ProviderInterface;
