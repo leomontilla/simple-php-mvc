@@ -60,6 +60,10 @@ class MVC
         
         # Modules
         $this->container->modules = array();
+        
+        # Init Modules and Providers
+        $this->initModules();
+        $this->initProviders();
     }
     
     /**
@@ -343,6 +347,43 @@ class MVC
     }
     
     /**
+     * Initialize Modules
+     * 
+     * @return MVC
+     */
+    final protected function initModules()
+    {
+        foreach ($this->setModules() as $module) {
+            $this->registerModule($module);
+        }
+        return $this;
+    }
+    
+    /**
+     * Initialize Providers
+     * 
+     * @return MVC
+     * @throws \LogicException
+     */
+    final protected function initProviders()
+    {
+        foreach ($this->setProviders() as $currentProvider) {
+            if (!is_array($currentProvider) || count($currentProvider) !== 2) {
+                throw new \LogicException(sprintf('Provider params invalids. Expected array(ProviderInterface provider, array options) or array(array options, ProviderInterface provider).'));
+            }
+            $currentProvider = array_values($currentProvider);
+            if (is_object($currentProvider[0]) && is_array($currentProvider[1])) {
+                $this->registerProvider($currentProvider[0], $currentProvider[1]);
+            } elseif (is_array($currentProvider[0]) && is_object($currentProvider[1])) {
+                $this->registerProvider($currentProvider[1], $currentProvider[0]);
+            } else {
+                throw new \LogicException(sprintf('Provider params invalids. Expected array(ProviderInterface provider, array options) or array(array options, ProviderInterface provider).'));
+            }
+        }
+        return $this;
+    }
+
+    /**
      * Register the modules
      * 
      * @param ModuleInterface $module
@@ -374,6 +415,26 @@ class MVC
         $provider->register($this, $options);
         
         return $this;
+    }
+    
+    /**
+     * Set Modules to register
+     * 
+     * @return array
+     */
+    public function setModules()
+    {
+        return array();
+    }
+    
+    /**
+     * Set Providers to register
+     * 
+     * @return array
+     */
+    public function setProviders()
+    {
+        return array();
     }
     
     /**
