@@ -7,10 +7,10 @@
  * @package MVC\Controllers
  */
 
-namespace MVC\Controllers;
+namespace MVC\Tests\Controllers;
 
 use MVC\Controller,
-    MVC\Models\User,
+    MVC\Tests\Models\User,
     MVC\MVC;
 
 class UserController extends Controller
