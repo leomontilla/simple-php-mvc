@@ -15,7 +15,7 @@ use MVC\Controller,
  * @package MVC
  * @version 1.5
  */
-class MVC
+class MVC implements MVCInterface
 {
 
     /**
@@ -42,6 +42,7 @@ class MVC
     public function __construct(array $userSettings = array())
     {
         $this->container = new \stdClass();
+        $this->container->rootDir = null;
         $this->container->settings = array_merge(static::getDefaultSettings(), $userSettings);
 
         $this->container->request = new HttpRequest();
@@ -61,9 +62,10 @@ class MVC
         # Modules
         $this->container->modules = array();
         
-        # Init Modules and Providers
-        $this->initModules();
-        $this->initProviders();
+        # Init Modules, Providers and Routes
+        $this->initModules()
+             ->initProviders()
+             ->initRoutes();
     }
     
     /**
@@ -137,6 +139,21 @@ class MVC
             $settings[$name] = $value;
             $c = $settings;
         }
+    }
+    
+    /**
+     * Get Application Dir
+     * 
+     * @return string Application Dir
+     */
+    public function getAppDir()
+    {
+        if (null === $this->container->rootDir) {
+            $r = new \ReflectionObject($this);
+            $this->container->rootDir = str_replace('\\', '/', dirname($r->getFileName()));
+        }
+
+        return $this->container->rootDir;
     }
     
     /**
@@ -382,6 +399,51 @@ class MVC
         }
         return $this;
     }
+    
+    /**
+     * Initialize Routes
+     * 
+     * @return MVC
+     */
+    final protected function initRoutes()
+    {
+        $jsonRoutes = $this->setJsonRoutes();
+        foreach ($jsonRoutes as $currentRoutes) {
+            foreach ($currentRoutes as $route) {
+                if (!count($route) == 3 && !count($route) == 4) {
+                    throw new \LogicException('Array Route invalid. Expected array(string|array method, string pattern, callback|string action).');
+                } else {
+                    $routesValues = array_values($route);
+                    if (count($routesValues) == 4) {
+                        $this->container->routes[$routesValues[3]] = array(
+                            $routesValues[0],
+                            $routesValues[1],
+                            $routesValues[2]
+                        );
+                    } else {
+                        $this->container->routes[] = $routesValues;
+                    }
+                }
+            }
+        }
+        foreach ($this->setRoutes() as $route) {
+            if (!count($route) == 3 && !count($route) == 4) {
+                throw new \LogicException('Array Route invalid. Expected array(string|array method, string pattern, callback|string action).');
+            } else {
+                $routesValues = array_values($route);
+                if (count($routesValues) == 4) {
+                    $this->container->routes[$routesValues[3]] = array(
+                        $routesValues[0],
+                        $routesValues[1],
+                        $routesValues[2]
+                    );
+                } else {
+                    $this->container->routes[] = $routesValues;
+                }
+            }
+        }
+        return $this;
+    }
 
     /**
      * Register the modules
@@ -396,7 +458,7 @@ class MVC
             throw new \LogicException(sprintf('Trying to register two modules with the same name "%s"', $name));
         }
         $this->container->modules[$name] = $module;
-
+        
         return $this;
     }
     
@@ -435,6 +497,37 @@ class MVC
     public function setProviders()
     {
         return array();
+    }
+    
+    /**
+     * Set Routes to register
+     * 
+     * @return array
+     */
+    public function setRoutes()
+    {
+        return array();
+    }
+    
+    /**
+     * Set Routes from JSON File
+     * 
+     * @return array
+     */
+    public function setJsonRoutes()
+    {
+        $routesJsonFile = $this->getAppDir() . '/config/routes.json';
+        $routes = array();
+
+        if (file_exists($routesJsonFile)) {
+            $routes[] = json_decode(file_get_contents($routesJsonFile), true);
+        }
+
+        foreach ($this->container->modules as $module) {
+            $routes[] = $module->getModuleExtension()->loadRoutes();
+        }
+
+        return $routes;
     }
     
     /**
