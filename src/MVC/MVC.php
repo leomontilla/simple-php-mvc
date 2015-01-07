@@ -19,7 +19,15 @@ class MVC
 {
 
     /**
+     * Static instance of MVC
+     * 
+     * @var MVC
+     */
+    static $instance;
+    
+    /**
      * Container of the aplication
+     * 
      * @access protected
      * @var \stdClass $container
      */
@@ -27,6 +35,7 @@ class MVC
 
     /**
      * Constructor
+     * 
      * @access public
      * @param  array $userSettings Associative array of application settings
      */
@@ -44,14 +53,33 @@ class MVC
         $this->container->routes = array();
         
         # Providers
-        $this->container->providers[] = array();
+        $this->container->providers = array();
         $this->container->providers['charset'] = $this->container->settings['charset'];
         $this->container->providers['debug'] = $this->container->settings['debug'];
         $this->container->providers['templates_path'] = array($this->container->settings['templates_path']);
+        
+        # Modules
+        $this->container->modules = array();
+    }
+    
+    /**
+     * Get instance of MVC
+     * 
+     * @param array $userSettings
+     * @return MVC
+     */
+    public static function getInstance(array $userSettings = array())
+    {
+        if (!self::$instance) {
+            self::$instance = new self($userSettings);
+        }
+        
+        return self::$instance;
     }
 
     /**
      * Get default application settings
+     * 
      * @access public
      * @return array
      */
@@ -109,6 +137,7 @@ class MVC
     
     /**
      * Get container key or container
+     * 
      * @access public
      * @param string $key
      * @return \stdClass|mixed
@@ -123,6 +152,7 @@ class MVC
     
     /**
      * Set container key and value
+     * 
      * @access public
      * @param string $key
      * @param mixed $value
@@ -136,6 +166,7 @@ class MVC
     
     /**
      * Return if provider exists
+     * 
      * @access public
      * @param string $key
      * @return boolean
@@ -151,6 +182,7 @@ class MVC
 
     /**
      * Add Group routes
+     * 
      * @access public
      * @return void
      */
@@ -166,6 +198,7 @@ class MVC
 
     /**
      * Add AJAX route
+     * 
      * @access public
      * @param string $pattern
      * @param callable $callable
@@ -180,6 +213,7 @@ class MVC
 
     /**
      * Add HEAD route
+     * 
      * @access public
      * @param string $pattern
      * @param callable $callable
@@ -194,6 +228,7 @@ class MVC
 
     /**
      * Add GET route
+     * 
      * @access public
      * @param string $pattern
      * @param callable $callable
@@ -210,6 +245,7 @@ class MVC
 
     /**
      * Add OPTIONS route
+     * 
      * @access public
      * @param string $pattern
      * @param callable $callable
@@ -226,6 +262,7 @@ class MVC
 
     /**
      * Add POST route
+     * 
      * @access public
      * @param string $pattern
      * @param callable $callable
@@ -242,6 +279,7 @@ class MVC
 
     /**
      * Add PUT route
+     * 
      * @access public
      * @param string $pattern
      * @param callable $callable
@@ -258,6 +296,7 @@ class MVC
 
     /**
      * Add DELETE route
+     * 
      * @access public
      * @param string $pattern
      * @param callable $callable
@@ -275,6 +314,7 @@ class MVC
     /**
      * Checks for request characteristics.
      * ajax, delete, flash, get, head, mobile, options, post, put, ssl
+     * 
      * @access public
      * @param string $caracteristic   The request caracteristic
      * @return mixed
@@ -303,7 +343,25 @@ class MVC
     }
     
     /**
+     * Register the modules
+     * 
+     * @param ModuleInterface $module
+     * @return MVC
+     */
+    public function registerModule(ModuleInterface $module)
+    {
+        $name = $module->getName();
+        if (isset($this->container->modules[$name])) {
+            throw new \LogicException(sprintf('Trying to register two modules with the same name "%s"', $name));
+        }
+        $this->container->modules[$name] = $module;
+
+        return $this;
+    }
+    
+    /**
      * Register the providers
+     * 
      * @access public
      * @param ProviderInterface $provider
      * @param array $options
@@ -320,6 +378,7 @@ class MVC
     
     /**
      * Boots of the all providers of the application
+     * 
      * @access public
      * @return void
      */
@@ -336,6 +395,7 @@ class MVC
     
     /**
      * Share a clousure object or callback object
+     * 
      * @access public
      * @param $callable
      * @return callable
@@ -360,6 +420,7 @@ class MVC
     
     /**
      * Share a protected clousure object
+     * 
      * @access public
      * @param  $callable
      * @return callable
@@ -377,6 +438,7 @@ class MVC
 
     /**
      * Returns the URL for the name or route
+     * 
      * @access public
      * @param string $name      Name of Route
      * @param boolean $relative If is true is a relative URL, else a absolute url
@@ -423,6 +485,7 @@ class MVC
 
     /**
      * Get the Request object
+     * 
      * @access public
      * @return HttpRequest
      */
@@ -433,6 +496,7 @@ class MVC
 
     /**
      * Get the data of request
+     * 
      * @access public
      * @return \stdClass
      */
@@ -443,6 +507,7 @@ class MVC
 
     /**
      * Get the query of request
+     * 
      * @access public
      * @return \stdClass
      */
@@ -453,6 +518,7 @@ class MVC
 
     /**
      * Get the Response object
+     * 
      * @access public
      * @return Response
      */
@@ -463,6 +529,7 @@ class MVC
 
     /**
      * Get the View object
+     * 
      * @access public
      * @return View
      */
@@ -473,6 +540,7 @@ class MVC
 
     /**
      * Render the template
+     * 
      * @access public
      * @param string $template
      * @param array $data
@@ -489,6 +557,7 @@ class MVC
 
     /**
      * Run the aplication
+     * 
      * @access public
      * @return void
      */
@@ -540,6 +609,7 @@ class MVC
     /**
      * Generate diagnostic template markup.
      * This method accepts a title and body content to generate an HTML document layout.
+     * 
      * @access public
      * @param  string   $title  The title of the HTML template
      * @param  string   $body   The body content of the HTML template
@@ -552,6 +622,7 @@ class MVC
 
     /**
      * Default Not Found handler
+     * 
      * @access public
      * @return void
      */
