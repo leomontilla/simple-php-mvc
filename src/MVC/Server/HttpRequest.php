@@ -75,13 +75,23 @@ class HttpRequest
         
         $parsed = parse_url($this->_env["REQUEST_URI"]);
         
-        $base = "/" . ltrim(
-          str_replace("\\", "/", dirname($this->_env["PHP_SELF"])),
-        "/");
-        $base = rtrim(str_replace("/index.php", "", $base), "/");
+        if (!isset($this->_env['BASE'])) {
+            $base = "/" . ltrim(
+                str_replace("\\", "/", dirname($this->_env["PHP_SELF"])),
+            "/");
+        } else {
+            $base = $this->_env['BASE'];
+        }
+        
+        if (preg_match('/[a-zA-Z0-9_]++\.php/i', $parsed['path'], $matches)) {
+            $urlPath = preg_replace("/$matches[0]/", '/', $parsed['path']);
+        } else {
+            $urlPath = $parsed['path'];
+        }
+        
         $pattern = "/^" . preg_quote($base, "/") . "/";
         $this->url = "/" . trim(
-            preg_replace($pattern, "", $parsed["path"]),
+            preg_replace($pattern, "", $urlPath),
         "/");
         
         if ( isset($parsed["query"]) ) {
