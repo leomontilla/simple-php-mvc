@@ -22,5 +22,5 @@ $command = new MVC\Command\Command(__DIR__, $settings);
 $mvc = new AppMVC(array(
     'debug' => $debug
 ));
-$application = new Application($mvc);
+$application = new Application($mvc, 'Simple PHP MVC', '1.5');
 $application->run($input);

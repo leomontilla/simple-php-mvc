@@ -29,6 +29,30 @@ class Command implements CommandInterface
      * @var Application
      */
     protected $application;
+
+    private $applicationDefinitionMerged = false;
+    private $applicationDefinitionMergedWithArgs = false;
+
+    /**
+     * Command code
+     *
+     * @var int
+     */
+    protected $code;
+    
+    /**
+     * Command InputDefinition
+     * 
+     * @var InputDefinition
+     */
+    protected $definition;
+    
+    /**
+     * Command description
+     * 
+     * @var string
+     */
+    protected $description;
     
     /**
      * Text Command Help
@@ -36,18 +60,27 @@ class Command implements CommandInterface
      * @var string
      */
     protected $help;
+
+    /**
+     * Ignore Validation Errors
+     *
+     * @var boolean
+     */
+    protected $ignoreValidationErrors = false;
     
     /**
-     *
+     * Command name
+     * 
      * @var string Command name
      */
     protected $name;
-    
+
     /**
+     * Process title
      *
-     * @var InputDefinition
+     * @var boolean
      */
-    protected $definition;
+    protected $processTitle = true;
     
     protected $synopsis;
 
@@ -104,6 +137,18 @@ class Command implements CommandInterface
 
         return $this;
     }
+
+    /**
+     * Execute current command that should be override
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \LogicException
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        throw new \LogicException('You must override the execute() method in the concrete command class.');
+    }
     
     /**
      * Configures the current command.
@@ -141,6 +186,16 @@ class Command implements CommandInterface
     {
         return $this->definition;
     }
+    
+    /**
+     * Get command description
+     * 
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
     /**
      * Get Command name
@@ -150,6 +205,25 @@ class Command implements CommandInterface
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Get native InputDefinition
+     * 
+     * @return InputDefinition
+     */
+    public function getNativeDefinition()
+    {
+        return $this->getDefinition();
+    }
+
+    public function getSynopsis()
+    {
+        if (null === $this->synopsis) {
+            $this->synopsis = trim(sprintf('%s %s', $this->name, $this->definition->getSynopsis()));
+        }
+
+        return $this->synopsis;
     }
 
     /**
@@ -207,12 +281,12 @@ class Command implements CommandInterface
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
-     * @throws Exception
+     * @throws \Exception
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
         // force the creation of the synopsis before the merge with the app definition
-        $this->synopsis = trim(sprintf('%s %s', $this->name, $this->definition->getSynopsis()));
+        $this->synopsis = $this->getSynopsis();
 
         // add the application arguments and options
         $this->mergeApplicationDefinition();
@@ -252,25 +326,70 @@ class Command implements CommandInterface
 
         return is_numeric($statusCode) ? (int) $statusCode : 0;
     }
+    
+    /**
+     * Set commadn aliases
+     * 
+     * @param array $aliases
+     * @return Command
+     */
+    public function setAliases(array $aliases)
+    {
+        $this->aliases = $aliases;
+        
+        return $this;
+    }
 
     /**
      * Set console application
      * 
      * @param Application $application
+     * @return Command
      */
     public function setApplication(Application $application)
     {
         $this->application = $application;
+        
+        return $this;
+    }
+    
+    /**
+     * Set Command InputDefinition
+     * 
+     * @param InputDefinition $definition
+     * @return Command
+     */
+    public function setDefinition(InputDefinition $definition)
+    {
+        $this->definition = $definition;
+        
+        return $this;
+    }
+    
+    /**
+     * Set Command description
+     * 
+     * @param string $description
+     * @return Command
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        
+        return $this;
     }
     
     /**
      * Set Command name
      * 
      * @param string $name Command name
+     * @return Command
      */
     public function setName($name)
     {
         $this->name = $name;
+        
+        return $this;
     }
     
     /**

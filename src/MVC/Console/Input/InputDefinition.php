@@ -127,6 +127,11 @@ class InputDefinition
 
         return $values;
     }
+
+    public function getArguments()
+    {
+        return $this->arguments;
+    }
     
     public function getArgumentRequiredCount()
     {
@@ -151,9 +156,10 @@ class InputDefinition
     
     /**
      * Get the option name from shortcut
-     * 
+     *
      * @param string $shortcut
      * @return InputOption
+     * @throws \InvalidArgumentException
      */
     public function getOptionForShortcut($shortcut)
     {

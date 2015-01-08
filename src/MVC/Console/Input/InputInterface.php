@@ -15,6 +15,9 @@ interface InputInterface
     
     public function getArguments();
     
+    /**
+     * @return string
+     */
     public function getFirstArgument();
     
     public function getOption($name);
@@ -23,12 +26,27 @@ interface InputInterface
     
     public function getParameterOption($values, $default = false);
     
+    /**
+     * @param string $name
+     * @return boolean
+     */
     public function hasArgument($name);
     
+    /**
+     * @param string $name
+     * @return boolean
+     */
     public function hasOption($name);
     
+    /**
+     * @param string|array $values
+     * @return boolean
+     */
     public function hasParameterOption($values);
     
+    /**
+     * @return boolean
+     */
     public function isInteractive();
     
     public function setArgument($name, $value);
