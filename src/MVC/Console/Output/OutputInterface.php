@@ -2,6 +2,8 @@
 
 namespace MVC\Console\Output;
 
+use MVC\Console\Formatter\OutputFormatterInterface;
+
 /**
  * Description of OutputInterface
  *
