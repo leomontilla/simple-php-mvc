@@ -208,16 +208,33 @@ class InputDefinition
 
         return implode(' ', $elements);
     }
-    
-    
-    
+
+    /**
+     * Has argument
+     *
+     * @param int|string $name
+     * @return boolean
+     */
     public function hasArgument($name)
     {
         $arguments = is_int($name) ? array_values($this->arguments) : $this->arguments;
 
         return isset($arguments[$name]);
     }
-    
+
+    /**
+     * Has option
+     *
+     * @param int|string $name
+     * @return boolean
+     */
+    public function hasOption($name)
+    {
+        $options = is_int($name) ? array_values($this->options) : $this->options;
+
+        return isset($options[$name]);
+    }
+
     public function setArguments($arguments = array())
     {
         $this->arguments = array();
