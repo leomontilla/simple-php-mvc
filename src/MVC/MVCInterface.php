@@ -17,6 +17,20 @@ interface MVCInterface
     public function getAppDir();
     
     /**
+     * Get registered modules
+     * 
+     * @return array Registered modules
+     */
+    public function getModules();
+    
+    /**
+     * Get registered providers
+     * 
+     * @return array Registered providers
+     */
+    public function getProviders();
+    
+    /**
      * Set Modules to register
      * 
      * @return array

@@ -7,9 +7,9 @@
  * @package MVC\Command
  */
 
-namespace MVC\Command;
+namespace MVC\Console\Command;
 
-interface Controller
+interface ControllerInterface
 {
 
     function buildController();

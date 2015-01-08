@@ -2,6 +2,8 @@
 
 namespace MVC;
 
+use MVC\File\Explorer;
+use MVC\Console\Application;
 use MVC\Injection\Container;
 
 /**
@@ -123,5 +125,31 @@ abstract class Module implements ModuleInterface
      */
     public function getParent()
     {
+    }
+    
+    /**
+     * Register commands
+     * 
+     * @param Application $application
+     * @return void
+     */
+    public function registerComands(Application $application)
+    {
+        if (!is_dir($dir = $this->getPath() . '/Command')) {
+            return;
+        }
+        
+        $explorer = new Explorer($dir);
+        $explorer->setSearchPattern('');
+        
+        $prefixNS = $this->getNamespace() . '\\Command';
+        foreach ($explorer->getFiles() as $file) {
+            $namespace = $prefixNS;
+            $class = $namespace . '\\' . $file->getBasename('.php');
+            $r = new \ReflectionClass($class);
+            if ($r->isSubclassOf('MVC\\Console\\Command\\Command') && !$r->isAbstract() && !$r->getConstructor()->getNumberOfRequiredParameters()) {
+                $application->add($r->newInstance());
+            }
+        }
     }
 }

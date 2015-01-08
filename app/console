@@ -3,6 +3,12 @@
 
 $loader = require __DIR__ . '/autoload.php';
 
+use MVC\Console\Application;
+use MVC\Console\Input\ArgvInput;
+
+$input = new ArgvInput();
+$debug = (!$input->hasParameterOption(array('--no-debug', ''))) ? true: false;
+
 /*
 $settings = array(
     'app_path' => './app'
@@ -13,5 +19,8 @@ $settings = array(
 $command = new MVC\Command\Command(__DIR__, $settings);
 */
 
-$command = new MVC\Command\Command(__DIR__);
-$command->run($argv);
+$mvc = new AppMVC(array(
+    'debug' => $debug
+));
+$application = new Application($mvc);
+$application->run($input);
