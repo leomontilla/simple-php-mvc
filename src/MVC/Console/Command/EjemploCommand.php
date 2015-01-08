@@ -1,20 +1,21 @@
 <?php
 
-/**
- * Command Application for create files of the application
- * 
- * @author Ramon Serrano
- * @package MVC\Command
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 namespace MVC\Command;
 
-use MVC\Command\Controller,
-    MVC\Command\Model,
-    MVC\Command\Test;
-
-class Command implements Controller, Model, Test {
-
+/**
+ * Description of EjemploCommand
+ *
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
+class EjemploCommand implements ControllerInterface, ModelInterface, TestInterface
+{
+    
     /**
      * Model name 
      * @var string
@@ -53,7 +54,8 @@ class Command implements Controller, Model, Test {
      * @param string $root
      * @param array $userSettings
      */
-    public function __construct($root, array $userSettings = array()) {
+    public function __construct($root, array $userSettings = array())
+    {
         $this->root = $root;
         $this->settings = array_merge(static::getDefaultSettings(), $userSettings);
     }
@@ -63,7 +65,8 @@ class Command implements Controller, Model, Test {
      * @access public
      * @return void
      */
-    public function validateSettings() {
+    public function validateSettings()
+    {
         if (!file_exists("$this->root/{$this->settings['app_path']}")) {
             print "\nError\n";
             exit("Don't exist the folder: $this->root/{$this->settings['app_path']}");
@@ -83,7 +86,8 @@ class Command implements Controller, Model, Test {
      * @access public
      * @return array
      */
-    public static function getDefaultSettings() {
+    public static function getDefaultSettings()
+    {
         return array(
             "app_path" => "./app",
             "controllers_path" => "./Controllers",
@@ -462,5 +466,4 @@ class ' . $nameFile[0] . ' extends \PHPUnit_Framework_TestCase
         $string[0] = strtoupper($string[0]);
         return $string;
     }
-
 }

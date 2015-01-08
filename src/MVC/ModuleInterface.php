@@ -2,6 +2,7 @@
 
 namespace MVC;
 
+use MVC\Console\Application;
 use MVC\Injection\ExtensionInterface;
 
 /**
@@ -50,4 +51,10 @@ interface ModuleInterface
      * @return string The Module absolute path
      */
     public function getPath();
+    
+    /**
+     * Register Modules comands
+     */
+    public function registerComands(Application $application);
+    
 }

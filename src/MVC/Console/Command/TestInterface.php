@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Command;
+namespace MVC\Console\Command;
 
 /**
  * Functions of Test
@@ -8,7 +8,7 @@ namespace MVC\Command;
  * @author Ramón Serrano
  * @package MVC\Command
  */
-interface Test
+interface TestInterface
 {
 
     function buildUnitTest();

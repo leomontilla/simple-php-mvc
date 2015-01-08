@@ -428,6 +428,27 @@ class MVC implements MVCInterface
         }
         return $this;
     }
+    
+    
+    /**
+     * Get registered modules
+     * 
+     * @return array
+     */
+    public function getModules()
+    {
+        return $this->container->modules;
+    }
+    
+    /**
+     * Get registered providers
+     * 
+     * @return array Registered providers
+     */
+    public function getProviders()
+    {
+        return $this->container->providers;
+    }
 
     /**
      * Register the modules
