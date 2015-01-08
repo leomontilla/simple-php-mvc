@@ -62,6 +62,10 @@ class HttpRequest
             "REQUEST_METHOD" => "GET"
         );
         
+        if (!isset($this->_env['REQUEST_URI'])) {
+            $this->_env['REQUEST_URI'] = '';
+        }
+        
         if ( isset($this->_env["SCRIPT_URI"]) ) {
             $this->_env["HTTPS"] =
                 ( strpos($this->_env["SCRIPT_URI"], "https://") === 0 );
