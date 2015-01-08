@@ -106,13 +106,13 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
         $setCodes = array();
         $unsetCodes = array();
 
-        if (null !== $this->foreground) {
-            $setCodes[] = $this->foreground['set'];
-            $unsetCodes[] = $this->foreground['unset'];
+        if (null !== $this->foregroundColor) {
+            $setCodes[] = $this->foregroundColor['set'];
+            $unsetCodes[] = $this->foregroundColor['unset'];
         }
-        if (null !== $this->background) {
-            $setCodes[] = $this->background['set'];
-            $unsetCodes[] = $this->background['unset'];
+        if (null !== $this->backgroundColor) {
+            $setCodes[] = $this->backgroundColor['set'];
+            $unsetCodes[] = $this->backgroundColor['unset'];
         }
         if (count($this->options)) {
             foreach ($this->options as $option) {
