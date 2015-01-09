@@ -7,12 +7,12 @@
  * @package MVC\Providers
  */
 
-namespace MVC\Providers;
+namespace MVC\Tests\Provider;
 
 use MVC\MVC,
-    MVC\ProviderInterface;
+    MVC\Provider\Provider;
 
-class TwigProvider implements ProviderInterface
+class TwigProvider extends Provider
 {
     /**
      * Bootstrap of the Provider

@@ -7,14 +7,14 @@
  * @package MVC\Providers
  */
 
-namespace MVC\Providers;
+namespace MVC\Tests\Provider;
 
 use Doctrine\ORM\Tools\Setup,
  Doctrine\ORM\EntityManager,
     MVC\MVC,
-    MVC\ProviderInterface;
+    MVC\Provider\Provider;
 
-class DoctrineORMProvider implements ProviderInterface
+class DoctrineORMProvider extends Provider
 {
     /**
      * Bootstrap of the Provider

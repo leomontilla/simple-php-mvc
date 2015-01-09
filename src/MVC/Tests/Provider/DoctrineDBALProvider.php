@@ -7,14 +7,14 @@
  * @package MVC\Providers
  */
 
-namespace MVC\Providers;
+namespace MVC\Tests\Provider;
 
 use Doctrine\DBAL\Configuration,
     Doctrine\DBAL\DriverManager,
     MVC\MVC,
-    MVC\ProviderInterface;
+    MVC\Provider\Provider;
 
-class DoctrineDBALProvider implements ProviderInterface
+class DoctrineDBALProvider extends Provider
 {
     
     /**

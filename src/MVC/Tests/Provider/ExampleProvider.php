@@ -7,12 +7,12 @@
  * @package MVC\Providers
  */
 
-namespace MVC\Providers;
+namespace MVC\Tests\Provider;
 
 use MVC\MVC,
-    MVC\ProviderInterface;
+    MVC\Provider\Provider;
 
-class ExampleProvider implements ProviderInterface
+class ExampleProvider extends Provider
 {
     
     /**
@@ -36,7 +36,7 @@ class ExampleProvider implements ProviderInterface
     public function register(MVC $app, array $options = array())
     {
         // Register the properties and functions of the provider
-        $app->setKey('example.name', get_class($this));
+        $app->setKey('example', get_class($this));
     }
 
 }

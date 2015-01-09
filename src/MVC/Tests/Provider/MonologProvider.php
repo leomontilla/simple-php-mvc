@@ -7,14 +7,14 @@
  * @package MVC\Providers
  */
 
-namespace MVC\Providers;
+namespace MVC\Tests\Provider;
 
 use Monolog\Logger,
     Monolog\Handler\StreamHandler,
     MVC\MVC,
-    MVC\ProviderInterface;
+    MVC\Provider\Provider;
 
-class MonologProvider implements ProviderInterface
+class MonologProvider extends Provider
 {
     
     /**
