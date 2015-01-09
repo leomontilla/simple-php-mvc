@@ -10,7 +10,7 @@
 namespace MVC\Tests\Provider;
 
 use Doctrine\ORM\Tools\Setup,
- Doctrine\ORM\EntityManager,
+    Doctrine\ORM\EntityManager,
     MVC\MVC,
     MVC\Provider\Provider;
 
@@ -63,16 +63,16 @@ class DoctrineORMProvider extends Provider
             $config = Setup::createXMLMetadataConfiguration($options['path_entities'], $options['dev_mode'], $options['proxy_dir']);
         }
         
-        if ($app->keyExists('dbal')) {
-            $entityManager = EntityManager::create($app->getKey('dbal'), $config);
-        } else {
+//        if ($app->keyExists('dbal')) {
+//            $entityManager = EntityManager::create($app->getKey('dbal'), $config);
+//        } else {
             $entityManager = EntityManager::create($options['params'], $config);
-        }
+//        }
         
-        if (!$app->keyExists('dbal')) {
-            $app->setKey('dbal', $entityManager->getConnection());
-        }
-        $app->setKey('em', $entityManager);
+//        if (!$app->keyExists('dbal')) {
+//            $app->setKey('dbal', $entityManager->getConnection());
+//        }
+//        $app->setKey('em', $entityManager);
     }
 
 }

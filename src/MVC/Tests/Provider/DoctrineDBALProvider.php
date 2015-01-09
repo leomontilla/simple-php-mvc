@@ -50,7 +50,7 @@ class DoctrineDBALProvider extends Provider
         
         $connection = DriverManager::getConnection($options, $config);
         
-        $app->setKey('dbal', $connection);
+//        $app->setKey('dbal', $connection);
     }
 
 }

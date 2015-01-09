@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC;
+namespace MVC\Module;
 
 use MVC\File\Explorer;
 use MVC\Console\Application;

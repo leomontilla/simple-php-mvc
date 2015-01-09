@@ -19,7 +19,7 @@ abstract class Provider implements ProviderInterface
     /**
      * Returns the provider name (the class short name).
      *
-     * @return string The Module name
+     * @return string The Provider name
      */
     final public function getName()
     {

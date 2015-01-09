@@ -3,14 +3,14 @@
 namespace EjemploModule;
 
 use MVC\MVC;
-use MVC\ProviderInterface;
+use MVC\Provider\Provider;
 
 /**
  * Description of EjemploProvider
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
-class EjemploProvider implements ProviderInterface
+class EjemploProvider extends Provider
 {
     public function boot(MVC $mvc)
     {

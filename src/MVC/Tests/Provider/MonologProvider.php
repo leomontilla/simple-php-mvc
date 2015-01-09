@@ -44,7 +44,7 @@ class MonologProvider extends Provider
         $logger = new Logger($options['log_name']);
         $logger->pushHandler(new StreamHandler($options['log_file']));
         
-        $app->setKey('monolog', $logger);
+//        $app->setKey('monolog', $logger);
     }
 
 }

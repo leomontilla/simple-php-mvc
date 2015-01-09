@@ -22,6 +22,13 @@ interface ProviderInterface
     public function boot(MVC $mvc);
     
     /**
+     * Returns the provider name (the class short name).
+     *
+     * @return string The Provider name
+     */
+    public function getName();
+
+    /**
      * Register the provider properties and functions
      * 
      * @access public

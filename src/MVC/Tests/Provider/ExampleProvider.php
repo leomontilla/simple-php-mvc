@@ -36,7 +36,7 @@ class ExampleProvider extends Provider
     public function register(MVC $app, array $options = array())
     {
         // Register the properties and functions of the provider
-        $app->setKey('example', get_class($this));
+//        $app->setKey('example', get_class($this));
     }
 
 }

@@ -114,20 +114,23 @@ class Router
     * * 'callback' - The callback function pulled from the matched route
     *
     * @access public
-    * @param string $request_uri       The request uri.
-    * @param string $request_method    The request method.
-    * @param array $routes             The routes.
+    * @param string $requestUri       The request uri.
+    * @param string $requestMethod    The request method.
+    * @param Route[] $routes             The routes.
     * @return array
     */
-    public function parse($request_uri, $request_method, $routes)
+    public function parse($requestUri, $requestMethod, $routes)
     {
         foreach ( $routes as $route ) {
-            list($method, $uri, $callback) = $route;
+            if (!$route instanceof Route) {
+                throw new \LogicException(sprintf('The route given don\'t is instance of Route. Type given "%s".', gettype($route)));
+            }
+            list($methods, $patternUri, $action) = array($route->getMethods(), $route->getPatternUri(), $route->getAction());
 
-            if ( is_array($method) ) {
+            if ( is_array($methods) ) {
                 $found = false;
-                foreach ( $method as $value ) {
-                    if ( strcasecmp($request_method, $value) == 0 ) {
+                foreach ( $methods as $method ) {
+                    if ( strcasecmp($requestMethod, $method) == 0 ) {
                         $found = true;
                         break;
                     }
@@ -135,57 +138,57 @@ class Router
                 if ( !$found ) {
                     continue;
                 }
-            } elseif ( strcasecmp($request_method, $method) != 0 ) {
+            } elseif ( strcasecmp($requestMethod, $methods) != 0 ) {
                 continue;
             }
 
-            if ( is_null($uri) || $uri == '*' ) {
+            if ( is_null($patternUri) || $patternUri == '*' ) {
                 $found = false;
-                $param = new \stdClass;
-                $params = array();
-                return compact('callback', 'found', 'param', 'params');
+                $params = new \stdClass;
+                $paramsMatched = array();
+                return compact('action', 'found', 'params');
             }
 
             $found = true;
 
             $route_to_match = '';
-            $len = strlen($uri);
+            $len = strlen($patternUri);
 
             for ( $i = 0; $i < $len; $i++ ) {
-                $char = $uri[$i];
+                $char = $patternUri[$i];
                 $is_regex = (
                     $char == '[' || $char == '(' || $char == '.'
                     || $char == '?' || $char == '+' || $char == '{'
                 );
                 if ( $is_regex ) {
-                    $route_to_match = $uri;
+                    $route_to_match = $patternUri;
                     break;
                 } elseif (
-                    !isset($request_uri[$i]) || $char != $request_uri[$i]
+                    !isset($requestUri[$i]) || $char != $requestUri[$i]
                 ) {
                     continue 2;
                 }
                 $route_to_match .= $char;
             }
 
-            $param = new \stdClass;
+            $params = new \stdClass;
 
             $regex = $this->_compile_regex($route_to_match);
-            if ( preg_match($regex, $request_uri, $params) ) {
-                foreach ( $params as $key => $arg ) {
+            if ( preg_match($regex, $requestUri, $paramsMatched) ) {
+                foreach ( $paramsMatched as $key => $arg ) {
                     if ( is_numeric($key) ) {
-                        unset($params[$key]);
+                        unset($paramsMatched[$key]);
                     } else {
-                        $param->$key = $arg;
+                        $params->$key = $arg;
                     }
                 }
-                return compact('callback', 'found', 'param', 'params');
+                return compact('action', 'found', 'params');
             }
         }
         return array(
             'found'    => false,
             'params'   => null,
-            'callback' => null
+            'action' => null
         );
     }
 

@@ -2,7 +2,7 @@
 
 namespace EjemploModule;
 
-use MVC\Module;
+use MVC\Module\Module;
 
 /**
  * Description of AppEjemploModule

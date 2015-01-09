@@ -23,7 +23,7 @@ class AppMVC extends MVC
     {
         $providers = array(
             array(
-                'instance' => new \MVC\Providers\DoctrineDBALProvider(),
+                'instance' => new \MVC\Tests\Provider\DoctrineDBALProvider(),
                 'options'  => array(
                     'charset'  => null,
                     'driver'   => 'pdo_mysql',
@@ -35,7 +35,7 @@ class AppMVC extends MVC
                 )
             ),
             array(
-                'instance' => new \MVC\Providers\DoctrineORMProvider(),
+                'instance' => new \MVC\Tests\Provider\DoctrineORMProvider(),
                 'options' => array(
                     'params'       => array(
                         'charset'  => null,
@@ -55,11 +55,11 @@ class AppMVC extends MVC
                 )
             ),
             array(
-                'instance' => new \MVC\Providers\MonologProvider(),
+                'instance' => new \MVC\Tests\Provider\MonologProvider(),
                 'options' => array()
             ),
             array(
-                'instance' => new \MVC\Providers\TwigProvider(),
+                'instance' => new \MVC\Tests\Provider\TwigProvider(),
                 'options' => array(
                     'path' => $this->getAppDir() . '/../src/EjemploModule/Resources/views'
                 )

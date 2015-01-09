@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC;
+namespace MVC\Module;
 
 use MVC\Console\Application;
 use MVC\Injection\ExtensionInterface;
