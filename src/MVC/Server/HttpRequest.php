@@ -254,14 +254,15 @@ class HttpRequest
     {
         switch ( strtolower($characteristic) ) {
             case "ajax":
-                return (
-                    $this->http_x_requested_with == "XMLHttpRequest"
+                return ( 
+                    isset($this->_env['HTTP_X_REQUESTED_WITH']) &&
+                    $this->_env['HTTP_X_REQUESTED_WITH'] == "XMLHttpRequest"
                 );
             case "delete":
                 return ( $this->method == "DELETE" );
             case "flash":
                 return (
-                    $this->http_user_agent == "Shockwave Flash"
+                    $this->_env['HTTP_USER_AGENT'] == "Shockwave Flash"
                 );
             case "get":
                 return ( $this->method == "GET" );
@@ -277,7 +278,7 @@ class HttpRequest
                 );
                 $pattern = "/" . implode("|", $mobile_user_agents) . "/i";
                 return (boolean) preg_match(
-                    $pattern, $this->http_user_agent
+                    $pattern, $this->_env['HTTP_USER_AGENT']
                 );
             case "options":
                 return ( $this->method == "OPTIONS" );
@@ -286,10 +287,79 @@ class HttpRequest
             case "put":
                 return ( $this->method == "PUT" );
             case "ssl":
-                return $this->https;
+                return $this->_env['HTTPS'];
             default:
                 return false;
         }
     }
     
+    /**
+     * Is AJAX
+     * 
+     * @return boolean
+     */
+    public function isAjax()
+    {
+        return $this->is('ajax');
+    }
+    
+    /**
+     * Is DELETE
+     * 
+     * @return boolean
+     */
+    public function isDelete()
+    {
+        return $this->is('delete');
+    }
+    
+    /**
+     * Is HEAD
+     * 
+     * @return boolean
+     */
+    public function isHead()
+    {
+        return $this->is('head');
+    }
+    
+    /**
+     * Is GET
+     * 
+     * @return boolean
+     */
+    public function isGet()
+    {
+        return $this->is('get');
+    }
+    
+    /**
+     * Is OPTIONS
+     * 
+     * @return boolean
+     */
+    public function isOptions()
+    {
+        return $this->is('options');
+    }
+    
+    /**
+     * Is POST
+     * 
+     * @return boolean
+     */
+    public function isPost()
+    {
+        return $this->is('post');
+    }
+    
+    /**
+     * Is PUT
+     * 
+     * @return boolean
+     */
+    public function isPut()
+    {
+        return $this->is('put');
+    }
 }
