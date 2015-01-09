@@ -119,7 +119,7 @@ class Router
     * @param Route[] $routes             The routes.
     * @return array
     */
-    public function parse($requestUri, $requestMethod, $routes)
+    public function parse(HttpRequest $request, $routes)
     {
         foreach ( $routes as $route ) {
             if (!$route instanceof Route) {
@@ -130,7 +130,10 @@ class Router
             if ( is_array($methods) ) {
                 $found = false;
                 foreach ( $methods as $method ) {
-                    if ( strcasecmp($requestMethod, $method) == 0 ) {
+                    if ( strcasecmp($request->getMethod(), $method) == 0 ) {
+                        $found = true;
+                        break;
+                    } elseif (($method === strtolower('ajax') || $method === strtolower('xhr')) && $request->isAjax()) {
                         $found = true;
                         break;
                     }
@@ -138,7 +141,9 @@ class Router
                 if ( !$found ) {
                     continue;
                 }
-            } elseif ( strcasecmp($requestMethod, $methods) != 0 ) {
+            } elseif ( strcasecmp($request->getMethod(), $methods) != 0 ) {
+                continue;
+            } elseif (($methods === strtolower('ajax') || $methods === strtolower('xhr')) && $request->isAjax()) {
                 continue;
             }
 
@@ -151,9 +156,10 @@ class Router
 
             $found = true;
 
-            $route_to_match = '';
+            $routeToMatch = '';
             $len = strlen($patternUri);
 
+            $requestUri = $request->url;
             for ( $i = 0; $i < $len; $i++ ) {
                 $char = $patternUri[$i];
                 $is_regex = (
@@ -161,19 +167,19 @@ class Router
                     || $char == '?' || $char == '+' || $char == '{'
                 );
                 if ( $is_regex ) {
-                    $route_to_match = $patternUri;
+                    $routeToMatch = $patternUri;
                     break;
                 } elseif (
                     !isset($requestUri[$i]) || $char != $requestUri[$i]
                 ) {
                     continue 2;
                 }
-                $route_to_match .= $char;
+                $routeToMatch .= $char;
             }
 
             $params = new \stdClass;
 
-            $regex = $this->_compile_regex($route_to_match);
+            $regex = $this->_compile_regex($routeToMatch);
             if ( preg_match($regex, $requestUri, $paramsMatched) ) {
                 foreach ( $paramsMatched as $key => $arg ) {
                     if ( is_numeric($key) ) {
