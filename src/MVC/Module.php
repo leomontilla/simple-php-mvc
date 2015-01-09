@@ -142,7 +142,6 @@ abstract class Module implements ModuleInterface
         $explorer->setSearchPattern('/[a-zA-Z0-9]Command\.php$/i');
         
         $prefixNS = $this->getNamespace() . '\\Command';
-        var_dump($explorer->getFiles());
         foreach ($explorer->getFiles() as $file) {
             $namespace = $prefixNS;
             $class = $namespace . '\\' . $file->getBasename('.php');

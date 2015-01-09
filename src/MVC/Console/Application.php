@@ -372,7 +372,7 @@ class Application
      */
     protected function getDefaultCommands()
     {
-        return array(new ListCommand());
+        return array(/*new ListCommand()*/);
     }
 
     /**
