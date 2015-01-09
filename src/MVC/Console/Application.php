@@ -42,6 +42,13 @@ class Application
      * @var array
      */
     protected $commands = array();
+
+    /**
+     * Modules Command Registered
+     *
+     * @var bool
+     */
+    protected $commandsRegistered = false;
     
     /**
      * Default Console Command Application
@@ -140,6 +147,12 @@ class Application
      */
     protected function doRun(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->commandsRegistered) {
+            $this->registerCommands();
+
+            $this->commandsRegistered = true;
+        }
+
         if (true === $input->hasParameterOption(array('--version', '-V'))) {
             $output->writeln($this->getLongVersion());
 

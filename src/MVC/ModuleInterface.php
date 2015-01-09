@@ -55,6 +55,6 @@ interface ModuleInterface
     /**
      * Register Modules comands
      */
-    public function registerComands(Application $application);
+    public function registerCommands(Application $application);
     
 }

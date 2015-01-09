@@ -404,6 +404,7 @@ class MVC implements MVCInterface
      * Initialize Routes
      * 
      * @return MVC
+     * @throws \LogicException
      */
     final protected function initRoutes()
     {
@@ -455,6 +456,7 @@ class MVC implements MVCInterface
      * 
      * @param ModuleInterface $module
      * @return MVC
+     * @throws \LogicException
      */
     public function registerModule(ModuleInterface $module)
     {

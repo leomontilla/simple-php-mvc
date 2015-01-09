@@ -133,16 +133,16 @@ abstract class Module implements ModuleInterface
      * @param Application $application
      * @return void
      */
-    public function registerComands(Application $application)
+    public function registerCommands(Application $application)
     {
         if (!is_dir($dir = $this->getPath() . '/Command')) {
             return;
         }
-        
         $explorer = new Explorer($dir);
-        $explorer->setSearchPattern('');
+        $explorer->setSearchPattern('/[a-zA-Z0-9]Command\.php$/i');
         
         $prefixNS = $this->getNamespace() . '\\Command';
+        var_dump($explorer->getFiles());
         foreach ($explorer->getFiles() as $file) {
             $namespace = $prefixNS;
             $class = $namespace . '\\' . $file->getBasename('.php');
