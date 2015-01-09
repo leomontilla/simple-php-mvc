@@ -178,8 +178,7 @@ class HttpRequest
      */
     public function getRootUri()
     {
-        $parsedUrl = $this->parseUrl();
-        return $parsedUrl['path'];
+        return $this->__get('SCRIPT_NAME');
     }
     
     /**
