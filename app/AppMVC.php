@@ -76,6 +76,6 @@ class AppMVC extends MVC
     
     public function getModules()
     {
-        return $this->container->modules;
+        return $this->container->getModules();
     }
 }
