@@ -7,7 +7,7 @@
  * @package MVC\Models
  */
 
-namespace MVC\Tests\Models;
+namespace MVC\Tests\Model;
 
 use MVC\DataBase\Model,
     MVC\DataBase\PDO;

@@ -6,7 +6,7 @@
  * @package MVC\Controllers
  */
 
-namespace MVC\Tests\Controllers;
+namespace MVC\Tests\Controller;
 
 use MVC\Controller,
     MVC\MVC;
