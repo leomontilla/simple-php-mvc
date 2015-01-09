@@ -699,7 +699,7 @@ class MVC implements MVCInterface
         }
         
         try {
-            $parsed = $this->container->getRouter()->parse($request->url, $request->method, $this->container->getRoutes());
+            $parsed = $this->container->getRouter()->parse($request, $this->container->getRoutes());
 
             if ($parsed['found'] || $this->container->hasRoute('notFound')) {
                 if (is_string($parsed['action'])) {
