@@ -13,7 +13,4 @@ if (isset($_SERVER['HTTP_CLIENT_IP'])
 require_once __DIR__ . '/../app/autoload.php';
 
 $mvc = new AppMVC();
-$mvc->get('/', function() {
-    return 'Index dev';
-}, 'index');
 $mvc->run();
