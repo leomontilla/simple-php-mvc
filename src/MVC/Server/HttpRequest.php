@@ -32,6 +32,14 @@ class HttpRequest
      * @var \stdClass
      */
     public $query;
+    
+    /**
+     * The request Method
+     * 
+     * @access public
+     * @var string
+     */
+    public $method = 'GET';
 
     /**
      * The parameters parsed from the request url.
@@ -120,9 +128,9 @@ class HttpRequest
             $this->_env["REQUEST_METHOD"] = $this->_env[$override];
         }
         
-        $method = strtoupper($this->_env["REQUEST_METHOD"]);
+        $this->method = strtoupper($this->_env["REQUEST_METHOD"]);
         
-        if ( $method == "PUT" || $method == "DELETE" ) {
+        if ( $this->method == "PUT" || $this->method == "DELETE" ) {
             $stream = fopen("php://input", "r");
             parse_str(stream_get_contents($stream), $this->data);
             fclose($stream);
@@ -150,7 +158,7 @@ class HttpRequest
      */
     public function getMethod()
     {
-        return $this->_env['REQUEST_METHOD'];
+        return $this->method;
     }
 
     /**
@@ -251,15 +259,15 @@ class HttpRequest
                     $this->http_x_requested_with == "XMLHttpRequest"
                 );
             case "delete":
-                return ( $this->request_method == "DELETE" );
+                return ( $this->method == "DELETE" );
             case "flash":
                 return (
                     $this->http_user_agent == "Shockwave Flash"
                 );
             case "get":
-                return ( $this->request_method == "GET" );
+                return ( $this->method == "GET" );
             case "head":
-                return ( $this->request_method == "HEAD" );
+                return ( $this->method == "HEAD" );
             case "mobile":
                 $mobile_user_agents = array(
                     "Android", "AvantGo", "Blackberry", "DoCoMo", "iPod",
@@ -273,11 +281,11 @@ class HttpRequest
                     $pattern, $this->http_user_agent
                 );
             case "options":
-                return ( $this->request_method == "OPTIONS" );
+                return ( $this->method == "OPTIONS" );
             case "post":
-                return ( $this->request_method == "POST" );
+                return ( $this->method == "POST" );
             case "put":
-                return ( $this->request_method == "PUT" );
+                return ( $this->method == "PUT" );
             case "ssl":
                 return $this->https;
             default:

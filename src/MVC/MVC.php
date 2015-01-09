@@ -715,7 +715,7 @@ class MVC implements MVCInterface
      * @access public
      * @return void
      */
-    public function run()
+    public function run(HttpRequest $request = null)
     {
         if ($this->container->settings['debug'] === true) {
             error_reporting(E_ALL);
@@ -723,14 +723,18 @@ class MVC implements MVCInterface
             error_reporting(0);
         }
         
+        if (!$request) {
+            $request = $this->container->request;
+        }
+        
         try {
-            $parsed = $this->container->router->parse($this->container->request->url, $this->container->request->request_method, $this->container->routes);
+            $parsed = $this->container->router->parse($request->url, $request->method, $this->container->routes);
 
             if ($parsed['found'] || isset($this->container->routes['notFound'])) {
                 if (is_string($parsed['callback'])) {
                     list($controller, $method) = explode('::', $parsed['callback']);
 
-                    $arguments = array($this, $this->container->request) + $parsed['params'];
+                    $arguments = array($this, $request) + $parsed['params'];
 
                     $controller = new $controller();
 
