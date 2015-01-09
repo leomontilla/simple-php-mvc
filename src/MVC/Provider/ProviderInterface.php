@@ -7,12 +7,15 @@
  * @package MVC
  */
 
-namespace MVC;
+namespace MVC\Provider;
+
+use MVC\MVC;
 
 interface ProviderInterface
 {    
     /**
      * Bootstrap of the provider
+     * 
      * @access public
      * @param MVC $mvc
      */
@@ -20,6 +23,7 @@ interface ProviderInterface
     
     /**
      * Register the provider properties and functions
+     * 
      * @access public
      * @param MVC $mvc
      */
