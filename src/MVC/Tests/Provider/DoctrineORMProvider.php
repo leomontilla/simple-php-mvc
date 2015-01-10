@@ -17,19 +17,19 @@ class DoctrineORMProvider extends Provider
     /**
      * Bootstrap of the Provider
      * @access public
-     * @param MVC $app
+     * @param MVC $mvc
      * @return void
      */
-    public function boot(MVC $app) { }
+    public function boot(MVC $mvc) { }
 
     /**
      * Register the properties of the Doctrine ORM Provider
+     * 
      * @access public
-     * @param MVC $app
-     * @param array $options
+     * @param MVC $mvc
      * @return void
      */
-    public function register(MVC $app, array $options)
+    public function register(MVC $mvc)
     {
         $default_options = array(
             'params'       => array(
@@ -47,7 +47,7 @@ class DoctrineORMProvider extends Provider
             'proxy_dir'    => null
         );
         
-        $options = array_merge($default_options, $options);
+        $options = array_merge($default_options, $this->options);
         
         if (empty($options['path_entities']) || !is_array($options['path_entities'])) {
             throw new \Exception('Option path_entities should be an array of path files entities.');
@@ -61,16 +61,16 @@ class DoctrineORMProvider extends Provider
             $config = Setup::createXMLMetadataConfiguration($options['path_entities'], $options['dev_mode'], $options['proxy_dir']);
         }
         
-//        if ($app->keyExists('dbal')) {
-//            $entityManager = EntityManager::create($app->getKey('dbal'), $config);
-//        } else {
+        if ($mvc->hasCvpp('dbal')) {
+            $entityManager = EntityManager::create($mvc->getCvpp('dbal'), $config);
+        } else {
             $entityManager = EntityManager::create($options['params'], $config);
-//        }
+        }
         
-//        if (!$app->keyExists('dbal')) {
-//            $app->setKey('dbal', $entityManager->getConnection());
-//        }
-//        $app->setKey('em', $entityManager);
+        if (!$mvc->hasCvpp('dbal')) {
+            $mvc->setCvpp('dbal', $entityManager->getConnection());
+        }
+        $mvc->setCvpp('em', $entityManager);
     }
 
 }

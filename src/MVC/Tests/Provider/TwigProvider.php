@@ -23,37 +23,36 @@ class TwigProvider extends Provider
     /**
      * Register the properties of the Twig Framework Provider
      * @access public
-     * @param MVC $app
-     * @param array $options
+     * @param MVC $mvc
      * @return void
      */
-    public function register(MVC $app, array $options)
+    public function register(MVC $mvc)
     {
         $defaultOptions = array(
-//            'charset'          => $app->getKey('charset'),
-//            'debug'            => $app->getKey('debug'),
-//            'strict_variables' => $app->getKey('debug'),
-//            'templates_path'   => $app->getKey('templates_path')
+            'charset'          => $mvc->getSetting('charset'),
+            'debug'            => $mvc->getSetting('debug'),
+            'strict_variables' => $mvc->getSetting('debug'),
+            'templates_path'   => $mvc->getSetting('templates_path')
         );
         
-        $options = array_merge($defaultOptions, $options);
+        $options = array_merge($defaultOptions, $this->options);
         
-//        $app->setKey('twig.loader.filesystem', new \Twig_Loader_Filesystem($options['path']));
-//        $app->setKey('twig.loader.array', new \Twig_Loader_Array($options['templates_path']));
+        $mvc->setCvpp('twig.loader.filesystem', new \Twig_Loader_Filesystem($options['path']));
+        $mvc->setCvpp('twig.loader.array', new \Twig_Loader_Array($options['templates_path']));
         
-//        $app->setKey('twig.loader', new \Twig_Loader_Chain(array(
-//            $app->getKey('twig.loader.array'),
-//            $app->getKey('twig.loader.filesystem')
-//        )));
+        $mvc->setCvpp('twig.loader', new \Twig_Loader_Chain(array(
+            $mvc->getKey('twig.loader.array'),
+            $mvc->getKey('twig.loader.filesystem')
+        )));
         
-//        $twig = new \Twig_Environment($app->getKey('twig.loader'), $options);
-//        $twig->addGlobal('app', $app);
-//        
-//        if ($options['debug']) {
-//            $twig->addExtension(new \Twig_Extension_Debug());
-//        }
+        $twig = new \Twig_Environment($mvc->getKey('twig.loader'), $options);
+        $twig->addGlobal('mvc', $mvc);
         
-//        $app->setKey('twig', $twig);
+        if ($options['debug']) {
+            $twig->addExtension(new \Twig_Extension_Debug());
+        }
+        
+        $mvc->setCvpp('twig', $twig);
     }
 
 }

@@ -18,31 +18,32 @@ class MonologProvider extends Provider
     /**
      * Bootstrap of the Provider
      * @access public
-     * @param MVC $app
+     * @param MVC $mvc
      * @return void
      */
-    public function boot(MVC $app) {}
+    public function boot(MVC $mvc) {}
 
     /**
      * Register the properties of the Monolog Provider
      * @access public
-     * @param MVC $app
-     * @param array $options
+     * @param MVC $mvc
      * @return void
      */
-    public function register(MVC $app, array $options)
+    public function register(MVC $mvc)
     {
         $defaultOptions = array(
-            'log_file' => './app.log',
+            'log_file' => $mvc->getAppDir() . '/logs/app_name.log',
             'log_name' => 'app_name'
         );
         
-        $options = array_merge($defaultOptions, $options);
+        $options = array_merge($defaultOptions, $this->options);
         
         $logger = new Logger($options['log_name']);
         $logger->pushHandler(new StreamHandler($options['log_file']));
         
-//        $app->setKey('monolog', $logger);
+        if (!$mvc->hasCvpp('monolog')) {
+            $mvc->setCvpp('monolog', $logger);
+        }
     }
 
 }

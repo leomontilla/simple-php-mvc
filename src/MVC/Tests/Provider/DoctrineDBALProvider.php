@@ -2,7 +2,8 @@
 
 namespace MVC\Tests\Provider;
 
-use Doctrine\DBAL\Configuration,
+use Doctrine\DBAL\Connection,
+    Doctrine\DBAL\Configuration,
     Doctrine\DBAL\DriverManager,
     MVC\MVC,
     MVC\Provider\Provider;
@@ -16,39 +17,59 @@ class DoctrineDBALProvider extends Provider
 {
     
     /**
+     * Doctrine DBAL Connection
+     * 
+     * @var Connection
+     */
+    protected $connection;
+    
+    /**
+     * Default options
+     * 
+     * @var array
+     */
+    static $defaultOptions = array(
+        'charset'  => null,
+        'driver'   => 'pdo_mysql',
+        'dbname'   => null,
+        'host'     => 'localhost',
+        'user'     => 'root',
+        'password' => null,
+        'port'     => null,
+    );
+
+    /**
+     * Doctrine DBAL Provider Construct
+     * 
+     * @param array $options
+     */
+    public function __construct(array $options = array())
+    {
+        $this->options = array_merge(self::$defaultOptions, $options);
+        
+    }
+
+    /**
      * Bootstrap of the Provider
      * @access public
-     * @param MVC $app
+     * @param MVC $mvc
      * @return void
      */
-    public function boot(MVC $app) {}
+    public function boot(MVC $mvc) {}
 
     /**
      * Register the properties of the Doctrine DBAL Provider
      * @access public
-     * @param MVC $app
-     * @param array $options
+     * @param MVC $mvc
      * @return void
      */
-    public function register(MVC $app, array $options)
+    public function register(MVC $mvc)
     {
-        $default_options = array(
-            'charset'  => null,
-            'driver'   => 'pdo_mysql',
-            'dbname'   => null,
-            'host'     => 'localhost',
-            'user'     => 'root',
-            'password' => null,
-            'port'     => null,
-        );
-        
-        $options = array_merge($default_options, $options);
-        
+        if (!$mvc->hasCvpp('dbal')) {
+            $mvc->setCvpp('dbal', $this->connection);
+        }
         $config = new Configuration();
-        
-        $connection = DriverManager::getConnection($options, $config);
-        
-//        $app->setKey('dbal', $connection);
+        $this->connection = DriverManager::getConnection($this->options, $config);
     }
 
 }
