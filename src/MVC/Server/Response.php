@@ -117,11 +117,7 @@ class Response
             $defaults['body'] = $response;
             $response = $defaults;
         } else {
-            $response = array(
-                'body'    => 'Internal Server Error',
-                'headers' => array('Content-Type: text/html; charset=utf-8'),
-                'status'  => 500
-            );
+            throw new \LogicException('Response can\'t be NULL.');
         }
         return $response;
     }
@@ -141,7 +137,7 @@ class Response
     public function redirect($url, $status = 302)
     {
         if (!headers_sent()) {
-            header("Location: $url", false, $status);
+            header("Location: $url", true, $status);
         }
     }
 
