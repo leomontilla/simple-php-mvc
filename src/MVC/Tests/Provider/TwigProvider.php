@@ -1,17 +1,15 @@
 <?php
 
-/**
- * Twig Framework Provider
- *
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\Providers
- */
-
 namespace MVC\Tests\Provider;
 
 use MVC\MVC,
     MVC\Provider\Provider;
 
+/**
+ * Twig Framework Provider
+ *
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 class TwigProvider extends Provider
 {
     /**

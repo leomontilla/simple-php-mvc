@@ -1,6 +1,6 @@
 <?php
 
-namespace EjemploModule\Command;
+namespace MVC\Tests\EjemploModule\Command;
 
 use MVC\Console\Command\Command;
 

@@ -1,18 +1,16 @@
 <?php
 
-/**
- * User Controller Example
- * 
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\Controllers
- */
-
-namespace MVC\Tests\Controller;
+namespace MVC\Tests\EjemploModule\Controller;
 
 use MVC\Controller,
     MVC\Tests\Models\User,
     MVC\MVC;
 
+/**
+ * User Controller Example
+ * 
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 class UserController extends Controller
 {
 

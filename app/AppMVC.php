@@ -13,7 +13,7 @@ class AppMVC extends MVC
     public function setModules()
     {
         $modules = array(
-            new EjemploModule\EjemploModule()
+            new MVC\Tests\EjemploModule\EjemploModule(),
         );
         
         return $modules;
@@ -23,7 +23,7 @@ class AppMVC extends MVC
     {
         $providers = array(
             array(
-                'instance' => new \MVC\Tests\Provider\DoctrineDBALProvider(),
+                'instance' => new MVC\Tests\Provider\DoctrineDBALProvider(),
                 'options'  => array(
                     'charset'  => null,
                     'driver'   => 'pdo_mysql',
@@ -35,7 +35,7 @@ class AppMVC extends MVC
                 )
             ),
             array(
-                'instance' => new \MVC\Tests\Provider\DoctrineORMProvider(),
+                'instance' => new MVC\Tests\Provider\DoctrineORMProvider(),
                 'options' => array(
                     'params'       => array(
                         'charset'  => null,
@@ -55,11 +55,11 @@ class AppMVC extends MVC
                 )
             ),
             array(
-                'instance' => new \MVC\Tests\Provider\MonologProvider(),
+                'instance' => new MVC\Tests\Provider\MonologProvider(),
                 'options' => array()
             ),
             array(
-                'instance' => new \MVC\Tests\Provider\TwigProvider(),
+                'instance' => new MVC\Tests\Provider\TwigProvider(),
                 'options' => array(
                     'path' => $this->getAppDir() . '/../src/EjemploModule/Resources/views'
                 )
@@ -67,7 +67,7 @@ class AppMVC extends MVC
         );
         
         $providers[] = array(
-            'instance' => new EjemploModule\EjemploProvider(),
+            'instance' => new MVC\Tests\EjemploModule\EjemploProvider(),
             'options'  => array()
         );
         

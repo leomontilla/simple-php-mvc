@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Doctrine ORM Provider
- *
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\Providers
- */
-
 namespace MVC\Tests\Provider;
 
 use Doctrine\ORM\Tools\Setup,
@@ -14,6 +7,11 @@ use Doctrine\ORM\Tools\Setup,
     MVC\MVC,
     MVC\Provider\Provider;
 
+/**
+ * Doctrine ORM Provider
+ *
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 class DoctrineORMProvider extends Provider
 {
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace EjemploModule\Controller;
+namespace MVC\Tests\EjemploModule\Controller;
 
 /**
  * Description of DefaultController

@@ -1,17 +1,15 @@
 <?php 
 
-/**
- * Example of User Model
- * 
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\Models
- */
-
-namespace MVC\Tests\Model;
+namespace MVC\Tests\EjemploModule\Model;
 
 use MVC\DataBase\Model,
     MVC\DataBase\PDO;
 
+/**
+ * Example of User Model
+ * 
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 class User extends Model
 {
 

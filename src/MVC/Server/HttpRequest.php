@@ -192,22 +192,6 @@ class HttpRequest
     }
     
     /**
-     * Get parsed url
-     * 
-     * @return array Parsed Url
-     */
-    protected function parseUrl()
-    {
-        $parsed = parse_url($this->_env["REQUEST_URI"]);
-        
-        if (preg_match('/[a-zA-Z0-9_]+\.php/i', $parsed['path'], $matches)) {
-            $parsed['path'] = preg_replace("/$matches[0]/", '/', $parsed['path']);
-        }
-        
-        return $parsed;
-    }
-    
-    /**
      * Checks for request characteristics.
      *
      * The full list of request characteristics is as follows:
@@ -361,5 +345,36 @@ class HttpRequest
     public function isPut()
     {
         return $this->is('put');
+    }
+    
+    /**
+     * Get parsed url
+     * 
+     * @return array Parsed Url
+     */
+    protected function parseUrl()
+    {
+        $parsed = parse_url($this->_env["REQUEST_URI"]);
+        
+        if (preg_match('/[a-zA-Z0-9_]+\.php/i', $parsed['path'], $matches)) {
+            $parsed['path'] = preg_replace("/$matches[0]/", '/', $parsed['path']);
+        }
+        
+        return $parsed;
+    }
+    
+    /**
+     * Set key env value
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return HttpRequest
+     */
+    public function __set($key, $value)
+    {
+        $key = strtoupper($key);
+        $this->_env[$key] = $value;
+        
+        return $this;
     }
 }

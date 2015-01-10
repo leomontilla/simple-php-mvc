@@ -1,6 +1,6 @@
 <?php
 
-namespace EjemploModule;
+namespace MVC\Tests\EjemploModule;
 
 use MVC\Module\Module;
 

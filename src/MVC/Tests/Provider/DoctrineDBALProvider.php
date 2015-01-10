@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Doctrine DBAL Provider
- *
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\Providers
- */
-
 namespace MVC\Tests\Provider;
 
 use Doctrine\DBAL\Configuration,
@@ -14,6 +7,11 @@ use Doctrine\DBAL\Configuration,
     MVC\MVC,
     MVC\Provider\Provider;
 
+/**
+ * Doctrine DBAL Provider
+ *
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 class DoctrineDBALProvider extends Provider
 {
     

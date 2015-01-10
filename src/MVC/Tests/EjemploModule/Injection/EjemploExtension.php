@@ -1,6 +1,6 @@
 <?php
 
-namespace EjemploModule\Injection;
+namespace MVC\Tests\EjemploModule\Injection;
 
 use MVC\Injection\Extension;
 

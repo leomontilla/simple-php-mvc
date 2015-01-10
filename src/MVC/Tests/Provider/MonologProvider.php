@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Monolog Provider
- *
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\Providers
- */
-
 namespace MVC\Tests\Provider;
 
 use Monolog\Logger,
@@ -14,6 +7,11 @@ use Monolog\Logger,
     MVC\MVC,
     MVC\Provider\Provider;
 
+/**
+ * Monolog Provider
+ *
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 class MonologProvider extends Provider
 {
     

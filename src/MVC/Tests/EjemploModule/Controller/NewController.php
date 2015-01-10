@@ -1,16 +1,14 @@
 <?php
 
-/**
- * Description of NewController
- * @author Ramón Serrano <ramon.calle.88@gmail.com>
- * @package MVC\Controllers
- */
-
-namespace MVC\Tests\Controller;
+namespace MVC\Tests\EjemploModule\Controller;
 
 use MVC\Controller,
     MVC\MVC;
 
+/**
+ * Description of NewController
+ * @author Ramón Serrano <ramon.calle.88@gmail.com>
+ */
 class NewController extends Controller 
 {
 
