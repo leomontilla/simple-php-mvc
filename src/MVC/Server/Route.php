@@ -143,8 +143,8 @@ class Route
      */
     public function setAction($action)
     {
-        if (!is_string($action) || !is_callable($action)) {
-            throw new \LogicException(sprintf('Route action given "%s" is invalid. String or Callable expected.', gettype($patternUri)));
+        if (!is_string($action) && !is_callable($action)) {
+            throw new \LogicException(sprintf('Route action given "%s" is invalid. String or Callable expected.', gettype($action)));
         }
         $this->action = $action;
         
