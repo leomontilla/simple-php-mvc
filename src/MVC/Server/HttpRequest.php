@@ -25,6 +25,13 @@ class HttpRequest
      * @var array
      */
     protected $_env = array();
+    
+    /**
+     * HttpRequest Instance
+     * 
+     * @var HttpRequest
+     */
+    static $instance;
 
     /**
      * The GET data.
@@ -148,6 +155,20 @@ class HttpRequest
     {
         $key = strtoupper($key);
         return ( isset($this->_env[$key]) ) ? $this->_env[$key] : null;
+    }
+    
+    /**
+     * Get HttpRequest Instance
+     * 
+     * @return HttpRequest
+     */
+    static function getInstance()
+    {
+        if (!self::$instance) {
+            self::$instance = new self();
+        }
+        
+        return self::$instance;
     }
 
     /**
