@@ -7,21 +7,22 @@
  * @package MVC
  */
 
-namespace MVC;
+namespace MVC\Controller;
 
-use MVC\Server\HttpRequest,
-    MVC\View,
-    MVC\Errors\RuntimeException;
+use MVC\Error,
+    MVC\MVC,
+    MVC\Server\HttpRequest,
+    MVC\View;
 
-class Controller
+abstract class Controller implements ControllerInterface
 {
 
     /**
      * Response of Controller
      * @access protected
-     * @var array $_response
+     * @var array
      */
-    protected $_response;
+    protected $response = array();
 
     /**
      * Object of the View
@@ -32,74 +33,98 @@ class Controller
 
     /**
      * Create the object View
+     * 
+     * @param View $view
      */
-    public function __construct()
+    public function __construct(View $view = null)
     {
-        $this->view = new View();
+        if (null === $view) {
+            $this->view = new View();
+        }
     }
 
     /**
      * Call a action of controller
+     * 
      * @access public
-     * @param MVC $mvc         Object of Application
-     * @param HttpRequest $request Object of Request class
-     * @param string $action   Action of Controller
+     * @param MVC $mvc         MVC Application object
+     * @param string $method   Method or Function of the Class Controller
      * @param string $fileView String of the view file
-     * @return array
+     * @return array           Response array
      */
-    public function call(MVC $mvc, HttpRequest $request, $action, $fileView)
+    final public function call(MVC $mvc, $method, $fileView = null)
     {
-        if (!method_exists($this, $action)) {
-            RuntimeException::run("Method '$action' don´t exists.");
+        if (!method_exists($this, $method)) {
+            throw new \LogicException(sprintf('Method "s" don\'t exists.', $method));
         }
-        
+        # Replace the view object
         $this->view = $mvc->view();
+        # Arguments of method
+        $arguments = array();
+        # Create a reflection method
+        $reflectionMethod = new \ReflectionMethod(get_class($this), $method);
+        $reflectionParams = $reflectionMethod->getParameters();
         
-        #Array vars
-        $vars = call_user_func_array(array(&$this, $action), array($mvc, $request));
-
-        if (is_null($vars) || $vars === false) {
-            return false;
+        foreach ($reflectionParams as $param) {
+            if ($paramClass = $param->getClass()) {
+                $className = $paramClass->name;
+                if ($className === 'MVC\\MVC' || $className === '\\MVC\\MVC') {
+                    $arguments[] = $mvc;
+                } elseif ($className === 'MVC\\Server\\HttpRequest' || $className === '\\MVC\\Server\\HttpRequest') {
+                    $arguments[] = $mvc->request();
+                }
+            } else {
+                foreach ($mvc->request()->params as $keyReqParam => $valueReqParam) {
+                    if ($param->name === $keyReqParam) {
+                        $arguments[] = $valueReqParam;
+                        break;
+                    }
+                }
+            }
         }
-        $this->_response = array();
-        if (is_string($vars)) {
-            $this->_response['body'] = $vars;
-            return $this->_response;
-        }
+        
+        $response = call_user_func_array($reflectionMethod->getClosure($this), $arguments);
 
-        if ($request->is("ajax")) {
-            $this->_response['body'] = $this->render_json($vars);
-        } else {
+        if (empty($response)) {
+            throw new \LogicException('Response null returned.');
+        }
+        
+        if (is_string($response)) {
+            $this->response['body'] = $response;
+        } elseif ($mvc->request()->isAjax()) {
+            $this->response['body'] = $this->renderJson($response);
+        } elseif(is_array($response)) {
+            if (!$fileView) {
+                throw new \LogicException('File view is null.');
+            }
             $class = explode("\\", get_called_class());
             $classname = end($class);
             // Class without Controller
-            $classname = str_replace('/(Controller)/i', '', $classname);
+            $classname = str_replace('Controller', '', $classname);
             $file = $classname . "/{$fileView}";
-            $this->_response['body'] = $this->render_html($file, $vars);
+            $this->response['body'] = $this->renderHtml($file, $response);
         }
 
-        return $this->_response;
+        return $this->response;
     }
-
+    
     /**
-     * Function for Error 404: Not Found
+     * Get the View object
      * @access public
-     * @param Request $request
-     * @return array
+     * @return View
      */
-    public function _404(Request $request)
+    public function getView()
     {
-        $uri = $request->getRequestUri();
-        return $this->view->render("404.html", array("uri", "uri"));
+        return $this->view;
     }
-
+    
     /**
      * Converts the supplied value to JSON.
      * @access public
      * @param mixed $value    The value to encode.
      * @return string
      */
-    public function render_json($value)
+    public function renderJson($value)
     {
         $options = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP;
         return json_encode($value, $options);
@@ -112,19 +137,22 @@ class Controller
      * @param array $vars       The variables to be substituted in the view.
      * @return mixed
      */
-    public function render_html($file, $vars = array())
+    public function renderHtml($file, $vars = array())
     {
         return $this->view->render($file, $vars);
     }
-
+    
     /**
-     * Get the View object
-     * @access public
-     * @return View
+     * Set View
+     * 
+     * @param View $view
+     * @return Controller
      */
-    public function view()
+    public function setView(View $view)
     {
-        return $this->view;
+        $this->view = $view;
+        
+        return $this;
     }
 
 }
