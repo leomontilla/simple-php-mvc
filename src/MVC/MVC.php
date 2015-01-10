@@ -28,6 +28,13 @@ class MVC implements MVCInterface
     protected $booted = false;
     
     /**
+     * Collection Vars Providers Public
+     * 
+     * @var array
+     */
+    protected $cvpp = array();
+    
+    /**
      * Container of the aplication
      * 
      * @access protected
@@ -142,6 +149,18 @@ class MVC implements MVCInterface
     {
         return $this->container;
     }
+    
+    /**
+     * Get var provider public from name
+     * 
+     * @access public
+     * @param string $name
+     * @return mixed
+     */
+    public function getCvpp($name)
+    {
+        return (!isset($this->cvpp[$name])) ? : $this->cvpp[$name];
+    }
 
     /**
      * Get default application settings
@@ -175,21 +194,6 @@ class MVC implements MVCInterface
     }
     
     /**
-     * Get container key or container
-     * 
-     * @access public
-     * @param string $key
-     * @return \stdClass|mixed
-     */
-//    public function getKey($key = null)
-//    {
-//        $providers = $this->container->getProviders();
-//        if ($key && isset($providers[$key])) {
-//            return $providers[$key];
-//        }
-//    }
-    
-    /**
      * Get registered modules
      * 
      * @return Module[] Registered modules
@@ -207,6 +211,18 @@ class MVC implements MVCInterface
     public function getProviders()
     {
         return $this->container->getProviders();
+    }
+    
+    /**
+     * Return if var provider public exists
+     * 
+     * @access public
+     * @param string $name
+     * @return boolean
+     */
+    public function hasCvpp($name)
+    {
+        return isset($this->cvpp[$name]);
     }
     
     /**
@@ -253,23 +269,6 @@ class MVC implements MVCInterface
         
         return $this;
     }
-    
-    /**
-     * Return if provider exists
-     * 
-     * @access public
-     * @param string $key
-     * @return boolean
-     */
-//    public function keyExists($key)
-//    {
-//        $providers = $this->container->getProviders();
-//        if (isset($providers[$key])) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    }
 
     /**
      * Add Group routes
@@ -462,19 +461,18 @@ class MVC implements MVCInterface
     }
     
     /**
-     * Set container key and value
+     * Set var provider public
      * 
      * @access public
-     * @param string $key
+     * @param string $name
      * @param mixed $value
      */
-//    public function setKey($key, $value)
-//    {
-//        if ($key && $value) {
-//            $providers = $this->container->getProviders();
-//            $providers[$key] = $value;
-//        }
-//    }
+    public function setCvpp($name, $value)
+    {
+        if ($name && $value) {
+            $this->cvpp[$name] = $value;
+        }
+    }
     
     /**
      * Set Modules to register
@@ -776,5 +774,4 @@ class MVC implements MVCInterface
     {
         echo static::generateTemplateMarkup('404 Page Not Found', '<p>The page you are looking for could not be found. Check the address bar to ensure your URL is spelled correctly. If all else fails, you can visit our home page at the link below.</p><a href="' . $this->container->getRequest()->getRootUri() . '">Visit the Home Page</a>');
     }
-
 }
