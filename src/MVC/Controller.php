@@ -72,7 +72,9 @@ class Controller
         } else {
             $class = explode("\\", get_called_class());
             $classname = end($class);
-            $file = lcfirst($classname) . "/{$fileView}";
+            // Class without Controller
+            $classname = str_replace('/(Controller)/i', '', $classname);
+            $file = $classname . "/{$fileView}";
             $this->_response['body'] = $this->render_html($file, $vars);
         }
 
