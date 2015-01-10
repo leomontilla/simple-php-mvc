@@ -90,12 +90,12 @@ class Container
     {
         $this->appDir = (isset($settings['appDir'])) ? $settings['appDir'] : null;
         $this->modules = array();
-        $this->settings = $settings;
-        $this->providers = $this->getDefaultProviders();
+        $this->providers = array();
         $this->request = new HttpRequest();
         $this->response = new Response();
         $this->router = new Router();
         $this->routes = array();
+        $this->settings = $settings;
         $this->view = new View();
         $this->view->templatesPath = $this->settings['templates_path'];
     }
@@ -172,20 +172,6 @@ class Container
     public function getAppDir()
     {
         return $this->appDir;
-    }
-    
-    /**
-     * Get default providers
-     * 
-     * @return array
-     */
-    protected function getDefaultProviders()
-    {
-        return array(
-            'charset'        => $this->settings['charset'],
-            'debug'          => $this->settings['debug'],
-            'templates_path' => $this->settings['templates_path']
-        );
     }
     
     /**
