@@ -1,6 +1,18 @@
 [{
     "method": ["GET", "POST"],
-    "pattern": "/ejemplo/index",
-    "action": "EjemploModule\\Controller\\DefaultController::ejemploJsonAction",
-    "name": "ejemplo_index"
+    "pattern": "/foo",
+    "action": "MVC\\Tests\\EjemploModule\\Controller\\FooController::indexAction",
+    "name": "foo_index"
+},
+{
+    "method": ["GET", "POST"],
+    "pattern": "/foo/redirect",
+    "action": "MVC\\Tests\\EjemploModule\\Controller\\FooController::redirectAction",
+    "name": "foo_redirect"
+},
+{
+    "method": ["GET", "POST"],
+    "pattern": "/foo/redirected",
+    "action": "MVC\\Tests\\EjemploModule\\Controller\\FooController::redirectedAction",
+    "name": "foo_redirected"
 }]
