@@ -158,6 +158,21 @@ class HttpRequest
     }
     
     /**
+     * Set key env value
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return HttpRequest
+     */
+    public function __set($key, $value)
+    {
+        $key = strtoupper($key);
+        $this->_env[$key] = $value;
+        
+        return $this;
+    }
+    
+    /**
      * Get HttpRequest Instance
      * 
      * @return HttpRequest
@@ -385,16 +400,27 @@ class HttpRequest
     }
     
     /**
-     * Set key env value
+     * Set Method
      * 
-     * @param string $key
-     * @param mixed $value
+     * @param string $method
      * @return HttpRequest
      */
-    public function __set($key, $value)
+    public function setMethod($method)
     {
-        $key = strtoupper($key);
-        $this->_env[$key] = $value;
+        $this->method = $method;
+        
+        return $this;
+    }
+
+    /**
+     * Set Url
+     * 
+     * @param string $url
+     * @return HttpRequest
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
         
         return $this;
     }
