@@ -214,6 +214,27 @@ class MVC implements MVCInterface
     }
     
     /**
+     * Get Setting
+     * 
+     * @param string $name
+     * @return mixed
+     */
+    public function getSetting($name)
+    {
+        return $this->container->getSetting($name);
+    }
+    
+    /**
+     * Get settings
+     * 
+     * @return array
+     */
+    public function getSettings()
+    {
+        return $this->container->getSettings();
+    }
+    
+    /**
      * Return if var provider public exists
      * 
      * @access public
