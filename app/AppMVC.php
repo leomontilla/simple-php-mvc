@@ -1,6 +1,9 @@
 <?php
 
 use MVC\MVC;
+use MVC\Module\Module;
+use MVC\Provider\Provider;
+use MVC\Server\Route;
 
 /**
  * Description of AppMVC
@@ -10,6 +13,11 @@ use MVC\MVC;
 class AppMVC extends MVC
 {
     
+    /**
+     * Set MVC Application Modules
+     * 
+     * @return Module[]
+     */
     public function setModules()
     {
         $modules = array(
@@ -19,6 +27,11 @@ class AppMVC extends MVC
         return $modules;
     }
     
+    /**
+     * Set MVC Application Providers
+     * 
+     * @return Provider[]
+     */
     public function setProviders()
     {
         $providers = array(
@@ -74,6 +87,21 @@ class AppMVC extends MVC
         return $providers;
     }
     
+    /**
+     * Set MVC Application Routes
+     * 
+     * @return Route[]
+     */
+    public function setRoutes()
+    {
+        $routes = parent::setRoutes();
+        
+        return $routes;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
     public function getModules()
     {
         return $this->container->getModules();

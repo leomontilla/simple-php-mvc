@@ -5,7 +5,6 @@ namespace MVC;
 use MVC\Application\Container,
     MVC\Module\Module,
     MVC\Provider\Provider,
-    MVC\Provider\ProviderInterface,
     MVC\Server\HttpRequest,
     MVC\Server\Response,
     MVC\Server\Route,
@@ -193,7 +192,7 @@ class MVC implements MVCInterface
     /**
      * Get registered modules
      * 
-     * @return array
+     * @return Module[] Registered modules
      */
     public function getModules()
     {
@@ -459,11 +458,11 @@ class MVC implements MVCInterface
      * Register the providers
      * 
      * @access public
-     * @param ProviderInterface $provider
+     * @param Provider $provider
      * @param array $options
      * @return MVC
      */
-    public function registerProvider(ProviderInterface $provider, array $options = array())
+    public function registerProvider(Provider $provider, array $options = array())
     {
         $this->container->addProvider($provider);
 
@@ -490,7 +489,7 @@ class MVC implements MVCInterface
     /**
      * Set Modules to register
      * 
-     * @return array
+     * @return Module[]
      */
     public function setModules()
     {
@@ -500,7 +499,7 @@ class MVC implements MVCInterface
     /**
      * Set Providers to register
      * 
-     * @return array
+     * @return Provider[]
      */
     public function setProviders()
     {
@@ -510,7 +509,7 @@ class MVC implements MVCInterface
     /**
      * Set Routes from JSON|PHP File
      * 
-     * @return array
+     * @return Route[]
      */
     public function setRoutes()
     {
