@@ -148,8 +148,7 @@ class Router
 
             if ( is_null($patternUri) || $patternUri == '*' ) {
                 $found = false;
-                $params = new \stdClass;
-                $paramsMatched = array();
+                $params = array();
                 return compact('action', 'found', 'params');
             }
 
@@ -176,7 +175,7 @@ class Router
                 $routeToMatch .= $char;
             }
 
-            $params = new \stdClass;
+            $params = array();
 
             $regex = $this->_compile_regex($routeToMatch);
             if ( preg_match($regex, $requestUri, $paramsMatched) ) {
@@ -184,7 +183,7 @@ class Router
                     if ( is_numeric($key) ) {
                         unset($paramsMatched[$key]);
                     } else {
-                        $params->$key = $arg;
+                        $params[$key] = $arg;
                     }
                 }
                 return compact('action', 'found', 'params');
