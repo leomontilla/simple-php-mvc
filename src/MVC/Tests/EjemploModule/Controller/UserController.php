@@ -2,7 +2,7 @@
 
 namespace MVC\Tests\EjemploModule\Controller;
 
-use MVC\Controller,
+use MVC\Controller\Controller,
     MVC\Tests\Models\User,
     MVC\MVC;
 
@@ -17,16 +17,20 @@ class UserController extends Controller
     /**
      * Example of index action for someone route with the use of the a User model
      * Using the render view
+     * 
      * @access public
-     * @param MVC $app
+     * @param MVC $mvc
      * @return string
      */
-    public function index(MVC $app)
+    public function index(MVC $mvc)
     {
-        $userModel = new User($app->getKey('pdo'));
+        if (!$mvc->hasCvpp('pdo')) {
+            throw new \LogicException('PDO don\'t exists. Register the MVC\DataBase\PdoProvider for use this function.');
+        }
+        $userModel = new User($mvc->getKey('pdo'));
         $users = $userModel->findAll();
         
-        return $app->view()->render('userController/index.html', array(
+        return $mvc->view()->render('User/index.html', array(
             'users' => $users
         ));
     }

@@ -17,7 +17,7 @@ class EjemploProvider extends Provider
         
     }
 
-    public function register(MVC $mvc, array $options)
+    public function register(MVC $mvc)
     {
         
     }

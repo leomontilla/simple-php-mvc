@@ -32,7 +32,7 @@ class TwigProvider extends Provider
             'charset'          => $mvc->getSetting('charset'),
             'debug'            => $mvc->getSetting('debug'),
             'strict_variables' => $mvc->getSetting('debug'),
-            'templates_path'   => $mvc->getSetting('templates_path')
+            'templates_path'   => array($mvc->getSetting('templates_path'))
         );
         
         $options = array_merge($defaultOptions, $this->options);
@@ -41,11 +41,11 @@ class TwigProvider extends Provider
         $mvc->setCvpp('twig.loader.array', new \Twig_Loader_Array($options['templates_path']));
         
         $mvc->setCvpp('twig.loader', new \Twig_Loader_Chain(array(
-            $mvc->getKey('twig.loader.array'),
-            $mvc->getKey('twig.loader.filesystem')
+            $mvc->getCvpp('twig.loader.array'),
+            $mvc->getCvpp('twig.loader.filesystem')
         )));
         
-        $twig = new \Twig_Environment($mvc->getKey('twig.loader'), $options);
+        $twig = new \Twig_Environment($mvc->getCvpp('twig.loader'), $options);
         $twig->addGlobal('mvc', $mvc);
         
         if ($options['debug']) {

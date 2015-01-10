@@ -34,5 +34,5 @@ interface ProviderInterface
      * @access public
      * @param MVC $mvc
      */
-    public function register(MVC $mvc, array $options);
+    public function register(MVC $mvc);
 }

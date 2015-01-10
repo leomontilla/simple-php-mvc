@@ -15,4 +15,10 @@
     "pattern": "/foo/redirected",
     "action": "MVC\\Tests\\EjemploModule\\Controller\\FooController::redirectedAction",
     "name": "foo_redirected"
+},
+{
+    "method": ["GET", "POST", "AJAX"],
+    "pattern": "/user",
+    "action": "MVC\\Tests\\EjemploModule\\Controller\\UserController::index",
+    "name": "user_index"
 }]

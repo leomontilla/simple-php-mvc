@@ -35,6 +35,9 @@ class AppMVC extends MVC
     public function setProviders()
     {
         $providers = array(
+            new \MVC\DataBase\PdoProvider(array(
+                'dbname' => 'sf_etituymedio'
+            )),
             new \MVC\Tests\Provider\DoctrineDBALProvider(array(
                 'charset'  => null,
                 'driver'   => 'pdo_mysql',
@@ -57,7 +60,7 @@ class AppMVC extends MVC
                 'dev_mode'     => false,
                 'etities_type' => 'annotations',
                 'path_entities' => array(
-                    $this->getAppDir() . '/../src/EjemploModule/Entity'
+                    $this->getAppDir() . '/../src/MVC/Tests/EjemploModule/Entity'
                 ),
                 'proxy_dir'    => null
             )),
@@ -65,7 +68,7 @@ class AppMVC extends MVC
 
             )),
             new \MVC\Tests\Provider\TwigProvider(array(
-                'path' => $this->getAppDir() . '/../src/EjemploModule/Resources/views'
+                'path' => $this->getAppDir() . '/../src/MVC/Tests/EjemploModule/Resources/views'
             )),
         );
         

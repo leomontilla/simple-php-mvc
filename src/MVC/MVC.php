@@ -15,7 +15,7 @@ use MVC\Application\Container,
  *
  * @author Ramon Serrano <ramon.calle.88@gmail.com>
  * @package MVC
- * @version 1.5
+ * @version 1.6
  */
 class MVC implements MVCInterface
 {
