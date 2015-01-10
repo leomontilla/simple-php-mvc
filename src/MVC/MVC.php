@@ -577,19 +577,23 @@ class MVC implements MVCInterface
      * Returns the URL for the name or route
      * 
      * @access public
+     * @deprecated since version 1.6
      * @param string $name      Name of Route
+     * @param array $params     Parameters of route
      * @param boolean $relative If is true is a relative URL, else a absolute url
      * @return string
      */
-    public function generateUrl($name, $relative = true)
+    public function generateUrl($name, array $params = array(), $relative = false)
     {
-        $routes = $this->container->getRoutes();
-        if ($relative) {
-            return isset($routes[$name]) ? $routes[$name][1] : '';
-        } else {
-            $rootUri = $this->container->getRequest()->getRootUri();
-            return isset($routes[$name]) ? $rootUri . $routes[$name][1] : '';
-        }
+//        if (!$this->container->hasRoute($name)) {
+//            return '';
+//        }
+//        if ($relative) {
+//            return $this->container->getRoute($name)->getPatternUri();
+//        } else {
+//            $rootUri = $this->container->getRequest()->getRootUri();
+//            return isset($routes[$name]) ? $rootUri . $routes[$name][1] : '';
+//        }
     }
 
     /**
@@ -702,16 +706,37 @@ class MVC implements MVCInterface
 
             if ($parsed['found'] || $this->container->hasRoute('notFound')) {
                 if (is_string($parsed['action'])) {
+                    # Extract class controller and method
                     list($controller, $method) = explode('::', $parsed['action']);
 
-                    $arguments = array($this, $request, $parsed['params']);
+                    # initialize arguments
+                    $arguments = array();
+                    # Create a reflection method
+                    $reflectionMethod = new \ReflectionMethod($controller, $method);
+                    $reflectionParams = $reflectionMethod->getParameters();
+                    # Create arguments
+                    foreach ($reflectionParams as $param) {
+                        if ($paramClass = $param->getClass()) {
+                            $className = $paramClass->name;
+                            if ($className === 'MVC\\MVC' || $className === '\\MVC\\MVC') {
+                                $arguments[] = $this;
+                            } elseif ($className === 'MVC\\Server\\HttpRequest' || $className === '\\MVC\\Server\\HttpRequest') {
+                                $arguments[] = $request;
+                            }
+                        } else {
+                            foreach ($parsed['params'] as $keyRouteParam => $valueRouteParam) {
+                                if ($param->name === $keyRouteParam) {
+                                    $arguments[] = $valueRouteParam;
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
-                    $controller = new $controller();
-
-                    $response = call_user_func_array(array(&$controller, $method), $arguments);
+                    $response = call_user_func_array($reflectionMethod->getClosure(new $controller()), $arguments);
 
                     if (is_array($response) && !isset($response['body'])) {
-                        throw Error::run("Invalid response array. Expected array('body' => string, 'status' => int).");
+                        throw new \LogicException("Invalid response array. Array response haven't body. Expected array('body' => 'string')");
                     } elseif (is_string($response)) {
                         $response = array('body' => $response);
                     }
@@ -720,13 +745,16 @@ class MVC implements MVCInterface
 
                     $response = call_user_func_array($parsed['action'], array_values($parsed['params']));
                 } else {
-                    $response = false;
+                    throw new \LogicException('Route haven\'t action.');
                 }
                 if ($this->container->hasProvider('monolog')) {
                     //$this->container->providers['monolog']->addInfo($response, $parsed);
                 }
                 $this->container->getResponse()->render($response);
             } else {
+                if (!$this->container->getSetting('debug')) {
+                    throw new \LogicException(sprintf('Route or Resource "%s" not found.', $request->url));
+                }
                 $this->defaultNotFound();
             }
         } catch (\Exception $e) {
