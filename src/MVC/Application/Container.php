@@ -80,7 +80,12 @@ class Container
      * @var View
      */
     protected $view;
-            
+    
+    /**
+     * MVC Application Container Construct
+     * 
+     * @param array $settings
+     */
     function __construct(array $settings)
     {
         $this->appDir = (isset($settings['appDir'])) ? $settings['appDir'] : null;
