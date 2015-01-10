@@ -162,7 +162,7 @@ class Route
     {
         if (is_string($methods)) {
             if (!isset(self::$validMethods[strtolower($methods)])) {
-                throw new \LogicException(sprintf('Route method "%s" is invalid. Params expected "%s"', $methods, implode(', ', self::$validMethods)));
+                throw new \LogicException(sprintf('Route method "%s" is invalid. Params expected "%s"', $methods, implode(', ', array_keys(self::$validMethods))));
             }
             $this->methods = array($methods);
         }
