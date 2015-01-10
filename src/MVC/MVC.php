@@ -230,18 +230,8 @@ class MVC implements MVCInterface
      */
     final protected function initProviders()
     {
-        foreach ($this->setProviders() as $currentProvider) {
-            if (!is_array($currentProvider) || count($currentProvider) !== 2) {
-                throw new \LogicException(sprintf('Provider params invalids. Expected array(ProviderInterface provider, array options) or array(array options, ProviderInterface provider).'));
-            }
-            $currentProvider = array_values($currentProvider);
-            if (is_object($currentProvider[0]) && is_array($currentProvider[1])) {
-                $this->registerProvider($currentProvider[0], $currentProvider[1]);
-            } elseif (is_array($currentProvider[0]) && is_object($currentProvider[1])) {
-                $this->registerProvider($currentProvider[1], $currentProvider[0]);
-            } else {
-                throw new \LogicException(sprintf('Provider params invalids. Expected array(ProviderInterface provider, array options) or array(array options, ProviderInterface provider).'));
-            }
+        foreach ($this->setProviders() as $provider) {
+            $this->registerProvider($provider);
         }
         return $this;
     }
@@ -462,11 +452,11 @@ class MVC implements MVCInterface
      * @param array $options
      * @return MVC
      */
-    public function registerProvider(Provider $provider, array $options = array())
+    public function registerProvider(Provider $provider)
     {
+        $provider->register($this);
+        
         $this->container->addProvider($provider);
-
-        $provider->register($this, $options);
         
         return $this;
     }
