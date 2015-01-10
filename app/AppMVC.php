@@ -35,9 +35,17 @@ class AppMVC extends MVC
     public function setProviders()
     {
         $providers = array(
-            array(
-                'instance' => new \MVC\Tests\Provider\DoctrineDBALProvider(),
-                'options'  => array(
+            new \MVC\Tests\Provider\DoctrineDBALProvider(array(
+                'charset'  => null,
+                'driver'   => 'pdo_mysql',
+                'dbname'   => 'test',
+                'host'     => 'localhost',
+                'user'     => 'root',
+                'password' => null,
+                'port'     => null,
+            )),
+            new \MVC\Tests\Provider\DoctrineORMProvider(array(
+                'params'       => array(
                     'charset'  => null,
                     'driver'   => 'pdo_mysql',
                     'dbname'   => 'test',
@@ -45,44 +53,25 @@ class AppMVC extends MVC
                     'user'     => 'root',
                     'password' => null,
                     'port'     => null,
-                )
-            ),
-            array(
-                'instance' => new \MVC\Tests\Provider\DoctrineORMProvider(),
-                'options' => array(
-                    'params'       => array(
-                        'charset'  => null,
-                        'driver'   => 'pdo_mysql',
-                        'dbname'   => 'test',
-                        'host'     => 'localhost',
-                        'user'     => 'root',
-                        'password' => null,
-                        'port'     => null,
-                    ),
-                    'dev_mode'     => false,
-                    'etities_type' => 'annotations',
-                    'path_entities' => array(
-                        $this->getAppDir() . '/../src/EjemploModule/Entity'
-                    ),
-                    'proxy_dir'    => null
-                )
-            ),
-            array(
-                'instance' => new \MVC\Tests\Provider\MonologProvider(),
-                'options' => array()
-            ),
-            array(
-                'instance' => new \MVC\Tests\Provider\TwigProvider(),
-                'options' => array(
-                    'path' => $this->getAppDir() . '/../src/EjemploModule/Resources/views'
-                )
-            )
+                ),
+                'dev_mode'     => false,
+                'etities_type' => 'annotations',
+                'path_entities' => array(
+                    $this->getAppDir() . '/../src/EjemploModule/Entity'
+                ),
+                'proxy_dir'    => null
+            )),
+            new \MVC\Tests\Provider\MonologProvider(array(
+
+            )),
+            new \MVC\Tests\Provider\TwigProvider(array(
+                'path' => $this->getAppDir() . '/../src/EjemploModule/Resources/views'
+            )),
         );
         
-        $providers[] = array(
-            'instance' => new \MVC\Tests\EjemploModule\EjemploProvider(),
-            'options'  => array()
-        );
+        $providers[] = new \MVC\Tests\EjemploModule\EjemploProvider(array(
+            
+        ));
         
         return $providers;
     }
