@@ -23,7 +23,7 @@ class ControllerReflectionTest extends \PHPUnit_Framework_TestCase
         print "Number of required parameters: {$reflectionMethod->getNumberOfRequiredParameters()}\n";
         
         foreach($reflectionParams as $key => $param) {
-            print "Parameter {$key}: {$param->getClass()->name}\n{$param->name}\n";
+            print "Parameter {$key}: {$param->getClass()->name} \${$param->name}\n";
         }
     }
     
