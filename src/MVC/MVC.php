@@ -174,7 +174,7 @@ class MVC implements MVCInterface
             "charset" => "UTF-8",
             "debug" => true,
             "error_writer" => true,
-            "templates_path" => "./templates"
+            "templates_path" => $this->getAppDir() . "/Views"
         );
     }
     
