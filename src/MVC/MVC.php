@@ -57,8 +57,14 @@ class MVC implements MVCInterface
      */
     public function __construct(array $userSettings = array())
     {
-        $settings = array_merge(self::getDefaultSettings(), $userSettings);
+        $settings = array_merge($this->getDefaultSettings(), $userSettings);
         $this->container = new Container($settings);
+        
+        if (!$this->container->hasSetting('templates_path')) {
+            $this->container->setSettings(array(
+                "templates_path" => $this->getAppDir() . "/Views"
+                ));
+        }
         
         # Init Modules, Providers and Routes
         $this->initModules()
@@ -168,13 +174,12 @@ class MVC implements MVCInterface
      * @access public
      * @return array
      */
-    public static function getDefaultSettings()
+    public function getDefaultSettings()
     {
         return array(
             "charset" => "UTF-8",
             "debug" => true,
             "error_writer" => true,
-            "templates_path" => $this->getAppDir() . "/Views"
         );
     }
     

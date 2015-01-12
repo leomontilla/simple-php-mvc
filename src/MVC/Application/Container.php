@@ -91,13 +91,12 @@ class Container
         $this->appDir = (isset($settings['appDir'])) ? $settings['appDir'] : null;
         $this->modules = array();
         $this->providers = array();
-        $this->request = new HttpRequest();
-        $this->response = new Response();
-        $this->router = new Router();
         $this->routes = array();
-        $this->settings = $settings;
-        $this->view = new View();
-        $this->view->templatesPath = $this->settings['templates_path'];
+        $this->setRequest(new HttpRequest());
+        $this->setResponse(new Response());
+        $this->setRouter(new Router());        
+        $this->setSettings($settings);
+        $this->setView(new View());
     }
     
     /**
@@ -341,7 +340,7 @@ class Container
      */
     public function hasSetting($name)
     {
-        return isset($this->settings[$name]);
+        return (isset($this->settings[$name]));
     }
 
     /**
@@ -405,6 +404,10 @@ class Container
     public function setSettings(array $settings)
     {
         $this->settings = array_merge($this->settings, $settings);
+        
+        if (isset($settings['templates_path'])) {
+            $this->view->templatesPath = $this->settings['templates_path'];
+        }
         
         return $this;
     }
