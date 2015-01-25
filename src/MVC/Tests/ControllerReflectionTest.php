@@ -31,8 +31,8 @@ class ControllerReflectionTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'MVC\\Tests\\EjemploModule\\Controller\\FooController',
-                'fooAction'
+                'MVC\\Tests\\TestModule\\Controller\\FooController',
+                'indexAction'
             )
         );
     }
