@@ -1,15 +1,15 @@
 <?php
 
-namespace MVC\Tests\EjemploModule;
+namespace MVC\Tests\TestModule;
 
 use MVC\Module\Module;
 
 /**
- * Description of AppEjemploModule
+ * Example Module
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
-class EjemploModule extends Module
+class TestModule extends Module
 {
     
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Tests\EjemploModule\Controller;
+namespace MVC\Tests\TestModule\Controller;
 
 use MVC\Controller\Controller;
 use MVC\MVC;

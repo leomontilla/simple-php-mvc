@@ -1,9 +1,9 @@
 <?php
 
-namespace MVC\Tests\EjemploModule\Controller;
+namespace MVC\Tests\TestModule\Controller;
 
 use MVC\Controller\Controller,
-    MVC\Tests\Models\User,
+    MVC\Tests\TestModule\Model\User,
     MVC\MVC;
 
 /**
@@ -21,6 +21,7 @@ class UserController extends Controller
      * @access public
      * @param MVC $mvc
      * @return string
+     * @throws \LogicException
      */
     public function index(MVC $mvc)
     {

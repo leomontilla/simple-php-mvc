@@ -1,16 +1,16 @@
 <?php
 
-namespace MVC\Tests\EjemploModule;
+namespace MVC\Tests\TestModule;
 
 use MVC\MVC;
 use MVC\Provider\Provider;
 
 /**
- * Description of EjemploProvider
+ * Description of TestProvider
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
-class EjemploProvider extends Provider
+class TestProvider extends Provider
 {
     public function boot(MVC $mvc)
     {

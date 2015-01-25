@@ -1,6 +1,6 @@
 <?php 
 
-namespace MVC\Tests\EjemploModule\Model;
+namespace MVC\Tests\TestModule\Model;
 
 use MVC\DataBase\Model,
     MVC\DataBase\PDO;
@@ -15,12 +15,13 @@ class User extends Model
 
     /**
      * Construct of the class
+     *
      * @access public
      * @param PDO $pdo
      */
     public function __construct(PDO $pdo)
     {
-        parent::__construct($pdo, 'usuario');
+        parent::__construct($pdo, 'user');
     }
 
 }

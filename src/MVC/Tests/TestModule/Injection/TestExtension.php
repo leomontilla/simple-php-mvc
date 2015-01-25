@@ -1,6 +1,6 @@
 <?php
 
-namespace MVC\Tests\EjemploModule\Injection;
+namespace MVC\Tests\TestModule\Injection;
 
 use MVC\Injection\Extension;
 
@@ -9,7 +9,7 @@ use MVC\Injection\Extension;
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
-class EjemploExtension extends Extension
+class TestExtension extends Extension
 {
 
 }

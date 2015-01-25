@@ -1,20 +1,20 @@
 <?php
 
-namespace MVC\Tests\EjemploModule\Command;
+namespace MVC\Tests\TestModule\Command;
 
-use MVC\Console\Command\Command;
+use Symfony\Component\Console\Command\Command;
 
 /**
- * Description of EjemploCommand
+ * TestCommand
  *
  * @author Ramón Serrano <ramon.calle.88@gmail.com>
  */
-class EjemploCommand extends Command
+class TestCommand extends Command
 {
 
     protected function configure()
     {
-        $this->setName('ejemplo')
+        $this->setName('test')
             ->setDescription('Ejemplo de comando')
             ->setHelp(<<<EOF
 Este es un ejemplo de comando

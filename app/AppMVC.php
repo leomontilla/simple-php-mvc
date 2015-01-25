@@ -21,7 +21,7 @@ class AppMVC extends MVC
     public function setModules()
     {
         $modules = array(
-            new \MVC\Tests\EjemploModule\EjemploModule(),
+            new \MVC\Tests\TestModule\TestModule(),
         );
         
         return $modules;
@@ -75,7 +75,7 @@ class AppMVC extends MVC
             )),
         );
         
-        $providers[] = new \MVC\Tests\EjemploModule\EjemploProvider(array(
+        $providers[] = new \MVC\Tests\TestModule\TestProvider(array(
             
         ));
         
