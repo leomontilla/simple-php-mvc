@@ -55,6 +55,8 @@ class View
     public function render($file, $vars = null) 
     {
         if (!$this->templatesPath) {
+            throw new \LogicException('Variable "templatesPath" can\'t be NULL.');
+        } else if (!$this->templatesPath) {
             throw new \LogicException(sprintf('Folder "%s" don\'t exists.', $this->templatesPath));
         }
         
