@@ -54,10 +54,14 @@ class View
      */
     public function render($file, $vars = null) 
     {
-        $__template__ = "$this->templatesPath/{$file}";
+        if (!$this->templatesPath) {
+            throw new \LogicException(sprintf('Folder "%s" don\'t exists.', $this->templatesPath));
+        }
         
-        if(!file_exists($__template__)){
-           throw new \LogicException(sprintf('View "%s" don\'t exists.', $__template__));
+        $template = "$this->templatesPath/{$file}";
+        
+        if(!file_exists($template)){
+           throw new \LogicException(sprintf('View "%s" don\'t exists.', $template));
         }
         
         if (is_array($vars)) {
@@ -68,7 +72,7 @@ class View
         }        
         
         ob_start();
-        require $__template__;
+        require $template;
         return ob_get_clean();
     }
 
