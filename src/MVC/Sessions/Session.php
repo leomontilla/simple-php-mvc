@@ -16,7 +16,21 @@ class Session
      * @access public
      * @var Session
      */
-    public static $instance;
+    static $instance;
+
+    /**
+     * Sessions namespace
+     *
+     * @var string
+     */
+    static $namespace = 'SIMPLE_PHP_MVC';
+
+    /**
+     * Sessions vars
+     *
+     * @var array
+     */
+    private $vars = array();
     
     /**
      * Construct of the class
@@ -24,6 +38,43 @@ class Session
     public function __construct()
     {
         $this->__init();
+        $_SESSION[self::$namespace] = array();
+        $this->vars = &$_SESSION[self::$namespace];
+    }
+
+    /**
+     * Sessions destroy
+     * @access public
+     * @return void
+     */
+    public static function __destroy()
+    {
+        session_destroy();
+    }
+
+    /**
+     * Start sessions vars
+     * @access public
+     * @return void
+     */
+    public static function __init()
+    {
+        session_start();
+    }
+
+    /**
+     * Get the value of Session key
+     * @access public
+     * @param $name
+     * @return bool|mixed
+     */
+    public  function get($name)
+    {
+        if ($this->has($name)) {
+            return $this->vars[$name];
+        } else {
+            return false;
+        }
     }
     
     /**
@@ -38,14 +89,16 @@ class Session
         }
         return self::$instance;
     }
-    
+
     /**
-     * Start sessions vars
-     * @access public
-     * @return void
+     * Has session name
+     *
+     * @param $name
+     * @return bool
      */
-    public static function __init() {
-        session_start();
+    public function has($name)
+    {
+        return isset($this->vars[$name]);
     }
     
     /**
@@ -55,35 +108,13 @@ class Session
      * @param mixed $value
      * @return bool
      */
-    public function setSession($name, $value) {
-        if (!isset($_SESSION[$name])) {
-            $_SESSION[$name] = $value;
+    public function set($name, $value)
+    {
+        if (!$this->has($name)) {
+            $this->vars[$name] = $value;
         } else {
             return false;
         }
-    }
-
-    /**
-     * Get the value of Session key
-     * @access public
-     * @param $name
-     * @return bool|mixed
-     */
-    public  function getSession($name) {
-        if (isset($_SESSION[$name])) {
-            return $_SESSION[$name];
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Sessions destroy
-     * @access public
-     * @return void
-     */
-    public static function __destroy() {
-        session_destroy();
     }
 
 }
