@@ -474,7 +474,6 @@ class MVC implements MVCInterface
      * 
      * @access public
      * @param Provider $provider
-     * @param array $options
      * @return MVC
      */
     public function registerProvider(Provider $provider)

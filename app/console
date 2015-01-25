@@ -3,24 +3,25 @@
 
 $loader = require __DIR__ . '/autoload.php';
 
-use MVC\Console\Application;
-use MVC\Console\Input\ArgvInput;
+use MVC\Tests\Provider\ConsoleSymfonyProvider;
+use Symfony\Component\Console\Command\ListCommand;
+use Symfony\Component\Console\Input\ArgvInput;
+
+$mvc = new AppMVC();
+
+# Console Symfony Provider Instance
+$csp = new ConsoleSymfonyProvider(array(
+    'modules'  => $mvc->setModules(),
+    'commands' => array(
+        new ListCommand()
+    )
+));
+
+$mvc->registerProvider($csp);
 
 $input = new ArgvInput();
-$debug = (!$input->hasParameterOption(array('--no-debug', ''))) ? true: false;
+$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
+$debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
+$mvc->config('debug', $debug);
 
-/*
-$settings = array(
-    'app_path' => './app'
-    'views_path' => './Views',
-    'models_path' => './Models',
-    'controllers_path' => './Controllers'
-);
-$command = new MVC\Command\Command(__DIR__, $settings);
-*/
-
-$mvc = new AppMVC(array(
-    'debug' => $debug
-));
-$application = new Application($mvc, 'Simple PHP MVC', '1.5');
-$application->run($input);
+$mvc->getCvpp('symfony.console')->run($input);

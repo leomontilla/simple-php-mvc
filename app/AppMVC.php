@@ -36,6 +36,9 @@ class AppMVC extends MVC
     {
         $providers = array(
             new \MVC\DataBase\PdoProvider(array(
+                'host'   => '127.0.0.1',
+                'user'   => 'root',
+                'passwd' => '',
                 'dbname' => 'sf_etituymedio'
             )),
             new \MVC\Tests\Provider\DoctrineDBALProvider(array(
@@ -87,6 +90,15 @@ class AppMVC extends MVC
     public function setRoutes()
     {
         $routes = parent::setRoutes();
+        
+        $routes[] = array(
+            array(
+                "method"  => ["ajax", "get", "post"],
+                "pattern" => "/",
+                "action"  => function() {return 'Index';},
+                "name"    => "index"
+            )
+        );
         
         return $routes;
     }

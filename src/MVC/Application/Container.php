@@ -72,7 +72,9 @@ class Container
      * 
      * @var array
      */
-    protected $settings = array();
+    protected $settings = array(
+        'debug' => true
+    );
     
     /**
      * Object View
