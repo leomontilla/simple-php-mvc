@@ -2,7 +2,7 @@
 
 namespace MVC\Module;
 
-use MVC\Console\Application;
+use Symfony\Component\Console\Application;
 use MVC\Injection\ExtensionInterface;
 
 /**

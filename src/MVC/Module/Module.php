@@ -3,7 +3,7 @@
 namespace MVC\Module;
 
 use MVC\File\Explorer;
-use MVC\Console\Application;
+use Symfony\Component\Console\Application;
 use MVC\Injection\Container;
 
 /**
@@ -146,7 +146,7 @@ abstract class Module implements ModuleInterface
             $namespace = $prefixNS;
             $class = $namespace . '\\' . $file->getBasename('.php');
             $r = new \ReflectionClass($class);
-            if ($r->isSubclassOf('MVC\\Console\\Command\\Command') && !$r->isAbstract() && !$r->getConstructor()->getNumberOfRequiredParameters()) {
+            if ($r->isSubclassOf('Symfony\\Component\\Console\\Command\\Command') && !$r->isAbstract() && !$r->getConstructor()->getNumberOfRequiredParameters()) {
                 $application->add($r->newInstance());
             }
         }

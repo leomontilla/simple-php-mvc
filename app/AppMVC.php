@@ -63,7 +63,7 @@ class AppMVC extends MVC
                 'dev_mode'     => false,
                 'etities_type' => 'annotations',
                 'path_entities' => array(
-                    $this->getAppDir() . '/../src/MVC/Tests/EjemploModule/Entity'
+                    $this->getAppDir() . '/../src/MVC/Tests/TestModule/Entity'
                 ),
                 'proxy_dir'    => null
             )),
@@ -71,7 +71,7 @@ class AppMVC extends MVC
 
             )),
             new \MVC\Tests\Provider\TwigProvider(array(
-                'path' => $this->getAppDir() . '/../src/MVC/Tests/EjemploModule/Resources/views'
+                'path' => $this->getAppDir() . '/../src/MVC/Tests/TestModule/Resources/views'
             )),
         );
         

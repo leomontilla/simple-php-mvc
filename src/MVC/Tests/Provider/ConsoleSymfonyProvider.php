@@ -9,6 +9,7 @@
 namespace MVC\Tests\Provider;
 
 use MVC\MVC;
+use MVC\Module\Module;
 use MVC\Provider\Provider;
 use Symfony\Component\Console\Application;
 
@@ -26,6 +27,13 @@ class ConsoleSymfonyProvider extends Provider
     );
 
     /**
+     * Registered modules
+     *
+     * @var Module[]
+     */
+    protected $modules = array();
+
+    /**
      * Doctrine DBAL Provider Construct
      *
      * @param array $options
@@ -33,6 +41,7 @@ class ConsoleSymfonyProvider extends Provider
     public function __construct(array $options = array())
     {
         $this->options = array_merge(self::$defaultOptions, $options);
+        $this->modules = $options['modules'];
     }
 
     /**
@@ -57,6 +66,10 @@ class ConsoleSymfonyProvider extends Provider
 
         if (!$mvc->hasCvpp('symfony.console')) {
             $mvc->setCvpp('symfony.console', $application);
+        }
+
+        foreach ($this->modules as $module) {
+            $module->registerCommands($mvc->getCvpp('symfony.console'));
         }
     }
 }
