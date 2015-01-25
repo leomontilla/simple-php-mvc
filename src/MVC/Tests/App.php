@@ -17,7 +17,7 @@ class App extends MVC
      */
     public function __construct() {
         parent::__construct(array(
-            'templates_path' => __DIR__ . '/Views'
+            'templates_path' => __DIR__ . '/TestModule/Resources/views'
         ));
     }
 

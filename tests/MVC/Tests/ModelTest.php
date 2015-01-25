@@ -8,8 +8,7 @@
 
 namespace MVC\Tests;
 
-use MVC\DataBase\PDO,
-    MVC\Tests\MVC\ExampleModel;
+use MVC\DataBase\PDO;
 
 class ModelTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +20,7 @@ class ModelTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->_pdo = new PDO('mysql:host=localhost;dbname=MPPD_DB;charset=UTF8', 'root', '');
-        $this->_model = new ExampleModel($this->_pdo);
+        $this->_model = new Model($this->_pdo);
     }
     
     public function testQuery()

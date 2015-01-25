@@ -9,9 +9,7 @@
 
 namespace MVC\Controller;
 
-use MVC\Error,
-    MVC\MVC,
-    MVC\Server\HttpRequest,
+use MVC\MVC,
     MVC\View;
 
 abstract class Controller implements ControllerInterface
@@ -38,6 +36,7 @@ abstract class Controller implements ControllerInterface
      */
     public function __construct(View $view = null)
     {
+        $this->view = $view;
         if (null === $view) {
             $this->view = new View();
         }
@@ -51,6 +50,7 @@ abstract class Controller implements ControllerInterface
      * @param string $method   Method or Function of the Class Controller
      * @param string $fileView String of the view file
      * @return array           Response array
+     * @throws \LogicException
      */
     final public function call(MVC $mvc, $method, $fileView = null)
     {

@@ -2,7 +2,7 @@
 
 namespace MVC\Tests;
 
-use MVC\Tests\EjemploModule\Controller\FooController;
+use MVC\Tests\TestModule\Controller\FooController;
 use MVC\MVC;
 use MVC\View;
 

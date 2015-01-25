@@ -95,7 +95,9 @@ class AppMVC extends MVC
             array(
                 "method"  => ["ajax", "get", "post"],
                 "pattern" => "/",
-                "action"  => function() {return 'Index';},
+                "action"  => function() {
+                    return 'Index';
+                },
                 "name"    => "index"
             )
         );
