@@ -763,7 +763,7 @@ class MVC implements MVCInterface
                     throw new \LogicException('Route haven\'t action.');
                 }
                 if ($this->container->hasProvider('monolog')) {
-                    //$this->container->providers['monolog']->addInfo($response, $parsed);
+                    $this->container->providers['monolog']->addInfo($response, $parsed);
                 }
                 $this->container->getResponse()->render($response);
             } else {
