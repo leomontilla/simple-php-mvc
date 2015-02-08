@@ -36,9 +36,10 @@ abstract class Controller implements ControllerInterface
      */
     public function __construct(View $view = null)
     {
-        $this->view = $view;
         if (null === $view) {
             $this->view = new View();
+        } else {
+            $this->view = $view;
         }
     }
 
