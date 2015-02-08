@@ -28,7 +28,7 @@ class UserController extends Controller
         if (!$mvc->hasCvpp('pdo')) {
             throw new \LogicException('PDO don\'t exists. Register the MVC\DataBase\PdoProvider for use this function.');
         }
-        $userModel = new User($mvc->getKey('pdo'));
+        $userModel = new User($mvc->getCvpp('pdo'));
         $users = $userModel->findAll();
         
         return $mvc->view()->render('User/index.html', array(
