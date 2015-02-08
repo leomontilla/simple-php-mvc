@@ -537,8 +537,9 @@ class MVC implements MVCInterface
         }
 
         foreach ($this->container->getModules() as $module) {
-            if ($module->getModuleExtension() instanceof Injection\Extension) {
-                $routes[] = $module->getModuleExtension()->loadRoutes();
+            $extension = $module->getModuleExtension();
+            if ($extension instanceof Injection\Extension && method_exists($extension, 'loadRoutes')) {
+                $routes[] = $extension->loadRoutes();
             }
         }
 
