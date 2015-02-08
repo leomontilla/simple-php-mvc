@@ -767,7 +767,7 @@ class MVC implements MVCInterface
                 }
                 $this->container->getResponse()->render($response);
             } else {
-                if (!$this->container->getSetting('debug')) {
+                if ($this->container->getSetting('debug')) {
                     throw new \LogicException(sprintf('Route or Resource "%s" not found.', $request->url));
                 }
                 $this->defaultNotFound();
