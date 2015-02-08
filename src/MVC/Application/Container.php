@@ -114,6 +114,7 @@ class Container
         if (isset($this->modules[$name])) {
             throw new \LogicException(sprintf('Trying to register two modules with the same name "%s"', $name));
         }
+        $this->view->addTemplatePath($module->getPath() . '/Resources/views');
         $this->modules[$name] = $module;
         
         return $this;

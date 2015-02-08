@@ -21,7 +21,7 @@ class User extends Model
      */
     public function __construct(PDO $pdo)
     {
-        parent::__construct($pdo, 'user');
+        parent::__construct($pdo, 'Usuario');
     }
 
 }

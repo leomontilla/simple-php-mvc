@@ -14,9 +14,30 @@ class View
     /**
      * Path folder templates
      * @access public
-     * @var string
+     * @var string|array
      */
     public $templatesPath;
+
+    /**
+     * Add Template Path
+     *
+     * @param string $path Templates path
+     */
+    public function addTemplatePath($path)
+    {
+        if (is_array($this->templatesPath)) {
+            if (array_search($path, $this->templatesPath)) {
+                throw new \LogicException(sprintf('Templates path "%s" exists.', $path));
+            } else {
+                $this->templatesPath[] = $path;
+            }
+        } else if (is_string($this->templatesPath)) {
+            $lastTemplate = $this->templatesPath;
+            $this->templatesPath = array(
+                $lastTemplate, $path
+            );
+        }
+    }
 
     /**
      * Display the content of template
@@ -54,13 +75,23 @@ class View
      */
     public function render($file, $vars = null) 
     {
-        if (!$this->templatesPath) {
+        $template = '';
+
+        if (is_null($this->templatesPath)) {
             throw new \LogicException('Variable "templatesPath" can\'t be NULL.');
-        } else if (!$this->templatesPath) {
+        } else if (is_string($this->templatesPath) && !file_exists($this->templatesPath)) {
             throw new \LogicException(sprintf('Folder "%s" don\'t exists.', $this->templatesPath));
+        } else if (is_array($this->templatesPath)) {
+            foreach ($this->templatesPath as $folderPath) {
+                if (file_exists($template = "$folderPath/{$file}")) {
+                    break;
+                }
+            }
         }
         
-        $template = "$this->templatesPath/{$file}";
+        if (!$template) {
+            $template = "$this->templatesPath/{$file}";
+        }
         
         if(!file_exists($template)){
            throw new \LogicException(sprintf('View "%s" don\'t exists.', $template));
